@@ -502,8 +502,54 @@ def make_asciidoc_encoding(instr_dict):
         asciidoc_content += ',\n'.join(reversed(bits))
         asciidoc_content += '\n]}\n'
         asciidoc_content += '....\n\n'
+        asciidoc_content += make_asciidoc_argument_table(instr_name, instr_data)
     return asciidoc_content
 
+def make_asciidoc_argument_table(instr_name, instr_data):
+    '''
+    Generate an AsciiDoc table for instruction arguments.
+
+    This function creates an AsciiDoc formatted table that lists the arguments
+    of a given instruction, their direction (input/output), and their definition.
+
+    Args:
+    instr_name (str): The name of the instruction
+    instr_data (dict): A dictionary containing instruction data
+
+    Returns:
+    str: AsciiDoc formatted string containing the argument table
+
+    The function does the following:
+    1. Initializes the AsciiDoc content with table headers
+    2. Retrieves the variable fields (arguments) for the instruction
+    3. For each field that exists in the instruction_arguments dictionary:
+       - Adds a row to the table with the field name, direction, and definition
+    4. Closes the table
+
+    Note: This function assumes the existence of an 'instruction_arguments' 
+    dictionary that contains information about each possible argument.
+    '''
+    asciidoc_content = ''
+    asciidoc_content += 'Arguments::\n'
+    asciidoc_content += '[%autowidth]\n'
+    asciidoc_content += '[%header,cols="4,2,2"]\n'
+    asciidoc_content += '|===\n'
+    asciidoc_content += '|Register |Direction |Definition\n'
+
+    # Get the variable fields (arguments) for this instruction
+    var_fields = instr_data.get('variable_fields', [])
+
+    # For each field, if it exists in the instruction_arguments dictionary,
+    # add it to the table
+    for field in var_fields:
+        if field in instruction_arguments:
+            arg_info = instruction_arguments[field]
+            asciidoc_content += f"|{field} |{arg_info['direction']} |{arg_info['definition']}\n"
+    
+    # Close the table
+    asciidoc_content += '|===\n\n'
+    
+    return asciidoc_content
 
 def make_priv_latex_table():
     latex_file = open('priv-instr-table.tex','w')

@@ -69,6 +69,21 @@ arg_lut['mop_rr_t_30'] = (30,30)
 arg_lut['mop_rr_t_27_26'] = (27, 26)
 arg_lut['c_mop_t'] = (10,8)
 
+#for argument table
+instruction_arguments = {
+    'rd': {'direction': 'output', 'definition': 'Destination register'},
+    'rs1': {'direction': 'input', 'definition': 'Source register 1'},
+    'rs2': {'direction': 'input', 'definition': 'Source register 2'},
+    'rs3': {'direction': 'input', 'definition': 'Source register 3'},
+    'shamt': {'direction': 'input', 'definition': 'Shift amount (5 or 6 bits)'},
+    'imm12': {'direction': 'input', 'definition': '12-bit immediate'},
+    'imm20': {'direction': 'input', 'definition': '20-bit immediate'},
+    'bimm12hi': {'direction': 'input', 'definition': 'High bits of 13-bit branch offset'},
+    'bimm12lo': {'direction': 'input', 'definition': 'Low bits of 13-bit branch offset'},
+    'jimm20': {'direction': 'input', 'definition': '20-bit jump offset'},
+    'zimm': {'direction': 'input', 'definition': 'Zero-extended immediate'},
+}
+
 # dictionary containing the mapping of the argument to what the fields in
 # the AsciiDoc table should be
 asciidoc_mapping = {}
