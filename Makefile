@@ -9,7 +9,7 @@ default: everything
 
 .PHONY : everything
 everything:
-	@./parse.py -c -go -chisel -sverilog -rust -latex -spinalhdl $(EXTENSIONS)
+	@./parse.py -c -go -chisel -sverilog -rust -latex -spinalhdl -asciidoc $(EXTENSIONS)
 
 .PHONY : encoding.out.h
 encoding.out.h:
@@ -35,9 +35,13 @@ inst.sverilog:
 inst.rs:
 	@./parse.py -rust $(EXTENSIONS)
 
+.PHONY : instr-encoding.adoc
+instr-encoding.adoc:
+	@./parse.py -asciidoc $(EXTENSIONS)
+
 .PHONY : clean
 clean:
-	rm -f inst* priv-instr-table.tex encoding.out.h
+	rm -f inst* priv-instr-table.tex encoding.out.h instr-encoding.adoc
 
 .PHONY : install
 install: everything
