@@ -439,6 +439,7 @@ def make_asciidoc_encoding(instr_dict):
     str: AsciiDoc formatted string with instruction encoding information
     '''
     asciidoc_content = ''
+    asciidoc_content += '<<<'
     for instr_name, instr_data in instr_dict.items():
         encoding = instr_data['encoding']
         asciidoc_content += f'==== {instr_name.upper()}\n\n'
@@ -502,7 +503,9 @@ def make_asciidoc_encoding(instr_dict):
         asciidoc_content += ',\n'.join(reversed(bits))
         asciidoc_content += '\n]}\n'
         asciidoc_content += '....\n\n'
+        asciidoc_content += make_asciidoc_mnemonic (instr_name, instr_data)
         asciidoc_content += make_asciidoc_argument_table(instr_name, instr_data)
+        asciidoc_content += '<<<\n\n'
     return asciidoc_content
 
 def make_asciidoc_argument_table(instr_name, instr_data):
@@ -549,6 +552,49 @@ def make_asciidoc_argument_table(instr_name, instr_data):
     # Close the table
     asciidoc_content += '|===\n\n'
     
+    return asciidoc_content
+
+def make_asciidoc_mnemonic(instr_name, instr_data):
+    '''
+    Generate an AsciiDoc formatted mnemonic representation for an instruction.
+
+    Args:
+    instr_name (str): The name of the instruction
+    instr_data (dict): A dictionary containing instruction data
+
+    Returns:
+    str: AsciiDoc formatted string containing the mnemonic representation
+
+    The function does the following:
+    1. Initializes the AsciiDoc content with a header for the mnemonic
+    2. Constructs the mnemonic using the instruction name and its arguments
+    3. Maps the instruction fields to their AsciiDoc representations
+    4. Formats the mnemonic in AsciiDoc
+    '''
+    asciidoc_content = ''
+    asciidoc_content += f'Mnemonic::\n'
+
+    # Get the variable fields (arguments) for this instruction
+    var_fields = instr_data.get('variable_fields', [])
+
+    # Construct the mnemonic
+    mnemonic = instr_name.lower()
+    args = []
+    for field in var_fields:
+        if field in asciidoc_mapping:
+            args.append(asciidoc_mapping[field])
+        else:
+            args.append(field)
+
+    # Add the arguments to the mnemonic
+    if args:
+        mnemonic += ' ' + ', '.join(args)
+
+    # Format the mnemonic in AsciiDoc
+    asciidoc_content += f'+\n'
+    asciidoc_content += f'`{mnemonic}`\n'
+    asciidoc_content += f'+\n\n'
+
     return asciidoc_content
 
 def make_priv_latex_table():
