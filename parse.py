@@ -439,7 +439,7 @@ def make_asciidoc_encoding(instr_dict):
     str: AsciiDoc formatted string with instruction encoding information
     '''
     asciidoc_content = ''
-    asciidoc_content += '<<<'
+    asciidoc_content += '<<<\n'
     for instr_name, instr_data in instr_dict.items():
         encoding = instr_data['encoding']
         asciidoc_content += f'==== {instr_name.upper()}\n\n'
@@ -505,6 +505,7 @@ def make_asciidoc_encoding(instr_dict):
         asciidoc_content += '....\n\n'
         asciidoc_content += make_asciidoc_mnemonic (instr_name, instr_data)
         asciidoc_content += make_asciidoc_argument_table(instr_name, instr_data)
+        asciidoc_content += make_asciidoc_sail(instr_name)
         asciidoc_content += '<<<\n\n'
     return asciidoc_content
 
@@ -596,6 +597,49 @@ def make_asciidoc_mnemonic(instr_name, instr_data):
     asciidoc_content += f'+\n\n'
 
     return asciidoc_content
+
+def find_matching_brace(text, start):
+    count = 0
+    for i, char in enumerate(text[start:], start):
+        if char == '{':
+            count += 1
+        elif char == '}':
+            count -= 1
+            if count == 0:
+                return i
+    return -1
+ 
+def make_asciidoc_sail(instr_name):
+    file_path = "../sail-riscv/model/riscv_insts_base.sail"
+    asciidoc_content = ""
+    riscv_name = "RISCV_" + instr_name.upper()
+
+    with open(file_path, 'r') as f:
+        content = f.read()
+        
+        function_starts = list(re.finditer(r'function clause execute', content))
+        
+        for match in function_starts:
+            start = match.start()
+            end = find_matching_brace(content, start)
+            if end != -1:
+                block = content[start:end+1]
+
+                if re.search(r'\b(' + re.escape(riscv_name) + r'|' + re.escape(instr_name.upper()) + r')\b', block):
+                    asciidoc_content += f"== Instruction {instr_name}\n\n"
+                    asciidoc_content += "[source,sail]\n"
+                    asciidoc_content += "----\n"
+                    asciidoc_content += block + "\n"
+                    asciidoc_content += "----\n\n"
+                    return asciidoc_content  # Return the AsciiDoc formatted string
+
+    if not asciidoc_content:
+        print(f"{instr_name} NOT found")
+        asciidoc_content += f"== Instruction {instr_name}\n\n"
+        asciidoc_content += f"Instruction {instr_name} not found in the expected format.\n"
+    
+    return asciidoc_content
+
 
 def make_priv_latex_table():
     latex_file = open('priv-instr-table.tex','w')
