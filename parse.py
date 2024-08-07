@@ -598,6 +598,79 @@ def make_asciidoc_mnemonic(instr_name, instr_data):
 
     return asciidoc_content
 
+
+def process_asciidoc_block(block, instr_name):
+    '''
+    Process a block of code for a specific instruction.
+    
+    This function takes a code block and an instruction name, then creates a new block
+    specific to that instruction. It handles the "match op" (switch) structure,
+    extracts the relevant parts, and formats them appropriately.
+    
+    Args:
+    block (str): The original code block to process.
+    instr_name (str): The name of the instruction to focus on.
+    
+    Returns:
+    str: A new code block formatted for the specific instruction.
+    '''
+    
+    new_block = []
+    start_word = "match op"
+    stop_word = "};"
+    first_two_words = ""
+    instr_upper = instr_name.upper()
+    instr_pattern = f"RISCV_{instr_upper}"
+    
+    # Split the block into lines and replace the generic TYPE with the specific instruction
+    block_lines = block.split('\n')
+    block_lines[0] = re.sub(r'\b\w*TYPE\w*\b', instr_pattern, block_lines[0])
+    
+    # Find the start of the "match op" (switch) block
+    start_block_index = -1
+    for i, line in enumerate(block_lines):
+        if start_word in line:
+            start_block_index = i
+            first_two_words = ' '.join(line.split()[:2])
+            break
+        else:
+            new_block.append(line)
+    
+    # Find the end of the "match op" (switch) block
+    end_block_index = -1
+    for i, line in enumerate(block_lines):
+        if stop_word in line:
+            end_block_index = i
+            break
+    
+    if (start_block_index != -1) and (end_block_index != -1):
+        # Process the "match op" block
+        block_match_op = block_lines[start_block_index:end_block_index]
+        encontrado = False
+        for line in block_match_op:
+            if instr_pattern in line:
+                encontrado = True
+            if encontrado:
+                if re.search(r'\bRISCV_\w+\b', line) and instr_pattern not in line:
+                    break
+                elif instr_pattern in line:
+                    # Format the line for the specific instruction
+                    partes = line.split('=')
+                    partes[0] = first_two_words.strip()
+                    line = '='.join(partes).strip()
+                    line = line.replace("=>", " =")
+                    new_block.append('  ' + line)
+                else:
+                    new_block.append(line)
+        
+        for line in block_lines[end_block_index + 1:]:
+            new_block.append(line)
+    
+    # Join the processed lines into a single string
+    formatted_block = '\n'.join(new_block)
+    return formatted_block
+
+
 def find_matching_brace(text, start):
     count = 0
     for i, char in enumerate(text[start:], start):
@@ -629,7 +702,7 @@ def make_asciidoc_sail(instr_name):
                     asciidoc_content += f"== Instruction {instr_name}\n\n"
                     asciidoc_content += "[source,sail]\n"
                     asciidoc_content += "----\n"
-                    asciidoc_content += block + "\n"
+                    asciidoc_content += process_asciidoc_block(block, instr_name)
                     asciidoc_content += "----\n\n"
                     return asciidoc_content  # Return the AsciiDoc formatted string
 
