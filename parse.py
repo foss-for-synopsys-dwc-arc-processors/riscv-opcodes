@@ -440,9 +440,13 @@ def make_asciidoc_encoding(instr_dict):
     '''
     asciidoc_content = ''
     asciidoc_content += '<<<\n'
+
     for instr_name, instr_data in instr_dict.items():
+        
         encoding = instr_data['encoding']
         asciidoc_content += f'==== {instr_name.upper()}\n\n'
+        asciidoc_content += make_asciidoc_synopsis (instr_name)
+        asciidoc_content += make_asciidoc_mnemonic (instr_name, instr_data)
         asciidoc_content += 'Encoding::\n'
         asciidoc_content += '[wavedrom, , svg]\n'
         asciidoc_content += '....\n'
@@ -503,7 +507,8 @@ def make_asciidoc_encoding(instr_dict):
         asciidoc_content += ',\n'.join(reversed(bits))
         asciidoc_content += '\n]}\n'
         asciidoc_content += '....\n\n'
-        asciidoc_content += make_asciidoc_mnemonic (instr_name, instr_data)
+
+        asciidoc_content += make_asciidoc_description (instr_name)
         asciidoc_content += make_asciidoc_argument_table(instr_name, instr_data)
         asciidoc_content += make_asciidoc_sail(instr_name)
         asciidoc_content += '<<<\n\n'
@@ -598,6 +603,9 @@ def make_asciidoc_mnemonic(instr_name, instr_data):
 
     return asciidoc_content
 
+def make_asciidoc_synopsis(instr_name):
+    asciidoc_content = 'Synopsis:: \n\n'
+    return asciidoc_content
 
 def process_asciidoc_block(block, instr_name):
     '''
@@ -670,6 +678,9 @@ def process_asciidoc_block(block, instr_name):
     formatted_block = '\n'.join(new_block)
     return formatted_block
 
+def make_asciidoc_description(instr_name):
+    asciidoc_content = 'Description:: \n\n'
+    return asciidoc_content
 
 def find_matching_brace(text, start):
     count = 0
@@ -681,7 +692,7 @@ def find_matching_brace(text, start):
             if count == 0:
                 return i
     return -1
- 
+
 def make_asciidoc_sail(instr_name):
     file_path = "../sail-riscv/model/riscv_insts_base.sail"
     asciidoc_content = ""
@@ -699,17 +710,17 @@ def make_asciidoc_sail(instr_name):
                 block = content[start:end+1]
 
                 if re.search(r'\b(' + re.escape(riscv_name) + r'|' + re.escape(instr_name.upper()) + r')\b', block):
-                    asciidoc_content += f"== Instruction {instr_name}\n\n"
+                    asciidoc_content += f"Sail Code:: \n\n"
                     asciidoc_content += "[source,sail]\n"
-                    asciidoc_content += "----\n"
+                    asciidoc_content += "--\n"
                     asciidoc_content += process_asciidoc_block(block, instr_name)
-                    asciidoc_content += "----\n\n"
+                    asciidoc_content += "\n--\n\n"
                     return asciidoc_content  # Return the AsciiDoc formatted string
 
     if not asciidoc_content:
         print(f"{instr_name} NOT found")
-        asciidoc_content += f"== Instruction {instr_name}\n\n"
-        asciidoc_content += f"Instruction {instr_name} not found in the expected format.\n"
+        asciidoc_content += f"Sail Code :: \n\n"
+        asciidoc_content += f"Instruction {instr_name} sail code not found in the expected format.\n\n"
     
     return asciidoc_content
 
