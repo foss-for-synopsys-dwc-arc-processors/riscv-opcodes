@@ -1,0 +1,101 @@
+==== SFENCE_VMA
+
+Synopsis:: 
+
+Mnemonic::
++
+`sfence_vma rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 15, name: 0x73},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x9}
+]}
+....
+
+Description:: 
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute SFENCE_VMA(rs1, rs2) = {
+  let addr : option(xlenbits) = if rs1 == 0b00000 then None() else Some(X(rs1));
+  let asid : option(xlenbits) = if rs2 == 0b00000 then None() else Some(X(rs2));
+  match cur_privilege {
+    User       => { handle_illegal(); RETIRE_FAIL },
+    Supervisor => match (architecture(get_mstatus_SXL(mstatus)), mstatus[TVM]) {
+                    (Some(_), 0b1)  => { handle_illegal(); RETIRE_FAIL },
+                    (Some(_), 0b0) => { flush_TLB(asid, addr); RETIRE_SUCCESS },
+                    (_, _)           => internal_error(__FILE__, __LINE__, "unimplemented sfence architecture")
+                  },
+    Machine    => { flush_TLB(asid, addr); RETIRE_SUCCESS }
+  }
+}
+--
+
+<<<
+
+==== SRET
+
+Synopsis:: 
+
+Mnemonic::
++
+`sret`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 32, name: 0x10200073}
+]}
+....
+
+Description:: 
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute SRET() = {
+  let sret_illegal : bool = match cur_privilege {
+    User       => true,
+    Supervisor => not(haveSupMode ()) | mstatus[TSR] == 0b1,
+    Machine    => not(haveSupMode ())
+  };
+  if   sret_illegal
+  then { handle_illegal(); RETIRE_FAIL }
+  else if not(ext_check_xret_priv (Supervisor))
+  then { ext_fail_xret_priv(); RETIRE_FAIL }
+  else {
+    set_next_pc(exception_handler(cur_privilege, CTL_SRET(), PC));
+    RETIRE_SUCCESS
+  }
+}
+--
+
+<<<
+

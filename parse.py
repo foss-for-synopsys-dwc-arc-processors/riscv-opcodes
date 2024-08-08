@@ -420,97 +420,124 @@ def create_inst_dict(file_filter, include_pseudo=False, include_pseudo_ops=[]):
                 instr_dict[name] = single_dict
     return instr_dict
 
-def make_asciidoc_encoding(instr_dict):
+def make_asciidoc_instructions(instr_dict):
     '''
-    This function generates AsciiDoc content for instruction encodings.
-    It takes the instruction dictionary as input and creates an AsciiDoc
-    formatted string containing the encoding information for each instruction.
-
-    For each instruction in the dictionary:
-    - Creates a section header with the instruction name
-    - Generates a WaveDrom diagram showing the encoding
-    - Handles special cases for immediate values
-    - Ensures proper bit ordering and field naming
+    Main function to generate AsciiDoc content for all instructions,
+    separating them into unprivileged and privileged instructions.
 
     Args:
     instr_dict (dict): A dictionary containing instruction information
 
     Returns:
-    str: AsciiDoc formatted string with instruction encoding information
+    tuple: Two strings containing AsciiDoc formatted content for unprivileged and privileged instructions
     '''
-    asciidoc_content = ''
+    asciidoc_content_unprivileged = ''
+    asciidoc_content_privileged = ''
 
     for instr_name, instr_data in instr_dict.items():
-        
-        encoding = instr_data['encoding']
-        asciidoc_content += f'==== {instr_name.upper()}\n\n'
-        asciidoc_content += make_asciidoc_synopsis (instr_name)
-        asciidoc_content += make_asciidoc_mnemonic (instr_name, instr_data)
-        asciidoc_content += 'Encoding::\n'
-        asciidoc_content += '[wavedrom, , svg]\n'
-        asciidoc_content += '....\n'
-        asciidoc_content += '{reg:[\n'
-        
-        bits = []
-        var_fields = instr_data.get('variable_fields', [])
-        
-        # Create a list of tuples (start_bit, end_bit, field_name)
-        fields = []
-        for field_name in var_fields:
-            if field_name in arg_lut:
-                start_bit, end_bit = arg_lut[field_name]
-                fields.append((start_bit, end_bit, field_name))
-        
-        # Sort fields by start_bit in descending order
-        fields.sort(key=lambda x: x[0], reverse=True)
-        
-        current_bit = 31
-        for start_bit, end_bit, field_name in fields:
-            # Add any fixed bits before this field
-            if current_bit > start_bit:
-                fixed_bits = encoding[31-current_bit:31-start_bit]
-                if fixed_bits:
-                    if '-' in fixed_bits:
-                        bits.append(f'{{bits: {current_bit-start_bit}, name: \'{fixed_bits}\'}}')
-                    else:
-                        bits.append(f'{{bits: {current_bit-start_bit}, name: 0x{int(fixed_bits, 2):x}}}')
-            
-            # Add the variable field, splitting it if it's an immediate with several partitions
-            field_bits = encoding[31-start_bit:31-end_bit+1]
-            field_name = asciidoc_mapping.get(field_name, field_name)
-            if 'imm' in field_name and '|' in field_name:
-                imm_parts = field_name.split('[')[1].split(']')[0].split('|')
-                imm_bits = start_bit - end_bit + 1
-                for part in (imm_parts):
-                    if ':' in part:
-                        part_start, part_end = map(int, part.split(':'))
-                        part_bits = part_start - part_end + 1
-                    else:
-                        part_bits = 1
-                    bits.append(f'{{bits: {part_bits}, name: \'imm[{part}]\'}}')
-                    imm_bits -= part_bits
-            else:
-                bits.append(f'{{bits: {start_bit-end_bit+1}, name: \'{field_name}\'}}')
-            
-            current_bit = end_bit - 1
-        
-        # Add any remaining fixed bits at the end
-        if current_bit >= 0:
-            fixed_bits = encoding[31-current_bit:]
+        # Check the extension to determine if it's privileged or unprivileged
+        is_privileged = any('rv_s' in ext for ext in instr_data['extension'])
+        is_unprivileged = any('rv_i' in ext for ext in instr_data['extension'])
+
+        # Generate the content for this instruction
+        instr_content = f'==== {instr_name.upper()}\n\n'
+        instr_content += make_asciidoc_synopsis(instr_name)
+        instr_content += make_asciidoc_mnemonic(instr_name, instr_data)
+        instr_content += make_asciidoc_encoding(instr_name, instr_data)
+        instr_content += make_asciidoc_description(instr_name)
+        instr_content += make_asciidoc_argument_table(instr_name, instr_data)
+        instr_content += make_asciidoc_sail(instr_name)
+        instr_content += '<<<\n\n'
+
+        # Add the content to the appropriate string based on the extension
+        if is_privileged:
+            asciidoc_content_privileged += instr_content
+        elif is_unprivileged:
+            asciidoc_content_unprivileged += instr_content
+        else:
+            # If it's neither rv_i nor rv64_h, you might want to handle this case
+            # For now, we'll add it to unprivileged as a default
+            asciidoc_content_unprivileged += instr_content
+
+    return asciidoc_content_unprivileged, asciidoc_content_privileged
+
+    
+
+def make_asciidoc_encoding(instr_name, instr_data):
+    '''
+    Generates AsciiDoc content for instruction encodings.
+    It takes the instruction name and data as input and creates an AsciiDoc
+    formatted string containing the encoding information for the instruction.
+
+    Args:
+    instr_name (str): The name of the instruction
+    instr_data (dict): A dictionary containing instruction data
+
+    Returns:
+    str: AsciiDoc formatted string with instruction encoding information
+    '''
+    asciidoc_content = 'Encoding::\n'
+    asciidoc_content += '[wavedrom, , svg]\n'
+    asciidoc_content += '....\n'
+    asciidoc_content += '{reg:[\n'
+    
+    encoding = instr_data['encoding']
+    var_fields = instr_data.get('variable_fields', [])
+    
+    # Create a list of tuples (start_bit, end_bit, field_name)
+    fields = []
+    for field_name in var_fields:
+        if field_name in arg_lut:
+            start_bit, end_bit = arg_lut[field_name]
+            fields.append((start_bit, end_bit, field_name))
+    
+    # Sort fields by start_bit in descending order
+    fields.sort(key=lambda x: x[0], reverse=True)
+    
+    bits = []
+    current_bit = 31
+    for start_bit, end_bit, field_name in fields:
+        # Add any fixed bits before this field
+        if current_bit > start_bit:
+            fixed_bits = encoding[31-current_bit:31-start_bit]
             if fixed_bits:
                 if '-' in fixed_bits:
-                    bits.append(f'{{bits: {current_bit+1}, name: \'{fixed_bits}\'}}')
+                    bits.append(f'{{bits: {current_bit-start_bit}, name: \'{fixed_bits}\'}}')
                 else:
-                    bits.append(f'{{bits: {current_bit+1}, name: 0x{int(fixed_bits, 2):x}}}')
+                    bits.append(f'{{bits: {current_bit-start_bit}, name: 0x{int(fixed_bits, 2):x}}}')
         
-        asciidoc_content += ',\n'.join(reversed(bits))
-        asciidoc_content += '\n]}\n'
-        asciidoc_content += '....\n\n'
-
-        asciidoc_content += make_asciidoc_description (instr_name)
-        asciidoc_content += make_asciidoc_argument_table(instr_name, instr_data)
-        asciidoc_content += make_asciidoc_sail(instr_name)
-        asciidoc_content += '<<<\n\n'
+        # Add the variable field, splitting it if it's an immediate with several partitions
+        field_bits = encoding[31-start_bit:31-end_bit+1]
+        field_name = asciidoc_mapping.get(field_name, field_name)
+        if 'imm' in field_name and '|' in field_name:
+            imm_parts = field_name.split('[')[1].split(']')[0].split('|')
+            imm_bits = start_bit - end_bit + 1
+            for part in (imm_parts):
+                if ':' in part:
+                    part_start, part_end = map(int, part.split(':'))
+                    part_bits = part_start - part_end + 1
+                else:
+                    part_bits = 1
+                bits.append(f'{{bits: {part_bits}, name: \'imm[{part}]\'}}')
+                imm_bits -= part_bits
+        else:
+            bits.append(f'{{bits: {start_bit-end_bit+1}, name: \'{field_name}\'}}')
+        
+        current_bit = end_bit - 1
+    
+    # Add any remaining fixed bits at the end
+    if current_bit >= 0:
+        fixed_bits = encoding[31-current_bit:]
+        if fixed_bits:
+            if '-' in fixed_bits:
+                bits.append(f'{{bits: {current_bit+1}, name: \'{fixed_bits}\'}}')
+            else:
+                bits.append(f'{{bits: {current_bit+1}, name: 0x{int(fixed_bits, 2):x}}}')
+    
+    asciidoc_content += ',\n'.join(reversed(bits))
+    asciidoc_content += '\n]}\n'
+    asciidoc_content += '....\n\n'
+    
     return asciidoc_content
 
 def make_asciidoc_argument_table(instr_name, instr_data):
@@ -1350,7 +1377,14 @@ if __name__ == "__main__":
         logging.info('priv-instr-table.tex generated successfully')
 
     if '-asciidoc' in sys.argv[1:]:
-        asciidoc_content = make_asciidoc_encoding(instr_dict)
-        with open('instr-encoding.adoc', 'w') as adoc_file:
-            adoc_file.write(asciidoc_content)
-        logging.info('instr-encoding.adoc generated successfully')
+        unprivileged_content, privileged_content = make_asciidoc_instructions(instr_dict)
+        
+        # Write unprivileged instructions to a file
+        with open('instr-encoding-unprivileged.adoc', 'w') as adoc_file:
+            adoc_file.write(unprivileged_content)
+        logging.info('instr-encoding-unprivileged.adoc generated successfully')
+        
+        # Write privileged instructions to a file
+        with open('instr-encoding-privileged.adoc', 'w') as adoc_file:
+            adoc_file.write(privileged_content)
+        logging.info('instr-encoding-privileged.adoc generated successfully')
