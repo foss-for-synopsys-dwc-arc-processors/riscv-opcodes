@@ -439,7 +439,6 @@ def make_asciidoc_encoding(instr_dict):
     str: AsciiDoc formatted string with instruction encoding information
     '''
     asciidoc_content = ''
-    asciidoc_content += '<<<\n'
 
     for instr_name, instr_data in instr_dict.items():
         
