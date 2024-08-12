@@ -447,6 +447,8 @@ def make_asciidoc_instructions(instr_dict):
         instr_content += make_asciidoc_description(instr_name)
         instr_content += make_asciidoc_argument_table(instr_name, instr_data)
         instr_content += make_asciidoc_sail(instr_name)
+        instr_content += f'Included in:: {asciidoc_extension_info(instr_data["extension"])}\n\n'
+        
         instr_content += '<<<\n\n'
 
         # Add the content to the appropriate string based on the extension
@@ -750,6 +752,20 @@ def make_asciidoc_sail(instr_name):
     
     return asciidoc_content
 
+def asciidoc_extension_info(extensions):
+    formatted_extensions = set()
+    for ext in extensions:
+        if 'rv32_' in ext:
+            base = 'RV32'
+        elif 'rv64_' in ext:
+            base = 'RV64'
+        else:
+            base = 'RV(32/64)'
+        
+        clean_ext = ext.replace('rv_', '').replace('rv32_', '').replace('rv64_', '').upper()
+        formatted_extensions.add(f"{base}{clean_ext}")
+
+    return ', '.join(sorted(formatted_extensions))
 
 def make_priv_latex_table():
     latex_file = open('priv-instr-table.tex','w')
