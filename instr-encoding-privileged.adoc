@@ -1,6 +1,6 @@
 ==== SFENCE_VMA
 
-Synopsis:: 
+Synopsis:: No synopsis available.
 
 Mnemonic::
 +
@@ -54,7 +54,7 @@ Included in:: RV(32/64)S
 
 ==== SRET
 
-Synopsis:: 
+Synopsis:: No synopsis available.
 
 Mnemonic::
 +

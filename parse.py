@@ -464,6 +464,38 @@ def make_asciidoc_instructions(instr_dict):
     return asciidoc_content_unprivileged, asciidoc_content_privileged
 
     
+def make_asciidoc_synopsis(instr_name):
+    """
+    Search for the synopsis of a given instruction in files named "base_name"_syn.
+
+    Args:
+    instr_name (str): The name of the instruction to search for
+
+    Returns:
+    str: AsciiDoc formatted string containing the synopsis of the instruction
+    """
+    asciidoc_content = 'Synopsis:: '
+    
+    # Get the directory of the current script
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    
+    # List all files in the current directory that end with '_syn'
+    syn_files = [f for f in os.listdir(current_dir) if f.endswith('_syn')]
+    
+    for syn_file in syn_files:
+        file_path = os.path.join(current_dir, syn_file)
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                parts = line.strip().split(' ', 1)
+                if len(parts) == 2 and parts[0].lower() == instr_name.lower():
+                    asciidoc_content += parts[1] + '\n\n'
+                    return asciidoc_content
+    
+    # If no synopsis is found, return a default message
+    asciidoc_content += 'No synopsis available.\n\n'
+    return asciidoc_content
+
 
 def make_asciidoc_encoding(instr_name, instr_data):
     '''
@@ -629,10 +661,6 @@ def make_asciidoc_mnemonic(instr_name, instr_data):
     asciidoc_content += f'`{mnemonic}`\n'
     asciidoc_content += f'+\n\n'
 
-    return asciidoc_content
-
-def make_asciidoc_synopsis(instr_name):
-    asciidoc_content = 'Synopsis:: \n\n'
     return asciidoc_content
 
 def process_asciidoc_block(block, instr_name):
