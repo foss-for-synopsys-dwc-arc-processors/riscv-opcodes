@@ -18,7 +18,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: No description available.
 
 Arguments::
 [%autowidth]
@@ -69,7 +69,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: No description available.
 
 Arguments::
 [%autowidth]

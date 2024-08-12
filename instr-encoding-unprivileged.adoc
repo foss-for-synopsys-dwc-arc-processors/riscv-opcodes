@@ -20,7 +20,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Adds rs1 and rs2, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -70,7 +70,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Adds the sign-extended 12-bit immediate to rs1 and stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -121,7 +121,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Performs bitwise AND on rs1 and rs2, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -171,7 +171,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Performs bitwise AND on rs1 and the sign-extended 12-bit immediate, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -219,7 +219,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Forms a 32-bit offset from the 20-bit U-immediate, fills the lowest 12 bits with zeros, adds this offset to the PC, and places the result in register rd
 
 Arguments::
 [%autowidth]
@@ -270,7 +270,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2, and if equal, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
 
 Arguments::
 [%autowidth]
@@ -341,7 +341,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2 as signed integers, and if rs1 >= rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
 
 Arguments::
 [%autowidth]
@@ -412,7 +412,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2 as unsigned integers, and if rs1 >= rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
 
 Arguments::
 [%autowidth]
@@ -483,7 +483,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2 as signed integers, and if rs1 < rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
 
 Arguments::
 [%autowidth]
@@ -554,7 +554,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2 as unsigned integers, and if rs1 < rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
 
 Arguments::
 [%autowidth]
@@ -625,7 +625,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2, and if not equal, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
 
 Arguments::
 [%autowidth]
@@ -689,7 +689,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: No description available.
 
 Arguments::
 [%autowidth]
@@ -729,7 +729,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: No description available.
 
 Arguments::
 [%autowidth]
@@ -783,7 +783,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Enforces ordering between memory operations and I/O from different RISC-V harts
 
 Arguments::
 [%autowidth]
@@ -851,7 +851,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Jumps to an offset formed by adding the sign-extended 20-bit immediate to the PC, and saves PC+4 to register rd
 
 Arguments::
 [%autowidth]
@@ -915,7 +915,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Jumps to the address formed by adding the sign-extended 12-bit immediate to register rs1, and saves PC+4 to register rd
 
 Arguments::
 [%autowidth]
@@ -956,7 +956,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Loads an 8-bit value from memory, sign-extends it to 32 bits, and writes it to rd
 
 Arguments::
 [%autowidth]
@@ -997,7 +997,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Loads an 8-bit value from memory, zero-extends it to 32 bits, and writes it to rd
 
 Arguments::
 [%autowidth]
@@ -1038,7 +1038,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Loads a 16-bit value from memory, sign-extends it to 32 bits, and writes it to rd
 
 Arguments::
 [%autowidth]
@@ -1079,7 +1079,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Loads a 16-bit value from memory, zero-extends it to 32 bits, and writes it to rd
 
 Arguments::
 [%autowidth]
@@ -1118,7 +1118,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Loads a 20-bit immediate into bits 31-12 of the destination register, setting bits 11-0 to zero
 
 Arguments::
 [%autowidth]
@@ -1166,7 +1166,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Loads a 32-bit value from memory and writes it to rd
 
 Arguments::
 [%autowidth]
@@ -1208,7 +1208,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Performs bitwise OR on rs1 and rs2, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -1258,7 +1258,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Performs bitwise OR on rs1 and the sign-extended 12-bit immediate, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -1309,7 +1309,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Stores the lowest 8 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
 
 Arguments::
 [%autowidth]
@@ -1350,7 +1350,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Stores the lowest 16 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
 
 Arguments::
 [%autowidth]
@@ -1391,7 +1391,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Shifts rs1 left by the amount specified in the lower 5 bits of rs2, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -1444,7 +1444,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2 as signed integers, sets rd to 1 if rs1 < rs2, 0 otherwise
 
 Arguments::
 [%autowidth]
@@ -1495,7 +1495,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 with the sign-extended 12-bit immediate as signed integers, sets rd to 1 if rs1 < immediate, 0 otherwise
 
 Arguments::
 [%autowidth]
@@ -1546,7 +1546,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 with the sign-extended 12-bit immediate as unsigned integers, sets rd to 1 if rs1 < immediate, 0 otherwise
 
 Arguments::
 [%autowidth]
@@ -1597,7 +1597,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Compares rs1 and rs2 as unsigned integers, sets rd to 1 if rs1 < rs2, 0 otherwise
 
 Arguments::
 [%autowidth]
@@ -1648,7 +1648,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Shifts rs1 right by the amount specified in the lower 5 bits of rs2, filling with the sign bit, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -1701,7 +1701,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Shifts rs1 right by the amount specified in the lower 5 bits of rs2, filling with zeros, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -1754,7 +1754,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Subtracts rs2 from rs1, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -1805,7 +1805,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Stores the 32 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
 
 Arguments::
 [%autowidth]
@@ -1846,7 +1846,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Performs bitwise XOR on rs1 and rs2, stores the result in rd
 
 Arguments::
 [%autowidth]
@@ -1896,7 +1896,7 @@ Encoding::
 ]}
 ....
 
-Description:: 
+Description:: Performs bitwise XOR on rs1 and the sign-extended 12-bit immediate, stores the result in rd
 
 Arguments::
 [%autowidth]

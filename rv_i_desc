@@ -1,0 +1,37 @@
+# rv_i descriptions
+
+lui Loads a 20-bit immediate into bits 31-12 of the destination register, setting bits 11-0 to zero
+auipc Forms a 32-bit offset from the 20-bit U-immediate, fills the lowest 12 bits with zeros, adds this offset to the PC, and places the result in register rd
+jal Jumps to an offset formed by adding the sign-extended 20-bit immediate to the PC, and saves PC+4 to register rd
+jalr Jumps to the address formed by adding the sign-extended 12-bit immediate to register rs1, and saves PC+4 to register rd
+beq Compares rs1 and rs2, and if equal, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+bne Compares rs1 and rs2, and if not equal, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+blt Compares rs1 and rs2 as signed integers, and if rs1 < rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+bge Compares rs1 and rs2 as signed integers, and if rs1 >= rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+bltu Compares rs1 and rs2 as unsigned integers, and if rs1 < rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+bgeu Compares rs1 and rs2 as unsigned integers, and if rs1 >= rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+lb Loads an 8-bit value from memory, sign-extends it to 32 bits, and writes it to rd
+lh Loads a 16-bit value from memory, sign-extends it to 32 bits, and writes it to rd
+lw Loads a 32-bit value from memory and writes it to rd
+lbu Loads an 8-bit value from memory, zero-extends it to 32 bits, and writes it to rd
+lhu Loads a 16-bit value from memory, zero-extends it to 32 bits, and writes it to rd
+sb Stores the lowest 8 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
+sh Stores the lowest 16 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
+sw Stores the 32 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
+addi Adds the sign-extended 12-bit immediate to rs1 and stores the result in rd
+slti Compares rs1 with the sign-extended 12-bit immediate as signed integers, sets rd to 1 if rs1 < immediate, 0 otherwise
+sltiu Compares rs1 with the sign-extended 12-bit immediate as unsigned integers, sets rd to 1 if rs1 < immediate, 0 otherwise
+xori Performs bitwise XOR on rs1 and the sign-extended 12-bit immediate, stores the result in rd
+ori Performs bitwise OR on rs1 and the sign-extended 12-bit immediate, stores the result in rd
+andi Performs bitwise AND on rs1 and the sign-extended 12-bit immediate, stores the result in rd
+add Adds rs1 and rs2, stores the result in rd
+sub Subtracts rs2 from rs1, stores the result in rd
+sll Shifts rs1 left by the amount specified in the lower 5 bits of rs2, stores the result in rd
+slt Compares rs1 and rs2 as signed integers, sets rd to 1 if rs1 < rs2, 0 otherwise
+sltu Compares rs1 and rs2 as unsigned integers, sets rd to 1 if rs1 < rs2, 0 otherwise
+xor Performs bitwise XOR on rs1 and rs2, stores the result in rd
+srl Shifts rs1 right by the amount specified in the lower 5 bits of rs2, filling with zeros, stores the result in rd
+sra Shifts rs1 right by the amount specified in the lower 5 bits of rs2, filling with the sign bit, stores the result in rd
+or Performs bitwise OR on rs1 and rs2, stores the result in rd
+and Performs bitwise AND on rs1 and rs2, stores the result in rd
+fence Enforces ordering between memory operations and I/O from different RISC-V harts

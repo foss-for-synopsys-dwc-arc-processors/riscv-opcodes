@@ -573,6 +573,40 @@ def make_asciidoc_encoding(instr_name, instr_data):
     asciidoc_content += '....\n\n'
     
     return asciidoc_content
+import os
+
+def make_asciidoc_description(instr_name):
+    """
+    Search for the description of a given instruction in files named "base_name"_desc.
+
+    Args:
+    instr_name (str): The name of the instruction to search for
+
+    Returns:
+    str: AsciiDoc formatted string containing the description of the instruction
+    """
+    asciidoc_content = 'Description:: '
+    
+    # Get the directory of the current script
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    
+    # List all files in the current directory that end with '_desc'
+    desc_files = [f for f in os.listdir(current_dir) if f.endswith('_desc')]
+    
+    for desc_file in desc_files:
+        file_path = os.path.join(current_dir, desc_file)
+        with open(file_path, 'r') as f:
+            lines = f.readlines()
+            # Skip the first line as it's the header
+            for line in lines[1:]:
+                parts = line.strip().split(' ', 1)
+                if len(parts) == 2 and parts[0].lower() == instr_name.lower():
+                    asciidoc_content += parts[1] + '\n\n'
+                    return asciidoc_content
+    
+    # If no description is found, return a default message
+    asciidoc_content += 'No description available.\n\n'
+    return asciidoc_content
 
 def make_asciidoc_argument_table(instr_name, instr_data):
     '''
@@ -733,10 +767,6 @@ def process_asciidoc_block(block, instr_name):
     # Join the processed lines into a single string
     formatted_block = '\n'.join(new_block)
     return formatted_block
-
-def make_asciidoc_description(instr_name):
-    asciidoc_content = 'Description:: \n\n'
-    return asciidoc_content
 
 def find_matching_brace(text, start):
     count = 0
