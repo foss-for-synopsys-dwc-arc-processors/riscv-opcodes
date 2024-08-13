@@ -1,0 +1,150 @@
+== Instruction Reference Table
+
+=== RV_C Extension
+
+[cols="2,4", options="header"]
+|===
+|Instruction |Synopsis
+
+|<<instruction-c_add,C_ADD>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_addi,C_ADDI>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_addi16sp,C_ADDI16SP>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_addi4spn,C_ADDI4SPN>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_and,C_AND>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_andi,C_ANDI>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_beqz,C_BEQZ>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_bnez,C_BNEZ>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_ebreak,C_EBREAK>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_j,C_J>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_jalr,C_JALR>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_jr,C_JR>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_li,C_LI>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_lui,C_LUI>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_lw,C_LW>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_lwsp,C_LWSP>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_mv,C_MV>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_nop,C_NOP>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_or,C_OR>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_sub,C_SUB>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_sw,C_SW>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_swsp,C_SWSP>> |Synopsis:: No synopsis available.
+
+|<<instruction-c_xor,C_XOR>> |Synopsis:: No synopsis available.
+
+|===
+
+=== RV_I Extension
+
+[cols="2,4", options="header"]
+|===
+|Instruction |Synopsis
+
+|<<instruction-add,ADD>> |Synopsis:: Add
+
+|<<instruction-addi,ADDI>> |Synopsis:: Add Immediate
+
+|<<instruction-and,AND>> |Synopsis:: AND
+
+|<<instruction-andi,ANDI>> |Synopsis:: AND Immediate
+
+|<<instruction-auipc,AUIPC>> |Synopsis:: Add Upper Immediate to PC
+
+|<<instruction-beq,BEQ>> |Synopsis:: Branch if Equal
+
+|<<instruction-bge,BGE>> |Synopsis:: Branch if Greater than or Equal (Signed)
+
+|<<instruction-bgeu,BGEU>> |Synopsis:: Branch if Greater than or Equal (Unsigned)
+
+|<<instruction-blt,BLT>> |Synopsis:: Branch if Less Than (Signed)
+
+|<<instruction-bltu,BLTU>> |Synopsis:: Branch if Less Than (Unsigned)
+
+|<<instruction-bne,BNE>> |Synopsis:: Branch if Not Equal
+
+|<<instruction-ebreak,EBREAK>> |Synopsis::   31..20=0x001 19..7=0 6..2=0x1C 1..0=3
+
+|<<instruction-ecall,ECALL>> |Synopsis::    31..20=0x000 19..7=0 6..2=0x1C 1..0=3
+
+|<<instruction-fence,FENCE>> |Synopsis:: Fence
+
+|<<instruction-jal,JAL>> |Synopsis:: Jump and Link
+
+|<<instruction-jalr,JALR>> |Synopsis:: Jump and Link Register
+
+|<<instruction-lb,LB>> |Synopsis:: Load Byte
+
+|<<instruction-lbu,LBU>> |Synopsis:: Load Byte (Unsigned)
+
+|<<instruction-lh,LH>> |Synopsis:: Load Halfword
+
+|<<instruction-lhu,LHU>> |Synopsis:: Load Halfword (Unsigned)
+
+|<<instruction-lui,LUI>> |Synopsis:: Load Upper Immediate
+
+|<<instruction-lw,LW>> |Synopsis:: Load Word
+
+|<<instruction-or,OR>> |Synopsis:: OR
+
+|<<instruction-ori,ORI>> |Synopsis:: OR Immediate
+
+|<<instruction-sb,SB>> |Synopsis:: Store Byte
+
+|<<instruction-sh,SH>> |Synopsis:: Store Halfword
+
+|<<instruction-sll,SLL>> |Synopsis:: Shift Left Logical
+
+|<<instruction-slt,SLT>> |Synopsis:: Set if Less Than (Signed)
+
+|<<instruction-slti,SLTI>> |Synopsis:: Set if Less Than Immediate (Signed)
+
+|<<instruction-sltiu,SLTIU>> |Synopsis:: Set if Less Than Immediate (Unsigned)
+
+|<<instruction-sltu,SLTU>> |Synopsis:: Set if Less Than (Unsigned)
+
+|<<instruction-sra,SRA>> |Synopsis:: Shift Right Arithmetic
+
+|<<instruction-srl,SRL>> |Synopsis:: Shift Right Logical
+
+|<<instruction-sub,SUB>> |Synopsis:: Subtract
+
+|<<instruction-sw,SW>> |Synopsis:: Store Word
+
+|<<instruction-xor,XOR>> |Synopsis:: Exclusive OR
+
+|<<instruction-xori,XORI>> |Synopsis:: Exclusive OR Immediate
+
+|===
+
+=== RV_S Extension
+
+[cols="2,4", options="header"]
+|===
+|Instruction |Synopsis
+
+|<<instruction-sfence_vma,SFENCE_VMA>> |Synopsis:: No synopsis available.
+
+|<<instruction-sret,SRET>> |Synopsis:: No synopsis available.
+
+|===
+

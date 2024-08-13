@@ -1,3 +1,4 @@
+[[instruction-sfence_vma]]
 ==== SFENCE_VMA
 
 Synopsis:: No synopsis available.
@@ -52,6 +53,7 @@ Included in:: RV(32/64)S
 
 <<<
 
+[[instruction-sret]]
 ==== SRET
 
 Synopsis:: No synopsis available.

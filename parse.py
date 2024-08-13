@@ -433,14 +433,19 @@ def make_asciidoc_instructions(instr_dict):
     '''
     asciidoc_content_unprivileged = ''
     asciidoc_content_privileged = ''
+    instr_content  = ''
 
     for instr_name, instr_data in instr_dict.items():
         # Check the extension to determine if it's privileged or unprivileged
         is_privileged = any('rv_s' in ext for ext in instr_data['extension'])
         is_unprivileged = any('rv_i' in ext for ext in instr_data['extension'])
 
+        # Generate a unique anchor for this instruction
+        anchor = f'[[instruction-{instr_name.lower().replace(".", "-")}]]'
+
         # Generate the content for this instruction
-        instr_content = f'==== {instr_name.upper()}\n\n'
+        instr_content = f'{anchor}\n'  # Add the anchor here
+        instr_content += f'==== {instr_name.upper()}\n\n'
         instr_content += make_asciidoc_synopsis(instr_name)
         instr_content += make_asciidoc_mnemonic(instr_name, instr_data)
         instr_content += make_asciidoc_encoding(instr_name, instr_data)
@@ -461,8 +466,33 @@ def make_asciidoc_instructions(instr_dict):
             # For now, we'll add it to unprivileged as a default
             asciidoc_content_unprivileged += instr_content
 
-    return asciidoc_content_unprivileged, asciidoc_content_privileged
+    anchor_table = make_asciidoc_anchor_table(instr_dict)
 
+    return asciidoc_content_unprivileged, asciidoc_content_privileged, anchor_table
+
+def make_asciidoc_anchor_table(instr_dict):
+    # Group instructions by extension
+    extension_groups = {}
+    for instr_name, instr_data in instr_dict.items():
+        for ext in instr_data['extension']:
+            if ext not in extension_groups:
+                extension_groups[ext] = []
+            extension_groups[ext].append((instr_name, instr_data))
+
+    # Generate the table
+    table_content = "== Instruction Reference Table\n\n"
+    for ext, instructions in sorted(extension_groups.items()):
+        table_content += f"=== {ext.upper()} Extension\n\n"
+        table_content += "[cols=\"2,4\", options=\"header\"]\n"
+        table_content += "|===\n"
+        table_content += "|Instruction |Synopsis\n\n"
+        for instr, instr_data in sorted(instructions, key=lambda x: x[0]):
+            anchor = f"instruction-{instr.lower().replace('.', '-')}"
+            synopsis = make_asciidoc_synopsis(instr).strip()
+            table_content += f"|<<{anchor},{instr.upper()}>> |{synopsis}\n\n"
+        table_content += "|===\n\n"
+
+    return table_content
     
 def make_asciidoc_synopsis(instr_name):
     """
@@ -1451,7 +1481,7 @@ if __name__ == "__main__":
         logging.info('priv-instr-table.tex generated successfully')
 
     if '-asciidoc' in sys.argv[1:]:
-        unprivileged_content, privileged_content = make_asciidoc_instructions(instr_dict)
+        unprivileged_content, privileged_content, anchor_table = make_asciidoc_instructions(instr_dict)
         
         # Write unprivileged instructions to a file
         with open('instr-encoding-unprivileged.adoc', 'w') as adoc_file:
@@ -1462,3 +1492,8 @@ if __name__ == "__main__":
         with open('instr-encoding-privileged.adoc', 'w') as adoc_file:
             adoc_file.write(privileged_content)
         logging.info('instr-encoding-privileged.adoc generated successfully')
+        
+        with open('instr-anchor-table.adoc', 'w') as adoc_file:
+            adoc_file.write(anchor_table)
+        logging.info('instr-anchor-table.adoc generated successfully')
+
