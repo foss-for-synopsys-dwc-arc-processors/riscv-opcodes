@@ -69,19 +69,145 @@ arg_lut['mop_rr_t_30'] = (30,30)
 arg_lut['mop_rr_t_27_26'] = (27, 26)
 arg_lut['c_mop_t'] = (10,8)
 
-#for argument table
+# RISC-V Instruction Types
+INSTR_TYPE_R = 'R-Type'
+INSTR_TYPE_I = 'I-Type'
+INSTR_TYPE_S = 'S-Type'
+INSTR_TYPE_B = 'B-Type'
+INSTR_TYPE_U = 'U-Type'
+INSTR_TYPE_J = 'J-Type'
+INSTR_TYPE_I_IMMEDIATE = 'I-immediate'
+INSTR_TYPE_S_IMMEDIATE = 'S-immediate'
+INSTR_TYPE_B_IMMEDIATE = 'B-immediate'
+INSTR_TYPE_U_IMMEDIATE = 'U-immediate'
+INSTR_TYPE_J_IMMEDIATE = 'J-immediate'
+INSTR_TYPE_UNKNOWN = 'Unknown'
+
+# Instruction Type Definitions
+INSTR_TYPES = {
+    INSTR_TYPE_R: [
+        (31, 25, 'funct7'),
+        (24, 20, 'rs2'),
+        (19, 15, 'rs1'),
+        (14, 12, 'funct3'),
+        (11, 7, 'rd'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_I: [
+        (31, 20, 'imm[11:0]'),
+        (19, 15, 'rs1'),
+        (14, 12, 'funct3'),
+        (11, 7, 'rd'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_S: [
+        (31, 25, 'imm[11:5]'),
+        (24, 20, 'rs2'),
+        (19, 15, 'rs1'),
+        (14, 12, 'funct3'),
+        (11, 7, 'imm[4:0]'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_B: [
+        (31, 31, 'imm[12]'),
+        (30, 25, 'imm[10:5]'),
+        (24, 20, 'rs2'),
+        (19, 15, 'rs1'),
+        (14, 12, 'funct3'),
+        (11, 8, 'imm[4:1]'),
+        (7, 7, 'imm[11]'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_U: [
+        (31, 12, 'imm[31:12]'),
+        (11, 7, 'rd'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_J: [
+        (31, 31, 'imm[20]'),
+        (30, 21, 'imm[10:1]'),
+        (20, 20, 'imm[11]'),
+        (19, 12, 'imm[19:12]'),
+        (11, 7, 'rd'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_I_IMMEDIATE: [
+        (31, 20, 'imm[11:0]'),
+        (19, 15, 'rs1'),
+        (14, 12, 'funct3'),
+        (11, 7, 'rd'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_S_IMMEDIATE: [
+        (31, 25, 'imm[11:5]'),
+        (24, 20, 'rs2'),
+        (19, 15, 'rs1'),
+        (14, 12, 'funct3'),
+        (11, 7, 'imm[4:0]'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_B_IMMEDIATE: [
+        (31, 31, 'imm[12]'),
+        (30, 25, 'imm[10:5]'),
+        (24, 20, 'rs2'),
+        (19, 15, 'rs1'),
+        (14, 12, 'funct3'),
+        (11, 8, 'imm[4:1]'),
+        (7, 7, 'imm[11]'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_U_IMMEDIATE: [
+        (31, 12, 'imm[31:12]'),
+        (11, 7, 'rd'),
+        (6, 0, 'opcode')
+    ],
+    INSTR_TYPE_J_IMMEDIATE: [
+        (31, 31, 'imm[20]'),
+        (30, 21, 'imm[10:1]'),
+        (20, 20, 'imm[11]'),
+        (19, 12, 'imm[19:12]'),
+        (11, 7, 'rd'),
+        (6, 0, 'opcode')
+    ]
+}
+
 instruction_arguments = {
     'rd': {'direction': 'output', 'definition': 'Destination register'},
     'rs1': {'direction': 'input', 'definition': 'Source register 1'},
     'rs2': {'direction': 'input', 'definition': 'Source register 2'},
     'rs3': {'direction': 'input', 'definition': 'Source register 3'},
+    'rd_rs1': {'direction': 'input/output', 'definition': 'Source/Destination register'},
     'shamt': {'direction': 'input', 'definition': 'Shift amount (5 or 6 bits)'},
+    'shamtw': {'direction': 'input', 'definition': 'Shift amount for 32-bit word (5 bits)'},
     'imm12': {'direction': 'input', 'definition': '12-bit immediate'},
     'imm20': {'direction': 'input', 'definition': '20-bit immediate'},
-    'bimm12hi': {'direction': 'input', 'definition': 'High bits of 13-bit branch offset'},
-    'bimm12lo': {'direction': 'input', 'definition': 'Low bits of 13-bit branch offset'},
+    'bimm12hi': {'direction': 'input', 'definition': 'High bits of 12-bit branch offset'},
+    'bimm12lo': {'direction': 'input', 'definition': 'Low bits of 12-bit branch offset'},
     'jimm20': {'direction': 'input', 'definition': '20-bit jump offset'},
     'zimm': {'direction': 'input', 'definition': 'Zero-extended immediate'},
+    'fm': {'direction': 'input', 'definition': 'Fence mask'},
+    'pred': {'direction': 'input', 'definition': 'Predecessor fence ordering'},
+    'succ': {'direction': 'input', 'definition': 'Successor fence ordering'},
+    'rm': {'direction': 'input', 'definition': 'Rounding mode'},
+    'aq': {'direction': 'input', 'definition': 'Acquire flag for atomic operations'},
+    'rl': {'direction': 'input', 'definition': 'Release flag for atomic operations'},
+    'csr': {'direction': 'input', 'definition': 'Control and Status Register address'},
+    'imm12hi': {'direction': 'input', 'definition': 'High 6 bits of 12-bit immediate'},
+    'imm12lo': {'direction': 'input', 'definition': 'Low 6 bits of 12-bit immediate'},
+    'c_rs1': {'direction': 'input', 'definition': 'Compressed source register 1'},
+    'c_rs2': {'direction': 'input', 'definition': 'Compressed source register 2'},
+    'c_rd': {'direction': 'output', 'definition': 'Compressed destination register'},
+    'c_imm': {'direction': 'input', 'definition': 'Compressed immediate'},
+    'c_uimm': {'direction': 'input', 'definition': 'Compressed unsigned immediate'},
+    'c_nzuimm': {'direction': 'input', 'definition': 'Compressed non-zero unsigned immediate'},
+    'c_nzimm': {'direction': 'input', 'definition': 'Compressed non-zero immediate'},
+    'c_bimm': {'direction': 'input', 'definition': 'Compressed branch immediate'},
+    'c_jimm': {'direction': 'input', 'definition': 'Compressed jump immediate'},
+    'rd_p': {'direction': 'output', 'definition': 'Compressed destination register (1-5)'},
+    'rs1_p': {'direction': 'input', 'definition': 'Compressed source register 1 (1-5)'},
+    'rs2_p': {'direction': 'input', 'definition': 'Compressed source register 2 (1-5)'},
+    'rd_rs1_n0': {'direction': 'input/output', 'definition': 'Non-zero compressed source/destination register'},
+    'rd_rs1_p': {'direction': 'input/output', 'definition': 'Non-zero compressed source/destination register (1-5)'},
 }
 
 # dictionary containing the mapping of the argument to what the fields in

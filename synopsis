@@ -1,0 +1,43 @@
+# rv_i synopsis
+
+lui Load Upper Immediate
+auipc Add Upper Immediate to PC
+jal Jump and Link to target address, storing return address
+jalr Jump and Link to computed target, storing return address
+beq Branch if Equal
+bne Branch if Not Equal
+blt Branch if Less Than (Signed)
+bge Branch if Greater than or Equal (Signed)
+bltu Branch if Less Than (Unsigned)
+bgeu Branch if Greater than or Equal (Unsigned)
+lb Load signed Byte from memory
+lh Load signed Halfword from memory
+lw Load signed Word from memory
+lbu Load unsigned Byte from memory
+lhu Load unsigned Halfword from memory
+sb Store Byte to memory
+sh Store Halfword to memory
+sw Store Word to memory
+addi Add Immediate
+slti Set if Less Than Immediate (Signed)
+sltiu Set if Less Than Immediate (Unsigned)
+xori Exclusive OR Immediate
+ori OR Immediate
+andi AND Immediate
+add Add two values
+sub Subtract one value from another
+sll Shift Left Logical
+slt Set if Less Than (Signed)
+sltu Set if Less Than (Unsigned)
+xor Exclusive OR two values
+srl Shift Right Logical
+sra Shift Right Arithmetic
+or OR two values
+and AND two values
+fence Enforce ordering between memory operations
+
+
+fence_tso Total Store Ordering fence
+pause Pause instruction for power management
+ecall Environment call
+ebreak Environment break

@@ -164,7 +164,7 @@ def extension_overlap_allowed(x, y):
 def instruction_overlap_allowed(x, y):
     return overlap_allowed(overlapping_instructions, x, y)
 
-def create_inst_dict(file_filter, include_pseudo=False, include_pseudo_ops=[]):
+def create_inst_dict(file_filter, include_pseudo=True, include_pseudo_ops=[]):
     '''
     This function return a dictionary containing all instructions associated
     with an extension defined by the file_filter input. The file_filter input
@@ -421,31 +421,16 @@ def create_inst_dict(file_filter, include_pseudo=False, include_pseudo_ops=[]):
     return instr_dict
 
 def make_asciidoc_instructions(instr_dict):
-    '''
-    Main function to generate AsciiDoc content for all instructions,
-    separating them into unprivileged and privileged instructions.
-
-    Args:
-    instr_dict (dict): A dictionary containing instruction information
-
-    Returns:
-    tuple: Two strings containing AsciiDoc formatted content for unprivileged and privileged instructions
-    '''
-    asciidoc_content_unprivileged = ''
-    asciidoc_content_privileged = ''
-    instr_content  = ''
+    extension_content = {}
+    instruction_list = []
 
     for instr_name, instr_data in instr_dict.items():
-        # Check the extension to determine if it's privileged or unprivileged
-        is_privileged = any('rv_s' in ext for ext in instr_data['extension'])
-        is_unprivileged = any('rv_i' in ext for ext in instr_data['extension'])
-
         # Generate a unique anchor for this instruction
         anchor = f'[[instruction-{instr_name.lower().replace(".", "-")}]]'
 
         # Generate the content for this instruction
-        instr_content = f'{anchor}\n'  # Add the anchor here
-        instr_content += f'==== {instr_name.upper()}\n\n'
+        instr_content = f'{anchor}\n'
+        instr_content += f'=== {instr_name.upper()}\n\n'
         instr_content += make_asciidoc_synopsis(instr_name)
         instr_content += make_asciidoc_mnemonic(instr_name, instr_data)
         instr_content += make_asciidoc_encoding(instr_name, instr_data)
@@ -456,47 +441,32 @@ def make_asciidoc_instructions(instr_dict):
         
         instr_content += '<<<\n\n'
 
-        # Add the content to the appropriate string based on the extension
-        if is_privileged:
-            asciidoc_content_privileged += instr_content
-        elif is_unprivileged:
-            asciidoc_content_unprivileged += instr_content
-        else:
-            # If it's neither rv_i nor rv64_h, you might want to handle this case
-            # For now, we'll add it to unprivileged as a default
-            asciidoc_content_unprivileged += instr_content
-
-    anchor_table = make_asciidoc_anchor_table(instr_dict)
-
-    return asciidoc_content_unprivileged, asciidoc_content_privileged, anchor_table
-
-def make_asciidoc_anchor_table(instr_dict):
-    # Group instructions by extension
-    extension_groups = {}
-    for instr_name, instr_data in instr_dict.items():
+        # Add the content to the appropriate extension
         for ext in instr_data['extension']:
-            if ext not in extension_groups:
-                extension_groups[ext] = []
-            extension_groups[ext].append((instr_name, instr_data))
+            if ext not in extension_content:
+                extension_content[ext] = ''
+            extension_content[ext] += instr_content
 
-    # Generate the table
+        # Add to instruction list for the reference table
+        instruction_list.append((instr_name, instr_data))
+
+    return extension_content, instruction_list
+
+def make_asciidoc_reference_table(instruction_list):
     table_content = "== Instruction Reference Table\n\n"
-    for ext, instructions in sorted(extension_groups.items()):
-        table_content += f"=== {ext.upper()} Extension\n\n"
-        table_content += "[cols=\"2,4\", options=\"header\"]\n"
-        table_content += "|===\n"
-        table_content += "|Instruction |Synopsis\n\n"
-        for instr, instr_data in sorted(instructions, key=lambda x: x[0]):
-            anchor = f"instruction-{instr.lower().replace('.', '-')}"
-            synopsis = make_asciidoc_synopsis(instr).strip()
-            table_content += f"|<<{anchor},{instr.upper()}>> |{synopsis}\n\n"
-        table_content += "|===\n\n"
-
+    table_content += "[cols=\"2,4\", options=\"header\"]\n"
+    table_content += "|===\n"
+    table_content += "|Instruction |Synopsis\n\n"
+    for instr_name, instr_data in sorted(instruction_list, key=lambda x: x[0]):
+        anchor = f"instruction-{instr_name.lower().replace('.', '-')}"
+        synopsis = make_asciidoc_synopsis(instr_name).strip()
+        table_content += f"|<<{anchor},{instr_name.upper()}>> |{synopsis}\n\n"
+    table_content += "|===\n\n"
     return table_content
     
 def make_asciidoc_synopsis(instr_name):
     """
-    Search for the synopsis of a given instruction in files named "base_name"_syn.
+    Search for the synopsis of a given instruction in a file named "synopsis".
 
     Args:
     instr_name (str): The name of the instruction to search for
@@ -509,12 +479,11 @@ def make_asciidoc_synopsis(instr_name):
     # Get the directory of the current script
     current_dir = os.path.dirname(os.path.realpath(__file__))
     
-    # List all files in the current directory that end with '_syn'
-    syn_files = [f for f in os.listdir(current_dir) if f.endswith('_syn')]
+    # Path to the synopsis file
+    synopsis_file = os.path.join(current_dir, "synopsis")
     
-    for syn_file in syn_files:
-        file_path = os.path.join(current_dir, syn_file)
-        with open(file_path, 'r') as f:
+    if os.path.exists(synopsis_file):
+        with open(synopsis_file, 'r') as f:
             lines = f.readlines()
             for line in lines:
                 parts = line.strip().split(' ', 1)
@@ -526,13 +495,10 @@ def make_asciidoc_synopsis(instr_name):
     asciidoc_content += 'No synopsis available.\n\n'
     return asciidoc_content
 
-
 def make_asciidoc_encoding(instr_name, instr_data):
     '''
-    Generates AsciiDoc content for instruction encodings.
-    It takes the instruction name and data as input and creates an AsciiDoc
-    formatted string containing the encoding information for the instruction.
-
+    Generates AsciiDoc content for instruction encodings with comments.
+    
     Args:
     instr_name (str): The name of the instruction
     instr_data (dict): A dictionary containing instruction data
@@ -543,7 +509,7 @@ def make_asciidoc_encoding(instr_name, instr_data):
     asciidoc_content = 'Encoding::\n'
     asciidoc_content += '[wavedrom, , svg]\n'
     asciidoc_content += '....\n'
-    asciidoc_content += '{reg:[\n'
+    asciidoc_content += '{reg: [\n'
     
     encoding = instr_data['encoding']
     var_fields = instr_data.get('variable_fields', [])
@@ -558,52 +524,118 @@ def make_asciidoc_encoding(instr_name, instr_data):
     # Sort fields by start_bit in descending order
     fields.sort(key=lambda x: x[0], reverse=True)
     
+    instruction_type = determine_instruction_type(fields)
+    print (instr_name, instruction_type)
+
+
     bits = []
     current_bit = 31
+
     for start_bit, end_bit, field_name in fields:
         # Add any fixed bits before this field
         if current_bit > start_bit:
             fixed_bits = encoding[31-current_bit:31-start_bit]
             if fixed_bits:
-                if '-' in fixed_bits:
-                    bits.append(f'{{bits: {current_bit-start_bit}, name: \'{fixed_bits}\'}}')
+                # Check for funct3 (3 bits, typically at 14-12)
+                if end_bit - start_bit == 3 and current_bit == 14:
+                    hex_value = hex(int(fixed_bits, 2))
+                    bits.append(f'{{bits: {current_bit-start_bit}, name: {hex_value}, attr:["funct3"]}}')
+                     # Check for funct7 (7 bits at the start, only in R-type instructions)
+                elif current_bit - start_bit == 7 and current_bit == 31 and instruction_type in [INSTR_TYPE_R, INSTR_TYPE_R]:
+                    hex_value = hex(int(fixed_bits, 2))
+                    bits.append(f'{{bits: {current_bit-start_bit}, name: {hex_value}, attr:["funct7"]}}')
                 else:
-                    bits.append(f'{{bits: {current_bit-start_bit}, name: 0x{int(fixed_bits, 2):x}}}')
-        
-        # Add the variable field, splitting it if it's an immediate with several partitions
-        field_bits = encoding[31-start_bit:31-end_bit+1]
+                    hex_value = hex(int(fixed_bits, 2))
+                    bits.append(f'{{bits: {current_bit-start_bit}, name: {hex_value}, attr:["funct3"]}}')
+
+                
+        # Add the variable field
         field_name = asciidoc_mapping.get(field_name, field_name)
-        if 'imm' in field_name and '|' in field_name:
-            imm_parts = field_name.split('[')[1].split(']')[0].split('|')
-            imm_bits = start_bit - end_bit + 1
-            for part in (imm_parts):
+        if 'imm' in field_name and '[' in field_name and ']' in field_name:
+            # Handle immediate fields
+            parts = field_name.split('[')[1].split(']')[0].split('|')
+            total_bits = start_bit - end_bit + 1
+            bits_used = 0
+            for part in parts:
                 if ':' in part:
-                    part_start, part_end = map(int, part.split(':'))
-                    part_bits = part_start - part_end + 1
+                    start, end = map(int, part.split(':'))
+                    part_bits = start - end + 1
+                    bits.append(f'{{bits: {part_bits}, name: \'imm[{part}]\'}}')
                 else:
+                    bits.append(f'{{bits: 1, name: \'[{part}]\'}}')
                     part_bits = 1
-                bits.append(f'{{bits: {part_bits}, name: \'imm[{part}]\'}}')
-                imm_bits -= part_bits
+                bits_used += part_bits
+            if bits_used != total_bits:
+                print(f"Warning: Mismatch in bits for {field_name} in {instr_name}")        
         else:
             bits.append(f'{{bits: {start_bit-end_bit+1}, name: \'{field_name}\'}}')
-        
+
         current_bit = end_bit - 1
+
+
     
     # Add any remaining fixed bits at the end
     if current_bit >= 0:
         fixed_bits = encoding[31-current_bit:]
         if fixed_bits:
-            if '-' in fixed_bits:
-                bits.append(f'{{bits: {current_bit+1}, name: \'{fixed_bits}\'}}')
-            else:
-                bits.append(f'{{bits: {current_bit+1}, name: 0x{int(fixed_bits, 2):x}}}')
+            hex_value = hex(int(fixed_bits, 2))
+            bits.append(f'{{bits: {current_bit+1}, name: {hex_value}, attr: ["OP"]}}')
     
     asciidoc_content += ',\n'.join(reversed(bits))
     asciidoc_content += '\n]}\n'
     asciidoc_content += '....\n\n'
     
     return asciidoc_content
-import os
+
+def determine_instruction_type(fields):
+    """
+    Determine the RISC-V instruction type based on the given fields, including specific immediate formats.
+    
+    :param fields: List of tuples (start_bit, end_bit, field_name)
+    :return: Instruction type (R-Type, I-Type, S-Type, B-Type, U-Type, J-Type, I-immediate, S-immediate, B-immediate, U-immediate, J-immediate, or Unknown)
+    """
+    field_dict = {(start, end): name for start, end, name in fields}
+    field_names = set(field_dict.values())
+    
+    # Check for specific immediate formats first
+    if (31, 20) in field_dict and field_dict[(31, 20)] == 'imm12':
+        return INSTR_TYPE_I_IMMEDIATE
+    
+    if (31, 25) in field_dict and (11, 7) in field_dict and \
+       field_dict[(31, 25)] == 'imm12hi' and field_dict[(11, 7)] == 'imm12lo':
+        return INSTR_TYPE_S_IMMEDIATE
+    
+    if (31, 31) in field_dict and (7, 7) in field_dict and (30, 25) in field_dict and (11, 8) in field_dict and \
+       all(field_dict[f].startswith('bimm') for f in [(31, 31), (7, 7), (30, 25), (11, 8)]):
+        return INSTR_TYPE_B_IMMEDIATE
+    
+    if (31, 12) in field_dict and field_dict[(31, 12)] == 'imm20':
+        return INSTR_TYPE_U_IMMEDIATE
+    
+    if (31, 31) in field_dict and (19, 12) in field_dict and (20, 20) in field_dict and (30, 21) in field_dict and \
+       all(field_dict[f].startswith('jimm') for f in [(31, 31), (19, 12), (20, 20), (30, 21)]):
+        return INSTR_TYPE_J_IMMEDIATE
+    
+    # If not a specific immediate format, check for general instruction types
+    if 'rs1' in field_names and 'rs2' in field_names and 'rd' in field_names:
+        return INSTR_TYPE_R
+    
+    if 'rs1' in field_names and 'rd' in field_names and 'rs2' not in field_names and any('imm' in name for name in field_names):
+        return INSTR_TYPE_I
+    
+    if 'rs1' in field_names and 'rs2' in field_names and 'rd' not in field_names and any('imm' in name for name in field_names):
+        return INSTR_TYPE_S
+    
+    if 'rs1' in field_names and 'rs2' in field_names and 'rd' not in field_names and 'bimm12hi' in field_names and 'bimm12lo' in field_names:
+        return INSTR_TYPE_B
+    
+    if 'rd' in field_names and 'imm20' in field_names:
+        return INSTR_TYPE_U
+    
+    if 'rd' in field_names and 'jimm20' in field_names:
+        return INSTR_TYPE_J
+    
+    return INSTR_TYPE_UNKNOWN
 
 def make_asciidoc_description(instr_name):
     """
@@ -621,18 +653,16 @@ def make_asciidoc_description(instr_name):
     current_dir = os.path.dirname(os.path.realpath(__file__))
     
     # List all files in the current directory that end with '_desc'
-    desc_files = [f for f in os.listdir(current_dir) if f.endswith('_desc')]
-    
-    for desc_file in desc_files:
-        file_path = os.path.join(current_dir, desc_file)
-        with open(file_path, 'r') as f:
-            lines = f.readlines()
-            # Skip the first line as it's the header
-            for line in lines[1:]:
-                parts = line.strip().split(' ', 1)
-                if len(parts) == 2 and parts[0].lower() == instr_name.lower():
-                    asciidoc_content += parts[1] + '\n\n'
-                    return asciidoc_content
+    desc_file = os.path.join(current_dir, "description")
+
+    with open(desc_file, 'r') as f:
+        lines = f.readlines()
+        # Skip the first line as it's the header
+        for line in lines[1:]:
+            parts = line.strip().split(' ', 1)
+            if len(parts) == 2 and parts[0].lower() == instr_name.lower():
+                asciidoc_content += parts[1] + '\n\n'
+                return asciidoc_content
     
     # If no description is found, return a default message
     asciidoc_content += 'No description available.\n\n'
@@ -694,31 +724,34 @@ def make_asciidoc_mnemonic(instr_name, instr_data):
 
     Returns:
     str: AsciiDoc formatted string containing the mnemonic representation
-
-    The function does the following:
-    1. Initializes the AsciiDoc content with a header for the mnemonic
-    2. Constructs the mnemonic using the instruction name and its arguments
-    3. Maps the instruction fields to their AsciiDoc representations
-    4. Formats the mnemonic in AsciiDoc
     '''
-    asciidoc_content = ''
-    asciidoc_content += f'Mnemonic::\n'
+    asciidoc_content = f'Mnemonic::\n'
 
     # Get the variable fields (arguments) for this instruction
     var_fields = instr_data.get('variable_fields', [])
 
     # Construct the mnemonic
     mnemonic = instr_name.lower()
-    args = []
+    reg_args = []
+    imm_args = []
+
+    # Process fields
     for field in var_fields:
-        if field in asciidoc_mapping:
-            args.append(asciidoc_mapping[field])
+        mapped_field = asciidoc_mapping.get(field, field)
+        if field.startswith(('imm', 'bimm')):
+            imm_args.append(mapped_field)
         else:
-            args.append(field)
+            reg_args.append(mapped_field)
+
+    # Combine immediate fields
+    combined_imm = combine_imm_fields(imm_args)
+
+    # Combine all arguments, registers first then immediates
+    all_args = reg_args + ([combined_imm] if combined_imm else [])
 
     # Add the arguments to the mnemonic
-    if args:
-        mnemonic += ' ' + ', '.join(args)
+    if all_args:
+        mnemonic += ' ' + ', '.join(all_args)
 
     # Format the mnemonic in AsciiDoc
     asciidoc_content += f'+\n'
@@ -727,6 +760,38 @@ def make_asciidoc_mnemonic(instr_name, instr_data):
 
     return asciidoc_content
 
+def combine_imm_fields(imm_fields):
+    '''
+    Combine multiple immediate fields into a single representation.
+
+    Args:
+    imm_fields (list): List of immediate field strings
+
+    Returns:
+    str: Combined immediate field representation
+    '''
+    if not imm_fields:
+        return ''
+    
+    all_bits = set()
+    for field in imm_fields:
+        if '[' in field and ']' in field:
+            range_str = field.split('[')[1].split(']')[0]
+            parts = range_str.split('|')
+            for part in parts:
+                if ':' in part:
+                    start, end = map(int, part.split(':'))
+                    all_bits.update(range(min(start, end), max(start, end) + 1))
+                else:
+                    all_bits.add(int(part))
+        elif field == 'imm':
+            return 'imm'  # If there's a generic 'imm', just return it
+    
+    if all_bits:
+        min_bit, max_bit = min(all_bits), max(all_bits)
+        return f'imm[{max_bit}:{min_bit}]'
+    else:
+        return 'imm'    
 def process_asciidoc_block(block, instr_name):
     '''
     Process a block of code for a specific instruction.
@@ -834,7 +899,7 @@ def make_asciidoc_sail(instr_name):
                     return asciidoc_content  # Return the AsciiDoc formatted string
 
     if not asciidoc_content:
-        print(f"{instr_name} NOT found")
+        #print(f"{instr_name} NOT found")
         asciidoc_content += f"Sail Code :: \n\n"
         asciidoc_content += f"Instruction {instr_name} sail code not found in the expected format.\n\n"
     
@@ -844,14 +909,21 @@ def asciidoc_extension_info(extensions):
     formatted_extensions = set()
     for ext in extensions:
         if 'rv32_' in ext:
-            base = 'RV32'
+            base = '<<rv32,RV32>>'
+            clean_ext = ext.replace('rv32_', '').upper()
+            formatted_ext = f"{base}{clean_ext}"
+            if clean_ext == 'I':
+                formatted_ext += ", RV64I"
         elif 'rv64_' in ext:
             base = 'RV64'
+            clean_ext = ext.replace('rv64_', '').upper()
+            formatted_ext = f"{base}{clean_ext}"
         else:
-            base = 'RV(32/64)'
+            base = '<<rv32,RV32>>, RV64'
+            clean_ext = ext.replace('rv_', '').upper()
+            formatted_ext = f"{base}{clean_ext}"
         
-        clean_ext = ext.replace('rv_', '').replace('rv32_', '').replace('rv64_', '').upper()
-        formatted_extensions.add(f"{base}{clean_ext}")
+        formatted_extensions.add(formatted_ext)
 
     return ', '.join(sorted(formatted_extensions))
 
@@ -1433,7 +1505,7 @@ if __name__ == "__main__":
     print(f'Running with args : {sys.argv}')
 
     extensions = sys.argv[1:]
-    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl']:
+    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl','-asciidoc']:
         if i in extensions:
             extensions.remove(i)
     print(f'Extensions selected : {extensions}')
@@ -1442,7 +1514,7 @@ if __name__ == "__main__":
     if "-go" in sys.argv[1:]:
         include_pseudo = True
 
-    instr_dict = create_inst_dict(extensions, include_pseudo)
+    instr_dict = create_inst_dict(extensions, include_pseudo=True)
     with open('instr_dict.yaml', 'w') as outfile:
         yaml.dump(instr_dict, outfile, default_flow_style=False)
     instr_dict = collections.OrderedDict(sorted(instr_dict.items()))
@@ -1481,19 +1553,26 @@ if __name__ == "__main__":
         logging.info('priv-instr-table.tex generated successfully')
 
     if '-asciidoc' in sys.argv[1:]:
-        unprivileged_content, privileged_content, anchor_table = make_asciidoc_instructions(instr_dict)
+        extension_content, instruction_list = make_asciidoc_instructions(instr_dict)
         
-        # Write unprivileged instructions to a file
-        with open('instr-encoding-unprivileged.adoc', 'w') as adoc_file:
-            adoc_file.write(unprivileged_content)
-        logging.info('instr-encoding-unprivileged.adoc generated successfully')
+        # Write each extension to a separate file
+        for ext, content in extension_content.items():
+            filename = f'instr-encoding-{ext}.adoc'
+            with open(filename, 'w') as adoc_file:
+                adoc_file.write(f"== {ext.upper()} Extension\n\n")
+                adoc_file.write(content)
+            logging.info(f'{filename} generated successfully')
         
-        # Write privileged instructions to a file
-        with open('instr-encoding-privileged.adoc', 'w') as adoc_file:
-            adoc_file.write(privileged_content)
-        logging.info('instr-encoding-privileged.adoc generated successfully')
-        
-        with open('instr-anchor-table.adoc', 'w') as adoc_file:
-            adoc_file.write(anchor_table)
-        logging.info('instr-anchor-table.adoc generated successfully')
+        # Write reference table to a file
+        reference_table = make_asciidoc_reference_table(instruction_list)
+        with open('instr-reference-table.adoc', 'w') as adoc_file:
+            adoc_file.write(reference_table)
+        logging.info('instr-reference-table.adoc generated successfully')
 
+        # Generate a main include file
+        with open('instr-encoding-all.adoc', 'w') as adoc_file:
+            adoc_file.write("= RISC-V Instruction Encoding\n\n")
+            adoc_file.write("include::instr-reference-table.adoc[]\n\n")
+            for ext in sorted(extension_content.keys()):
+                adoc_file.write(f"include::instr-encoding-{ext}.adoc[]\n")
+        logging.info('instr-encoding-all.adoc generated successfully')
