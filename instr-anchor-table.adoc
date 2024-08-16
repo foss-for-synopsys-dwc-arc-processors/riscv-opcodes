@@ -1,59 +1,5 @@
 == Instruction Reference Table
 
-=== RV_C Extension
-
-[cols="2,4", options="header"]
-|===
-|Instruction |Synopsis
-
-|<<instruction-c_add,C_ADD>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_addi,C_ADDI>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_addi16sp,C_ADDI16SP>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_addi4spn,C_ADDI4SPN>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_and,C_AND>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_andi,C_ANDI>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_beqz,C_BEQZ>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_bnez,C_BNEZ>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_ebreak,C_EBREAK>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_j,C_J>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_jalr,C_JALR>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_jr,C_JR>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_li,C_LI>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_lui,C_LUI>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_lw,C_LW>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_lwsp,C_LWSP>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_mv,C_MV>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_nop,C_NOP>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_or,C_OR>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_sub,C_SUB>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_sw,C_SW>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_swsp,C_SWSP>> |Synopsis:: No synopsis available.
-
-|<<instruction-c_xor,C_XOR>> |Synopsis:: No synopsis available.
-
-|===
-
 === RV_I Extension
 
 [cols="2,4", options="header"]
@@ -133,18 +79,6 @@
 |<<instruction-xor,XOR>> |Synopsis:: Exclusive OR
 
 |<<instruction-xori,XORI>> |Synopsis:: Exclusive OR Immediate
-
-|===
-
-=== RV_S Extension
-
-[cols="2,4", options="header"]
-|===
-|Instruction |Synopsis
-
-|<<instruction-sfence_vma,SFENCE_VMA>> |Synopsis:: No synopsis available.
-
-|<<instruction-sret,SRET>> |Synopsis:: No synopsis available.
 
 |===
 

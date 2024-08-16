@@ -754,6 +754,9 @@ def process_asciidoc_block(block, instr_name):
     block_lines = block.split('\n')
     block_lines[0] = re.sub(r'\b\w*TYPE\w*\b', instr_pattern, block_lines[0])
     
+    if ", op" in block_lines[0]:
+        block_lines[0] = block_lines[0].replace(", op", "")
+        
     # Find the start of the "match op" (switch) block
     start_block_index = -1
     for i, line in enumerate(block_lines):

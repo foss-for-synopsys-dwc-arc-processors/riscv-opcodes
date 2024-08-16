@@ -37,7 +37,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_ADD(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_ADD(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = rs1_val + rs2_val,
@@ -88,7 +88,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_ADDI (imm, rs1, rd, op)) = {
+function clause execute (RISCV_ADDI (imm, rs1, rd)) = {
   let rs1_val = X(rs1);
   let immext : xlenbits = sign_extend(imm);
   let result = rs1_val + immext,
@@ -140,7 +140,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_AND(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_AND(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = rs1_val & rs2_val,
@@ -191,7 +191,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_ANDI (imm, rs1, rd, op)) = {
+function clause execute (RISCV_ANDI (imm, rs1, rd)) = {
   let rs1_val = X(rs1);
   let immext : xlenbits = sign_extend(imm);
   let result = rs1_val & immext,
@@ -239,7 +239,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute RISCV_AUIPC(imm, rd, op) = {
+function clause execute RISCV_AUIPC(imm, rd) = {
   let off : xlenbits = sign_extend(imm @ 0x000);
   let ret = get_arch_pc() + off
   X(rd) = ret;
@@ -293,7 +293,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BEQ(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BEQ(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val == rs2_val,
@@ -306,7 +306,7 @@ function clause execute (RISCV_BEQ(imm, rs2, rs1, op)) = {
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -365,7 +365,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BGE(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BGE(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val >=_s rs2_val,
@@ -378,7 +378,7 @@ function clause execute (RISCV_BGE(imm, rs2, rs1, op)) = {
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -437,7 +437,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BGEU(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BGEU(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val >=_u rs2_val
@@ -450,7 +450,7 @@ function clause execute (RISCV_BGEU(imm, rs2, rs1, op)) = {
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -509,7 +509,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BLT(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BLT(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val <_s rs2_val,
@@ -522,7 +522,7 @@ function clause execute (RISCV_BLT(imm, rs2, rs1, op)) = {
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -581,7 +581,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BLTU(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BLTU(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val <_u rs2_val,
@@ -594,7 +594,7 @@ function clause execute (RISCV_BLTU(imm, rs2, rs1, op)) = {
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -653,7 +653,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BNE(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BNE(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val != rs2_val,
@@ -666,7 +666,7 @@ function clause execute (RISCV_BNE(imm, rs2, rs1, op)) = {
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -680,915 +680,6 @@ function clause execute (RISCV_BNE(imm, rs2, rs1, op)) = {
 --
 
 Included in:: RV(32/64)I
-
-<<<
-
-[[instruction-c_add]]
-==== C_ADD
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_add rd/rs!=0, rs2!=0`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x2},
-{bits: 5, name: 'rs2!=0'},
-{bits: 5, name: 'rd/rs!=0'},
-{bits: 20, name: '----------------1001'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_add sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_addi]]
-==== C_ADDI
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_addi rd/rs!=0, nzimm[4:0], nzimm[5]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 5, name: 'nzimm[4:0]'},
-{bits: 5, name: 'rd/rs!=0'},
-{bits: 1, name: 'nzimm[5]'},
-{bits: 19, name: '----------------000'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_addi sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_addi16sp]]
-==== C_ADDI16SP
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_addi16sp nzimm[9], nzimm[4|6|8:7|5]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 1, name: 'imm[5]'},
-{bits: 2, name: 'imm[8:7]'},
-{bits: 1, name: 'imm[6]'},
-{bits: 1, name: 'imm[4]'},
-{bits: 5, name: 0x2},
-{bits: 1, name: 'nzimm[9]'},
-{bits: 19, name: '----------------011'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_addi16sp sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_addi4spn]]
-==== C_ADDI4SPN
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_addi4spn rd', nzuimm[5:4|9:6|2|3]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x0},
-{bits: 3, name: 'rd''},
-{bits: 1, name: 'imm[3]'},
-{bits: 1, name: 'imm[2]'},
-{bits: 4, name: 'imm[9:6]'},
-{bits: 2, name: 'imm[5:4]'},
-{bits: 19, name: '----------------000'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_addi4spn sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_and]]
-==== C_AND
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_and rs1'/rs2', rs2'`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 3, name: 'rs2''},
-{bits: 2, name: 0x3},
-{bits: 3, name: 'rs1'/rs2''},
-{bits: 22, name: '----------------100011'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_and sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_andi]]
-==== C_ANDI
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_andi rs1'/rs2', imm[5], imm[4:0]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 5, name: 'imm[4:0]'},
-{bits: 3, name: 'rs1'/rs2''},
-{bits: 2, name: 0x2},
-{bits: 1, name: 'imm[5]'},
-{bits: 19, name: '----------------100'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_andi sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_beqz]]
-==== C_BEQZ
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_beqz rs1', imm[7:6|2:1|5], imm[8|4:3]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 1, name: 'imm[5]'},
-{bits: 2, name: 'imm[2:1]'},
-{bits: 2, name: 'imm[7:6]'},
-{bits: 3, name: 'rs1''},
-{bits: 2, name: 'imm[4:3]'},
-{bits: 1, name: 'imm[8]'},
-{bits: 19, name: '----------------110'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_beqz sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_bnez]]
-==== C_BNEZ
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_bnez rs1', imm[7:6|2:1|5], imm[8|4:3]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 1, name: 'imm[5]'},
-{bits: 2, name: 'imm[2:1]'},
-{bits: 2, name: 'imm[7:6]'},
-{bits: 3, name: 'rs1''},
-{bits: 2, name: 'imm[4:3]'},
-{bits: 1, name: 'imm[8]'},
-{bits: 19, name: '----------------111'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_bnez sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_ebreak]]
-==== C_EBREAK
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_ebreak`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 32, name: '----------------1001000000000010'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_ebreak sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_j]]
-==== C_J
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_j imm[11|4|9:8|10|6|7|3:1|5]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 1, name: 'imm[5]'},
-{bits: 3, name: 'imm[3:1]'},
-{bits: 1, name: 'imm[7]'},
-{bits: 1, name: 'imm[6]'},
-{bits: 1, name: 'imm[10]'},
-{bits: 2, name: 'imm[9:8]'},
-{bits: 1, name: 'imm[4]'},
-{bits: 1, name: 'imm[11]'},
-{bits: 19, name: '----------------101'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_j sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_jalr]]
-==== C_JALR
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_jalr rs1!=0`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 7, name: 0x2},
-{bits: 5, name: 'rs1!=0'},
-{bits: 20, name: '----------------1001'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_jalr sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_jr]]
-==== C_JR
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_jr rs1!=0`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 7, name: 0x2},
-{bits: 5, name: 'rs1!=0'},
-{bits: 20, name: '----------------1000'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_jr sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_li]]
-==== C_LI
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_li rd!=0, imm[4:0], imm[5]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 5, name: 'imm[4:0]'},
-{bits: 5, name: 'rd!=0'},
-{bits: 1, name: 'imm[5]'},
-{bits: 19, name: '----------------010'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_li sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_lui]]
-==== C_LUI
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_lui rd_n2, nzimm[17], nzimm[16:12]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 5, name: 'nzimm[16:12]'},
-{bits: 5, name: 'rd_n2'},
-{bits: 1, name: 'nzimm[17]'},
-{bits: 19, name: '----------------011'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_lui sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_lw]]
-==== C_LW
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_lw rd', rs1', uimm[2|6], uimm[5:3]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x0},
-{bits: 3, name: 'rd''},
-{bits: 1, name: 'imm[6]'},
-{bits: 1, name: 'imm[2]'},
-{bits: 3, name: 'rs1''},
-{bits: 3, name: 'uimm[5:3]'},
-{bits: 19, name: '----------------010'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_lw sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_lwsp]]
-==== C_LWSP
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_lwsp rd!=0, uimm[5], uimm[4:2|7:6]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x2},
-{bits: 2, name: 'imm[7:6]'},
-{bits: 3, name: 'imm[4:2]'},
-{bits: 5, name: 'rd!=0'},
-{bits: 1, name: 'uimm[5]'},
-{bits: 19, name: '----------------010'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_lwsp sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_mv]]
-==== C_MV
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_mv rd!=0, rs2!=0`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x2},
-{bits: 5, name: 'rs2!=0'},
-{bits: 5, name: 'rd!=0'},
-{bits: 20, name: '----------------1000'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_mv sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_nop]]
-==== C_NOP
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_nop nzimm[5], nzimm[4:0]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 5, name: 'nzimm[4:0]'},
-{bits: 5, name: 0x0},
-{bits: 1, name: 'nzimm[5]'},
-{bits: 19, name: '----------------000'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_nop sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_or]]
-==== C_OR
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_or rs1'/rs2', rs2'`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 3, name: 'rs2''},
-{bits: 2, name: 0x2},
-{bits: 3, name: 'rs1'/rs2''},
-{bits: 22, name: '----------------100011'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_or sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_sub]]
-==== C_SUB
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_sub rs1'/rs2', rs2'`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 3, name: 'rs2''},
-{bits: 2, name: 0x0},
-{bits: 3, name: 'rs1'/rs2''},
-{bits: 22, name: '----------------100011'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_sub sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_sw]]
-==== C_SW
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_sw rs1', rs2', uimm[2|6], uimm[5:3]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x0},
-{bits: 3, name: 'rs2''},
-{bits: 1, name: 'imm[6]'},
-{bits: 1, name: 'imm[2]'},
-{bits: 3, name: 'rs1''},
-{bits: 3, name: 'uimm[5:3]'},
-{bits: 19, name: '----------------110'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_sw sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_swsp]]
-==== C_SWSP
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_swsp rs2, uimm[5:2|7:6]`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x2},
-{bits: 5, name: 'rs2'},
-{bits: 2, name: 'imm[7:6]'},
-{bits: 4, name: 'imm[5:2]'},
-{bits: 19, name: '----------------110'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_swsp sail code not found in the expected format.
-
-Included in:: RV(32/64)C
-
-<<<
-
-[[instruction-c_xor]]
-==== C_XOR
-
-Synopsis:: No synopsis available.
-
-Mnemonic::
-+
-`c_xor rs1'/rs2', rs2'`
-+
-
-Encoding::
-[wavedrom, , svg]
-....
-{reg:[
-{bits: 2, name: 0x1},
-{bits: 3, name: 'rs2''},
-{bits: 2, name: 0x1},
-{bits: 3, name: 'rs1'/rs2''},
-{bits: 22, name: '----------------100011'}
-]}
-....
-
-Description:: No description available.
-
-Arguments::
-[%autowidth]
-[%header,cols="4,2,2"]
-|===
-|Register |Direction |Definition
-|===
-
-Sail Code :: 
-
-Instruction c_xor sail code not found in the expected format.
-
-Included in:: RV(32/64)C
 
 <<<
 
@@ -1800,7 +891,7 @@ function clause execute (RISCV_JAL(imm, rd)) = {
     },
     Ext_ControlAddr_OK(target) => {
       /* Perform standard alignment check */
-      if bit_to_bool(target[1]) & not(haveRVC())
+      if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C))
       then {
         handle_mem_exception(target, E_Fetch_Addr_Align());
         RETIRE_FAIL
@@ -2063,7 +1154,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute RISCV_LUI(imm, rd, op) = {
+function clause execute RISCV_LUI(imm, rd) = {
   let off : xlenbits = sign_extend(imm @ 0x000);
   let ret = off,
   X(rd) = ret;
@@ -2156,7 +1247,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_OR(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_OR(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = rs1_val | rs2_val,
@@ -2207,7 +1298,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_ORI (imm, rs1, rd, op)) = {
+function clause execute (RISCV_ORI (imm, rs1, rd)) = {
   let rs1_val = X(rs1);
   let immext : xlenbits = sign_extend(imm);
   let result = rs1_val | immext,
@@ -2343,7 +1434,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SLL(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_SLL(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = if   sizeof(xlen) == 32
@@ -2397,7 +1488,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SLT(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_SLT(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = zero_extend(bool_to_bits(rs1_val <_s rs2_val)),
@@ -2449,7 +1540,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SLTI (imm, rs1, rd, op)) = {
+function clause execute (RISCV_SLTI (imm, rs1, rd)) = {
   let rs1_val = X(rs1);
   let immext : xlenbits = sign_extend(imm);
   let result = zero_extend(bool_to_bits(rs1_val <_s immext)),
@@ -2501,7 +1592,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SLTIU (imm, rs1, rd, op)) = {
+function clause execute (RISCV_SLTIU (imm, rs1, rd)) = {
   let rs1_val = X(rs1);
   let immext : xlenbits = sign_extend(imm);
   let result = zero_extend(bool_to_bits(rs1_val <_u immext)),
@@ -2553,7 +1644,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SLTU(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_SLTU(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = zero_extend(bool_to_bits(rs1_val <_u rs2_val)),
@@ -2605,7 +1696,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SRA(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_SRA(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = if   sizeof(xlen) == 32
@@ -2659,7 +1750,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SRL(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_SRL(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = if   sizeof(xlen) == 32
@@ -2713,7 +1804,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_SUB(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_SUB(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = rs1_val - rs2_val,
@@ -2807,7 +1898,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_XOR(rs2, rs1, rd, op)) = {
+function clause execute (RISCV_XOR(rs2, rs1, rd)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let result = rs1_val ^ rs2_val,
@@ -2858,7 +1949,7 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_XORI (imm, rs1, rd, op)) = {
+function clause execute (RISCV_XORI (imm, rs1, rd)) = {
   let rs1_val = X(rs1);
   let immext : xlenbits = sign_extend(imm);
   let result = rs1_val ^ immext
