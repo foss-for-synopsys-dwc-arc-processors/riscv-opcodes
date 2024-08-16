@@ -1,7 +1,7 @@
-== RV_I Extension
+=== RV_I Extension
 
 [[instruction-add]]
-=== ADD
+==== ADD
 
 Synopsis:: Add two values
 
@@ -53,7 +53,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-addi]]
-=== ADDI
+==== ADDI
 
 Synopsis:: Add Immediate
 
@@ -104,7 +104,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-and]]
-=== AND
+==== AND
 
 Synopsis:: AND two values
 
@@ -156,7 +156,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-andi]]
-=== ANDI
+==== ANDI
 
 Synopsis:: AND Immediate
 
@@ -207,7 +207,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-auipc]]
-=== AUIPC
+==== AUIPC
 
 Synopsis:: Add Upper Immediate to PC
 
@@ -254,7 +254,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-beq]]
-=== BEQ
+==== BEQ
 
 Synopsis:: Branch if Equal
 
@@ -295,20 +295,20 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BEQ(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BEQ(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val == rs2_val,
   let t : xlenbits = PC + sign_extend(imm);
   if taken then {
-    /* Extensions get the first checks on the prospective target address. */
+    /* Extensions get the first checks on the target address. */
     match ext_control_check_pc(t) {
       Ext_ControlAddr_Error(e) => {
         ext_handle_control_check_error(e);
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -326,7 +326,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-bge]]
-=== BGE
+==== BGE
 
 Synopsis:: Branch if Greater than or Equal (Signed)
 
@@ -367,20 +367,20 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BGE(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BGE(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val >=_s rs2_val,
   let t : xlenbits = PC + sign_extend(imm);
   if taken then {
-    /* Extensions get the first checks on the prospective target address. */
+    /* Extensions get the first checks on the target address. */
     match ext_control_check_pc(t) {
       Ext_ControlAddr_Error(e) => {
         ext_handle_control_check_error(e);
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -398,7 +398,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-bgeu]]
-=== BGEU
+==== BGEU
 
 Synopsis:: Branch if Greater than or Equal (Unsigned)
 
@@ -439,20 +439,20 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BGEU(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BGEU(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val >=_u rs2_val
   let t : xlenbits = PC + sign_extend(imm);
   if taken then {
-    /* Extensions get the first checks on the prospective target address. */
+    /* Extensions get the first checks on the target address. */
     match ext_control_check_pc(t) {
       Ext_ControlAddr_Error(e) => {
         ext_handle_control_check_error(e);
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -470,7 +470,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-blt]]
-=== BLT
+==== BLT
 
 Synopsis:: Branch if Less Than (Signed)
 
@@ -511,20 +511,20 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BLT(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BLT(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val <_s rs2_val,
   let t : xlenbits = PC + sign_extend(imm);
   if taken then {
-    /* Extensions get the first checks on the prospective target address. */
+    /* Extensions get the first checks on the target address. */
     match ext_control_check_pc(t) {
       Ext_ControlAddr_Error(e) => {
         ext_handle_control_check_error(e);
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -542,7 +542,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-bltu]]
-=== BLTU
+==== BLTU
 
 Synopsis:: Branch if Less Than (Unsigned)
 
@@ -583,20 +583,20 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BLTU(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BLTU(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val <_u rs2_val,
   let t : xlenbits = PC + sign_extend(imm);
   if taken then {
-    /* Extensions get the first checks on the prospective target address. */
+    /* Extensions get the first checks on the target address. */
     match ext_control_check_pc(t) {
       Ext_ControlAddr_Error(e) => {
         ext_handle_control_check_error(e);
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -614,7 +614,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-bne]]
-=== BNE
+==== BNE
 
 Synopsis:: Branch if Not Equal
 
@@ -655,20 +655,20 @@ Sail Code::
 
 [source,sail]
 --
-function clause execute (RISCV_BNE(imm, rs2, rs1, op)) = {
+function clause execute (RISCV_BNE(imm, rs2, rs1)) = {
   let rs1_val = X(rs1);
   let rs2_val = X(rs2);
   let taken = rs1_val != rs2_val,
   let t : xlenbits = PC + sign_extend(imm);
   if taken then {
-    /* Extensions get the first checks on the prospective target address. */
+    /* Extensions get the first checks on the target address. */
     match ext_control_check_pc(t) {
       Ext_ControlAddr_Error(e) => {
         ext_handle_control_check_error(e);
         RETIRE_FAIL
       },
       Ext_ControlAddr_OK(target) => {
-        if bit_to_bool(target[1]) & not(haveRVC()) then {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
           handle_mem_exception(target, E_Fetch_Addr_Align());
           RETIRE_FAIL;
         } else {
@@ -686,7 +686,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-ebreak]]
-=== EBREAK
+==== EBREAK
 
 Synopsis:: Environment break
 
@@ -727,7 +727,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-ecall]]
-=== ECALL
+==== ECALL
 
 Synopsis:: Environment call
 
@@ -776,7 +776,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-fence]]
-=== FENCE
+==== FENCE
 
 Synopsis:: Enforce ordering between memory operations
 
@@ -849,7 +849,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-fence_tso]]
-=== FENCE_TSO
+==== FENCE_TSO
 
 Synopsis:: Total Store Ordering fence
 
@@ -902,7 +902,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-jal]]
-=== JAL
+==== JAL
 
 Synopsis:: Jump and Link to target address, storing return address
 
@@ -941,7 +941,7 @@ Sail Code::
 --
 function clause execute (RISCV_JAL(imm, rd)) = {
   let t : xlenbits = PC + sign_extend(imm);
-  /* Extensions get the first checks on the prospective target address. */
+  /* Extensions get the first checks on the target address. */
   match ext_control_check_pc(t) {
     Ext_ControlAddr_Error(e) => {
       ext_handle_control_check_error(e);
@@ -949,7 +949,7 @@ function clause execute (RISCV_JAL(imm, rd)) = {
     },
     Ext_ControlAddr_OK(target) => {
       /* Perform standard alignment check */
-      if bit_to_bool(target[1]) & not(haveRVC())
+      if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C))
       then {
         handle_mem_exception(target, E_Fetch_Addr_Align());
         RETIRE_FAIL
@@ -968,7 +968,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-jalr]]
-=== JALR
+==== JALR
 
 Synopsis:: Jump and Link to computed target, storing return address
 
@@ -1010,7 +1010,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-lb]]
-=== LB
+==== LB
 
 Synopsis:: Load signed Byte from memory
 
@@ -1043,16 +1043,32 @@ Arguments::
 |imm12 |input |12-bit immediate
 |===
 
-Sail Code :: 
-
-Instruction lb sail code not found in the expected format.
+Sail Code:: 
+[source,sail]
+--
+function clause execute(LB(imm, rs1, rd, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
+  match translateAddr(vaddr, Read(Data)) {
+    TR_Failure(e, _) => { handle_mem_exception(vaddr, e); 
+                        RETIRE_FAIL },
+    TR_Address(paddr, _) => 
+      match mem_read(Read(Data), paddr, 1, aq, rl, false) {
+        MemValue(result) => { X(rd) = sign_extend(result[7..0]); 
+                            RETIRE_SUCCESS },
+        MemException(e) => { handle_mem_exception(vaddr, e); 
+                           RETIRE_FAIL },
+      }
+  }
+}
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-lbu]]
-=== LBU
+==== LBU
 
 Synopsis:: Load unsigned Byte from memory
 
@@ -1085,16 +1101,32 @@ Arguments::
 |imm12 |input |12-bit immediate
 |===
 
-Sail Code :: 
-
-Instruction lbu sail code not found in the expected format.
+Sail Code:: 
+[source,sail]
+--
+function clause execute(LBU(imm, rs1, rd, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
+  match translateAddr(vaddr, Read(Data)) {
+     TR_Failure(e, _) => { handle_mem_exception(vaddr, e); 
+                         RETIRE_FAIL },
+     TR_Address(paddr, _) => 
+       match mem_read(Read(Data), paddr, 1, aq, rl, false) {
+         MemValue(result) => { X(rd) = zero_extend(result[7..0]); 
+                             RETIRE_SUCCESS },
+         MemException(e) => { handle_mem_exception(vaddr, e); 
+                            RETIRE_FAIL },
+       }
+  }
+}
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-lh]]
-=== LH
+==== LH
 
 Synopsis:: Load signed Halfword from memory
 
@@ -1127,16 +1159,35 @@ Arguments::
 |imm12 |input |12-bit immediate
 |===
 
-Sail Code :: 
-
-Instruction lh sail code not found in the expected format.
+Sail Code:: 
+[source,sail]
+--
+function clause execute(LH(imm, rs1, rd, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
+  if vaddr[0] != 0b0 then {
+    handle_mem_exception(vaddr, E_Load_Addr_Align());
+    RETIRE_FAIL
+  } else match translateAddr(vaddr, Read(Data)) {
+    TR_Failure(e, _) => { handle_mem_exception(vaddr, e); 
+                        RETIRE_FAIL },
+    TR_Address(paddr, _) => 
+      match mem_read(Read(Data), paddr, 2, aq, rl, false) {
+        MemValue(result) => { X(rd) = sign_extend(result[15..0]); 
+                            RETIRE_SUCCESS },
+        MemException(e) => { handle_mem_exception(vaddr, e); 
+                           RETIRE_FAIL },
+      }
+  }
+}
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-lhu]]
-=== LHU
+==== LHU
 
 Synopsis:: Load unsigned Halfword from memory
 
@@ -1169,16 +1220,35 @@ Arguments::
 |imm12 |input |12-bit immediate
 |===
 
-Sail Code :: 
-
-Instruction lhu sail code not found in the expected format.
+Sail Code::
+[source,sail]
+--
+function clause execute(LHU(imm, rs1, rd, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
+  if vaddr[0] != 0b0 then {
+    handle_mem_exception(vaddr, E_Load_Addr_Align());
+    RETIRE_FAIL
+  } else match translateAddr(vaddr, Read(Data)) {
+     TR_Failure(e, _) => { handle_mem_exception(vaddr, e); 
+                         RETIRE_FAIL },
+     TR_Address(paddr, _) => 
+        match mem_read(Read(Data), paddr, 2, aq, rl, false) {
+           MemValue(result) => { X(rd) = zero_extend(result[15..0]); 
+                               RETIRE_SUCCESS },
+           MemException(e) => { handle_mem_exception(vaddr, e); 
+                              RETIRE_FAIL },
+        }
+  }
+}
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-lui]]
-=== LUI
+==== LUI
 
 Synopsis:: Load Upper Immediate
 
@@ -1225,7 +1295,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-lw]]
-=== LW
+==== LW
 
 Synopsis:: Load signed Word from memory
 
@@ -1258,16 +1328,35 @@ Arguments::
 |imm12 |input |12-bit immediate
 |===
 
-Sail Code :: 
-
-Instruction lw sail code not found in the expected format.
+Sail Code:: 
+[source,sail]
+--
+function clause execute(LW(imm, rs1, rd, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
+  if vaddr[1..0] != 0b00 then {
+    handle_mem_exception(vaddr, E_Load_Addr_Align());
+    RETIRE_FAIL
+  } else match translateAddr(vaddr, Read(Data)) {
+     TR_Failure(e, _) => { handle_mem_exception(vaddr, e); 
+                         RETIRE_FAIL },
+     TR_Address(paddr, _) => 
+        match mem_read(Read(Data), paddr, 4, aq, rl, false) {
+           MemValue(result) => { X(rd) = sign_extend(result[31..0]); 
+                               RETIRE_SUCCESS },
+           MemException(e) => { handle_mem_exception(vaddr, e); 
+                              RETIRE_FAIL },
+      }
+  }
+}
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-or]]
-=== OR
+==== OR
 
 Synopsis:: OR two values
 
@@ -1319,7 +1408,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-ori]]
-=== ORI
+==== ORI
 
 Synopsis:: OR Immediate
 
@@ -1370,7 +1459,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-sb]]
-=== SB
+==== SB
 
 Synopsis:: Store Byte to memory
 
@@ -1405,16 +1494,42 @@ Arguments::
 |imm12lo |input |Low 6 bits of 12-bit immediate
 |===
 
-Sail Code :: 
+Sail Code:: 
+[source,sail]
+--
+function clause execute (SB(imm, rs2, rs1, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
 
-Instruction sb sail code not found in the expected format.
+  match translateAddr(vaddr, Write(Data)) {
+        TR_Failure(e, _)    => { handle_mem_exception(vaddr, e); 
+                               RETIRE_FAIL },
+        TR_Address(paddr, _) => {
+          let eares = mem_write_ea(paddr, 1, aq, rl, false);
+          match (eares) {
+            MemException(e) => { handle_mem_exception(vaddr, e); 
+                               RETIRE_FAIL },
+            MemValue(_) => {
+              let rs2_val = X(rs2);
+              match mem_write_value(paddr, 1, rs2_val[7 .. 0], aq, rl, false) {
+                MemValue(true)  => RETIRE_SUCCESS,
+                MemValue(false) => internal_error(__FILE__, __LINE__, "store got false from mem_write_value"),
+                MemException(e) => { handle_mem_exception(vaddr, e); 
+                                   RETIRE_FAIL }
+              }
+            }
+          }
+        }
+      }
+  }
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-sbreak]]
-=== SBREAK
+==== SBREAK
 
 Synopsis:: No synopsis available.
 
@@ -1449,7 +1564,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-scall]]
-=== SCALL
+==== SCALL
 
 Synopsis:: No synopsis available.
 
@@ -1484,7 +1599,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-sh]]
-=== SH
+==== SH
 
 Synopsis:: Store Halfword to memory
 
@@ -1519,16 +1634,42 @@ Arguments::
 |imm12lo |input |Low 6 bits of 12-bit immediate
 |===
 
-Sail Code :: 
+Sail Code:: 
+[source,sail]
+--
+function clause execute (SH(imm, rs2, rs1, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
 
-Instruction sh sail code not found in the expected format.
+  match translateAddr(vaddr, Write(Data)) {
+        TR_Failure(e, _)    => { handle_mem_exception(vaddr, e); 
+                               RETIRE_FAIL },
+        TR_Address(paddr, _) => {
+          let eares = mem_write_ea(paddr, 2, aq, rl, false);
+          match (eares) {
+            MemException(e) => { handle_mem_exception(vaddr, e); 
+                               RETIRE_FAIL },
+            MemValue(_) => {
+              let rs2_val = X(rs2);
+              match mem_write_value(paddr, 2, rs2_val[15 .. 0], aq, rl, false) {
+                MemValue(true)  => RETIRE_SUCCESS,
+                MemValue(false) => internal_error(__FILE__, __LINE__, "store got false from mem_write_value"),
+                MemException(e) => { handle_mem_exception(vaddr, e); 
+                                   RETIRE_FAIL }
+              }
+            }
+          }
+        }
+      }
+  }
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-sll]]
-=== SLL
+==== SLL
 
 Synopsis:: Shift Left Logical
 
@@ -1582,7 +1723,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-slt]]
-=== SLT
+==== SLT
 
 Synopsis:: Set if Less Than (Signed)
 
@@ -1635,7 +1776,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-slti]]
-=== SLTI
+==== SLTI
 
 Synopsis:: Set if Less Than Immediate (Signed)
 
@@ -1687,7 +1828,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-sltiu]]
-=== SLTIU
+==== SLTIU
 
 Synopsis:: Set if Less Than Immediate (Unsigned)
 
@@ -1738,7 +1879,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-sltu]]
-=== SLTU
+==== SLTU
 
 Synopsis:: Set if Less Than (Unsigned)
 
@@ -1790,7 +1931,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-sra]]
-=== SRA
+==== SRA
 
 Synopsis:: Shift Right Arithmetic
 
@@ -1844,7 +1985,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-srl]]
-=== SRL
+==== SRL
 
 Synopsis:: Shift Right Logical
 
@@ -1898,7 +2039,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-sub]]
-=== SUB
+==== SUB
 
 Synopsis:: Subtract one value from another
 
@@ -1950,7 +2091,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-sw]]
-=== SW
+==== SW
 
 Synopsis:: Store Word to memory
 
@@ -1985,16 +2126,42 @@ Arguments::
 |imm12lo |input |Low 6 bits of 12-bit immediate
 |===
 
-Sail Code :: 
+Sail Code:: 
+[source,sail]
+--
+function clause execute (SW(imm, rs2, rs1, aq, rl)) = {
+  let offset : xlenbits = sign_extend(imm);
+  let vaddr = X(rs1) + offset;
 
-Instruction sw sail code not found in the expected format.
+  match translateAddr(vaddr, Write(Data)) {
+        TR_Failure(e, _)    => { handle_mem_exception(vaddr, e); 
+                               RETIRE_FAIL },
+        TR_Address(paddr, _) => {
+          let eares = mem_write_ea(paddr, 4, aq, rl, false);
+          match (eares) {
+            MemException(e) => { handle_mem_exception(vaddr, e); 
+                               RETIRE_FAIL },
+            MemValue(_) => {
+              let rs2_val = X(rs2);
+              match mem_write_value(paddr, 4, rs2_val[31 .. 0], aq, rl, false) {
+                MemValue(true)  => RETIRE_SUCCESS,
+                MemValue(false) => internal_error(__FILE__, __LINE__, "store got false from mem_write_value"),
+                MemException(e) => { handle_mem_exception(vaddr, e); 
+                                   RETIRE_FAIL }
+              }
+            }
+          }
+        }
+      }
+  }
+--
 
 Included in:: <<rv32,RV32>>, RV64I
 
 <<<
 
 [[instruction-xor]]
-=== XOR
+==== XOR
 
 Synopsis:: Exclusive OR two values
 
@@ -2046,7 +2213,7 @@ Included in:: <<rv32,RV32>>, RV64I
 <<<
 
 [[instruction-xori]]
-=== XORI
+==== XORI
 
 Synopsis:: Exclusive OR Immediate
 
