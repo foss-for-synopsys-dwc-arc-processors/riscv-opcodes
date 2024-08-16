@@ -1,0 +1,1964 @@
+[[instruction-add]]
+==== ADD
+
+Synopsis:: Add
+
+Mnemonic::
++
+`add rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Adds rs1 and rs2, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_ADD(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = rs1_val + rs2_val,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-addi]]
+==== ADDI
+
+Synopsis:: Add Immediate
+
+Mnemonic::
++
+`addi rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x13},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Adds the sign-extended 12-bit immediate to rs1 and stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_ADDI (imm, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let immext : xlenbits = sign_extend(imm);
+  let result = rs1_val + immext,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-and]]
+==== AND
+
+Synopsis:: AND
+
+Mnemonic::
++
+`and rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x7},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Performs bitwise AND on rs1 and rs2, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_AND(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = rs1_val & rs2_val,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-andi]]
+==== ANDI
+
+Synopsis:: AND Immediate
+
+Mnemonic::
++
+`andi rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x13},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x7},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Performs bitwise AND on rs1 and the sign-extended 12-bit immediate, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_ANDI (imm, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let immext : xlenbits = sign_extend(imm);
+  let result = rs1_val & immext,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-auipc]]
+==== AUIPC
+
+Synopsis:: Add Upper Immediate to PC
+
+Mnemonic::
++
+`auipc rd, imm[31:12]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x17},
+{bits: 5, name: 'rd'},
+{bits: 20, name: 'imm[31:12]'}
+]}
+....
+
+Description:: Forms a 32-bit offset from the 20-bit U-immediate, fills the lowest 12 bits with zeros, adds this offset to the PC, and places the result in register rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|imm20 |input |20-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute RISCV_AUIPC(imm, rd) = {
+  let off : xlenbits = sign_extend(imm @ 0x000);
+  let ret = get_arch_pc() + off
+  X(rd) = ret;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-beq]]
+==== BEQ
+
+Synopsis:: Branch if Equal
+
+Mnemonic::
++
+`beq imm[12|10:5], rs1, rs2, imm[4:1|11]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x63},
+{bits: 1, name: 'imm[11]'},
+{bits: 4, name: 'imm[4:1]'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 6, name: 'imm[10:5]'},
+{bits: 1, name: 'imm[12]'}
+]}
+....
+
+Description:: Compares rs1 and rs2, and if equal, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|bimm12hi |input |High bits of 13-bit branch offset
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|bimm12lo |input |Low bits of 13-bit branch offset
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_BEQ(imm, rs2, rs1)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let taken = rs1_val == rs2_val,
+  let t : xlenbits = PC + sign_extend(imm);
+  if taken then {
+    /* Extensions get the first checks on the prospective target address. */
+    match ext_control_check_pc(t) {
+      Ext_ControlAddr_Error(e) => {
+        ext_handle_control_check_error(e);
+        RETIRE_FAIL
+      },
+      Ext_ControlAddr_OK(target) => {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
+          handle_mem_exception(target, E_Fetch_Addr_Align());
+          RETIRE_FAIL;
+        } else {
+          set_next_pc(target);
+          RETIRE_SUCCESS
+        }
+      }
+    }
+  } else RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-bge]]
+==== BGE
+
+Synopsis:: Branch if Greater than or Equal (Signed)
+
+Mnemonic::
++
+`bge imm[12|10:5], rs1, rs2, imm[4:1|11]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x63},
+{bits: 1, name: 'imm[11]'},
+{bits: 4, name: 'imm[4:1]'},
+{bits: 3, name: 0x5},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 6, name: 'imm[10:5]'},
+{bits: 1, name: 'imm[12]'}
+]}
+....
+
+Description:: Compares rs1 and rs2 as signed integers, and if rs1 >= rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|bimm12hi |input |High bits of 13-bit branch offset
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|bimm12lo |input |Low bits of 13-bit branch offset
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_BGE(imm, rs2, rs1)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let taken = rs1_val >=_s rs2_val,
+  let t : xlenbits = PC + sign_extend(imm);
+  if taken then {
+    /* Extensions get the first checks on the prospective target address. */
+    match ext_control_check_pc(t) {
+      Ext_ControlAddr_Error(e) => {
+        ext_handle_control_check_error(e);
+        RETIRE_FAIL
+      },
+      Ext_ControlAddr_OK(target) => {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
+          handle_mem_exception(target, E_Fetch_Addr_Align());
+          RETIRE_FAIL;
+        } else {
+          set_next_pc(target);
+          RETIRE_SUCCESS
+        }
+      }
+    }
+  } else RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-bgeu]]
+==== BGEU
+
+Synopsis:: Branch if Greater than or Equal (Unsigned)
+
+Mnemonic::
++
+`bgeu imm[12|10:5], rs1, rs2, imm[4:1|11]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x63},
+{bits: 1, name: 'imm[11]'},
+{bits: 4, name: 'imm[4:1]'},
+{bits: 3, name: 0x7},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 6, name: 'imm[10:5]'},
+{bits: 1, name: 'imm[12]'}
+]}
+....
+
+Description:: Compares rs1 and rs2 as unsigned integers, and if rs1 >= rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|bimm12hi |input |High bits of 13-bit branch offset
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|bimm12lo |input |Low bits of 13-bit branch offset
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_BGEU(imm, rs2, rs1)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let taken = rs1_val >=_u rs2_val
+  let t : xlenbits = PC + sign_extend(imm);
+  if taken then {
+    /* Extensions get the first checks on the prospective target address. */
+    match ext_control_check_pc(t) {
+      Ext_ControlAddr_Error(e) => {
+        ext_handle_control_check_error(e);
+        RETIRE_FAIL
+      },
+      Ext_ControlAddr_OK(target) => {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
+          handle_mem_exception(target, E_Fetch_Addr_Align());
+          RETIRE_FAIL;
+        } else {
+          set_next_pc(target);
+          RETIRE_SUCCESS
+        }
+      }
+    }
+  } else RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-blt]]
+==== BLT
+
+Synopsis:: Branch if Less Than (Signed)
+
+Mnemonic::
++
+`blt imm[12|10:5], rs1, rs2, imm[4:1|11]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x63},
+{bits: 1, name: 'imm[11]'},
+{bits: 4, name: 'imm[4:1]'},
+{bits: 3, name: 0x4},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 6, name: 'imm[10:5]'},
+{bits: 1, name: 'imm[12]'}
+]}
+....
+
+Description:: Compares rs1 and rs2 as signed integers, and if rs1 < rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|bimm12hi |input |High bits of 13-bit branch offset
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|bimm12lo |input |Low bits of 13-bit branch offset
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_BLT(imm, rs2, rs1)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let taken = rs1_val <_s rs2_val,
+  let t : xlenbits = PC + sign_extend(imm);
+  if taken then {
+    /* Extensions get the first checks on the prospective target address. */
+    match ext_control_check_pc(t) {
+      Ext_ControlAddr_Error(e) => {
+        ext_handle_control_check_error(e);
+        RETIRE_FAIL
+      },
+      Ext_ControlAddr_OK(target) => {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
+          handle_mem_exception(target, E_Fetch_Addr_Align());
+          RETIRE_FAIL;
+        } else {
+          set_next_pc(target);
+          RETIRE_SUCCESS
+        }
+      }
+    }
+  } else RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-bltu]]
+==== BLTU
+
+Synopsis:: Branch if Less Than (Unsigned)
+
+Mnemonic::
++
+`bltu imm[12|10:5], rs1, rs2, imm[4:1|11]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x63},
+{bits: 1, name: 'imm[11]'},
+{bits: 4, name: 'imm[4:1]'},
+{bits: 3, name: 0x6},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 6, name: 'imm[10:5]'},
+{bits: 1, name: 'imm[12]'}
+]}
+....
+
+Description:: Compares rs1 and rs2 as unsigned integers, and if rs1 < rs2, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|bimm12hi |input |High bits of 13-bit branch offset
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|bimm12lo |input |Low bits of 13-bit branch offset
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_BLTU(imm, rs2, rs1)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let taken = rs1_val <_u rs2_val,
+  let t : xlenbits = PC + sign_extend(imm);
+  if taken then {
+    /* Extensions get the first checks on the prospective target address. */
+    match ext_control_check_pc(t) {
+      Ext_ControlAddr_Error(e) => {
+        ext_handle_control_check_error(e);
+        RETIRE_FAIL
+      },
+      Ext_ControlAddr_OK(target) => {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
+          handle_mem_exception(target, E_Fetch_Addr_Align());
+          RETIRE_FAIL;
+        } else {
+          set_next_pc(target);
+          RETIRE_SUCCESS
+        }
+      }
+    }
+  } else RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-bne]]
+==== BNE
+
+Synopsis:: Branch if Not Equal
+
+Mnemonic::
++
+`bne imm[12|10:5], rs1, rs2, imm[4:1|11]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x63},
+{bits: 1, name: 'imm[11]'},
+{bits: 4, name: 'imm[4:1]'},
+{bits: 3, name: 0x1},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 6, name: 'imm[10:5]'},
+{bits: 1, name: 'imm[12]'}
+]}
+....
+
+Description:: Compares rs1 and rs2, and if not equal, branches to the PC-relative address formed by adding the sign-extended 12-bit immediate to the PC
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|bimm12hi |input |High bits of 13-bit branch offset
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|bimm12lo |input |Low bits of 13-bit branch offset
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_BNE(imm, rs2, rs1)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let taken = rs1_val != rs2_val,
+  let t : xlenbits = PC + sign_extend(imm);
+  if taken then {
+    /* Extensions get the first checks on the prospective target address. */
+    match ext_control_check_pc(t) {
+      Ext_ControlAddr_Error(e) => {
+        ext_handle_control_check_error(e);
+        RETIRE_FAIL
+      },
+      Ext_ControlAddr_OK(target) => {
+        if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C)) then {
+          handle_mem_exception(target, E_Fetch_Addr_Align());
+          RETIRE_FAIL;
+        } else {
+          set_next_pc(target);
+          RETIRE_SUCCESS
+        }
+      }
+    }
+  } else RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-ebreak]]
+==== EBREAK
+
+Synopsis::   31..20=0x001 19..7=0 6..2=0x1C 1..0=3
+
+Mnemonic::
++
+`ebreak`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 32, name: 0x100073}
+]}
+....
+
+Description:: No description available.
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute EBREAK() = {
+  handle_mem_exception(PC, E_Breakpoint());
+  RETIRE_FAIL
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-ecall]]
+==== ECALL
+
+Synopsis::    31..20=0x000 19..7=0 6..2=0x1C 1..0=3
+
+Mnemonic::
++
+`ecall`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 32, name: 0x73}
+]}
+....
+
+Description:: No description available.
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute ECALL() = {
+  let t : sync_exception =
+    struct { trap = match (cur_privilege) {
+                      User       => E_U_EnvCall(),
+                      Supervisor => E_S_EnvCall(),
+                      Machine    => E_M_EnvCall()
+                    },
+             excinfo = (None() : option(xlenbits)),
+             ext     = None() };
+  set_next_pc(exception_handler(cur_privilege, CTL_TRAP(t), PC));
+  RETIRE_FAIL
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-fence]]
+==== FENCE
+
+Synopsis:: Fence
+
+Mnemonic::
++
+`fence fm, pred, succ, rs1, rd`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0xf},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 4, name: 'succ'},
+{bits: 4, name: 'pred'},
+{bits: 4, name: 'fm'}
+]}
+....
+
+Description:: Enforces ordering between memory operations and I/O from different RISC-V harts
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rs1 |input |Source register 1
+|rd |output |Destination register
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (FENCE(pred, succ)) = {
+  // If the FIOM bit in menvcfg/senvcfg is set then the I/O bits can imply R/W.
+  let fiom = is_fiom_active();
+  let pred = effective_fence_set(pred, fiom);
+  let succ = effective_fence_set(succ, fiom);
+
+  match (pred, succ) {
+    (_ : bits(2) @ 0b11, _ : bits(2) @ 0b11) => sail_barrier(Barrier_RISCV_rw_rw),
+    (_ : bits(2) @ 0b10, _ : bits(2) @ 0b11) => sail_barrier(Barrier_RISCV_r_rw),
+    (_ : bits(2) @ 0b10, _ : bits(2) @ 0b10) => sail_barrier(Barrier_RISCV_r_r),
+    (_ : bits(2) @ 0b11, _ : bits(2) @ 0b01) => sail_barrier(Barrier_RISCV_rw_w),
+    (_ : bits(2) @ 0b01, _ : bits(2) @ 0b01) => sail_barrier(Barrier_RISCV_w_w),
+    (_ : bits(2) @ 0b01, _ : bits(2) @ 0b11) => sail_barrier(Barrier_RISCV_w_rw),
+    (_ : bits(2) @ 0b11, _ : bits(2) @ 0b10) => sail_barrier(Barrier_RISCV_rw_r),
+    (_ : bits(2) @ 0b10, _ : bits(2) @ 0b01) => sail_barrier(Barrier_RISCV_r_w),
+    (_ : bits(2) @ 0b01, _ : bits(2) @ 0b10) => sail_barrier(Barrier_RISCV_w_r),
+
+    (_ : bits(4)       , _ : bits(2) @ 0b00) => (),
+    (_ : bits(2) @ 0b00, _ : bits(4)       ) => (),
+
+    _ => { print("FIXME: unsupported fence");
+           () }
+  };
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-jal]]
+==== JAL
+
+Synopsis:: Jump and Link
+
+Mnemonic::
++
+`jal rd, imm[20|10:1|11|19:12]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x6f},
+{bits: 5, name: 'rd'},
+{bits: 8, name: 'imm[19:12]'},
+{bits: 1, name: 'imm[11]'},
+{bits: 10, name: 'imm[10:1]'},
+{bits: 1, name: 'imm[20]'}
+]}
+....
+
+Description:: Jumps to an offset formed by adding the sign-extended 20-bit immediate to the PC, and saves PC+4 to register rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|jimm20 |input |20-bit jump offset
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_JAL(imm, rd)) = {
+  let t : xlenbits = PC + sign_extend(imm);
+  /* Extensions get the first checks on the prospective target address. */
+  match ext_control_check_pc(t) {
+    Ext_ControlAddr_Error(e) => {
+      ext_handle_control_check_error(e);
+      RETIRE_FAIL
+    },
+    Ext_ControlAddr_OK(target) => {
+      /* Perform standard alignment check */
+      if bit_to_bool(target[1]) & not(extensionEnabled(Ext_C))
+      then {
+        handle_mem_exception(target, E_Fetch_Addr_Align());
+        RETIRE_FAIL
+      } else {
+        X(rd) = get_next_pc();
+        set_next_pc(target);
+        RETIRE_SUCCESS
+      }
+    }
+  }
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-jalr]]
+==== JALR
+
+Synopsis:: Jump and Link Register
+
+Mnemonic::
++
+`jalr rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x67},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Jumps to the address formed by adding the sign-extended 12-bit immediate to register rs1, and saves PC+4 to register rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code :: 
+
+Instruction jalr sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-lb]]
+==== LB
+
+Synopsis:: Load Byte
+
+Mnemonic::
++
+`lb rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x3},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Loads an 8-bit value from memory, sign-extends it to 32 bits, and writes it to rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code :: 
+
+Instruction lb sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-lbu]]
+==== LBU
+
+Synopsis:: Load Byte (Unsigned)
+
+Mnemonic::
++
+`lbu rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x3},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x4},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Loads an 8-bit value from memory, zero-extends it to 32 bits, and writes it to rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code :: 
+
+Instruction lbu sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-lh]]
+==== LH
+
+Synopsis:: Load Halfword
+
+Mnemonic::
++
+`lh rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x3},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x1},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Loads a 16-bit value from memory, sign-extends it to 32 bits, and writes it to rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code :: 
+
+Instruction lh sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-lhu]]
+==== LHU
+
+Synopsis:: Load Halfword (Unsigned)
+
+Mnemonic::
++
+`lhu rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x3},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x5},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Loads a 16-bit value from memory, zero-extends it to 32 bits, and writes it to rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code :: 
+
+Instruction lhu sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-lui]]
+==== LUI
+
+Synopsis:: Load Upper Immediate
+
+Mnemonic::
++
+`lui rd, imm[31:12]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x37},
+{bits: 5, name: 'rd'},
+{bits: 20, name: 'imm[31:12]'}
+]}
+....
+
+Description:: Loads a 20-bit immediate into bits 31-12 of the destination register, setting bits 11-0 to zero
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|imm20 |input |20-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute RISCV_LUI(imm, rd) = {
+  let off : xlenbits = sign_extend(imm @ 0x000);
+  let ret = off,
+  X(rd) = ret;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-lw]]
+==== LW
+
+Synopsis:: Load Word
+
+Mnemonic::
++
+`lw rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x3},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x2},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Loads a 32-bit value from memory and writes it to rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code :: 
+
+Instruction lw sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-or]]
+==== OR
+
+Synopsis:: OR
+
+Mnemonic::
++
+`or rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x6},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Performs bitwise OR on rs1 and rs2, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_OR(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = rs1_val | rs2_val,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-ori]]
+==== ORI
+
+Synopsis:: OR Immediate
+
+Mnemonic::
++
+`ori rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x13},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x6},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Performs bitwise OR on rs1 and the sign-extended 12-bit immediate, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_ORI (imm, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let immext : xlenbits = sign_extend(imm);
+  let result = rs1_val | immext,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sb]]
+==== SB
+
+Synopsis:: Store Byte
+
+Mnemonic::
++
+`sb imm[11:5], rs1, rs2, imm[4:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x23},
+{bits: 5, name: 'imm[4:0]'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 'imm[11:5]'}
+]}
+....
+
+Description:: Stores the lowest 8 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code :: 
+
+Instruction sb sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sh]]
+==== SH
+
+Synopsis:: Store Halfword
+
+Mnemonic::
++
+`sh imm[11:5], rs1, rs2, imm[4:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x23},
+{bits: 5, name: 'imm[4:0]'},
+{bits: 3, name: 0x1},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 'imm[11:5]'}
+]}
+....
+
+Description:: Stores the lowest 16 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code :: 
+
+Instruction sh sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sll]]
+==== SLL
+
+Synopsis:: Shift Left Logical
+
+Mnemonic::
++
+`sll rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x1},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Shifts rs1 left by the amount specified in the lower 5 bits of rs2, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SLL(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = if   sizeof(xlen) == 32
+                  then rs1_val << (rs2_val[4..0])
+                  else rs1_val << (rs2_val[5..0]),
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-slt]]
+==== SLT
+
+Synopsis:: Set if Less Than (Signed)
+
+Mnemonic::
++
+`slt rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x2},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Compares rs1 and rs2 as signed integers, sets rd to 1 if rs1 < rs2, 0 otherwise
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SLT(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = zero_extend(bool_to_bits(rs1_val <_s rs2_val)),
+  let result = zero_extend(bool_to_bits(rs1_val <_u rs2_val)),
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-slti]]
+==== SLTI
+
+Synopsis:: Set if Less Than Immediate (Signed)
+
+Mnemonic::
++
+`slti rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x13},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x2},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Compares rs1 with the sign-extended 12-bit immediate as signed integers, sets rd to 1 if rs1 < immediate, 0 otherwise
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SLTI (imm, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let immext : xlenbits = sign_extend(imm);
+  let result = zero_extend(bool_to_bits(rs1_val <_s immext)),
+  let result = zero_extend(bool_to_bits(rs1_val <_u immext)),
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sltiu]]
+==== SLTIU
+
+Synopsis:: Set if Less Than Immediate (Unsigned)
+
+Mnemonic::
++
+`sltiu rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x13},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x3},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Compares rs1 with the sign-extended 12-bit immediate as unsigned integers, sets rd to 1 if rs1 < immediate, 0 otherwise
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SLTIU (imm, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let immext : xlenbits = sign_extend(imm);
+  let result = zero_extend(bool_to_bits(rs1_val <_u immext)),
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sltu]]
+==== SLTU
+
+Synopsis:: Set if Less Than (Unsigned)
+
+Mnemonic::
++
+`sltu rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x3},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Compares rs1 and rs2 as unsigned integers, sets rd to 1 if rs1 < rs2, 0 otherwise
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SLTU(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = zero_extend(bool_to_bits(rs1_val <_u rs2_val)),
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sra]]
+==== SRA
+
+Synopsis:: Shift Right Arithmetic
+
+Mnemonic::
++
+`sra rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x5},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x20}
+]}
+....
+
+Description:: Shifts rs1 right by the amount specified in the lower 5 bits of rs2, filling with the sign bit, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SRA(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = if   sizeof(xlen) == 32
+                  then shift_right_arith32(rs1_val, rs2_val[4..0])
+                  else shift_right_arith64(rs1_val, rs2_val[5..0])
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-srl]]
+==== SRL
+
+Synopsis:: Shift Right Logical
+
+Mnemonic::
++
+`srl rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x5},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Shifts rs1 right by the amount specified in the lower 5 bits of rs2, filling with zeros, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SRL(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = if   sizeof(xlen) == 32
+                  then rs1_val >> (rs2_val[4..0])
+                  else rs1_val >> (rs2_val[5..0]),
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sub]]
+==== SUB
+
+Synopsis:: Subtract
+
+Mnemonic::
++
+`sub rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x0},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x20}
+]}
+....
+
+Description:: Subtracts rs2 from rs1, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_SUB(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = rs1_val - rs2_val,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-sw]]
+==== SW
+
+Synopsis:: Store Word
+
+Mnemonic::
++
+`sw imm[11:5], rs1, rs2, imm[4:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x23},
+{bits: 5, name: 'imm[4:0]'},
+{bits: 3, name: 0x2},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 'imm[11:5]'}
+]}
+....
+
+Description:: Stores the 32 bits from rs2 to memory at the address in rs1 plus the sign-extended 12-bit immediate
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code :: 
+
+Instruction sw sail code not found in the expected format.
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-xor]]
+==== XOR
+
+Synopsis:: Exclusive OR
+
+Mnemonic::
++
+`xor rd, rs1, rs2`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x33},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x4},
+{bits: 5, name: 'rs1'},
+{bits: 5, name: 'rs2'},
+{bits: 7, name: 0x0}
+]}
+....
+
+Description:: Performs bitwise XOR on rs1 and rs2, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|rs2 |input |Source register 2
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_XOR(rs2, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let rs2_val = X(rs2);
+  let result = rs1_val ^ rs2_val,
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
+[[instruction-xori]]
+==== XORI
+
+Synopsis:: Exclusive OR Immediate
+
+Mnemonic::
++
+`xori rd, rs1, imm[11:0]`
++
+
+Encoding::
+[wavedrom, , svg]
+....
+{reg:[
+{bits: 7, name: 0x13},
+{bits: 5, name: 'rd'},
+{bits: 3, name: 0x4},
+{bits: 5, name: 'rs1'},
+{bits: 12, name: 'imm[11:0]'}
+]}
+....
+
+Description:: Performs bitwise XOR on rs1 and the sign-extended 12-bit immediate, stores the result in rd
+
+Arguments::
+[%autowidth]
+[%header,cols="4,2,2"]
+|===
+|Register |Direction |Definition
+|rd |output |Destination register
+|rs1 |input |Source register 1
+|imm12 |input |12-bit immediate
+|===
+
+Sail Code:: 
+
+[source,sail]
+--
+function clause execute (RISCV_XORI (imm, rs1, rd)) = {
+  let rs1_val = X(rs1);
+  let immext : xlenbits = sign_extend(imm);
+  let result = rs1_val ^ immext
+  X(rd) = result;
+  RETIRE_SUCCESS
+}
+--
+
+Included in:: RV(32/64)I
+
+<<<
+
