@@ -452,6 +452,39 @@ def make_asciidoc_instructions(instr_dict):
 
     return extension_content, instruction_list
 
+
+def make_asciidoc_synopsis(instr_name):
+    """
+    Search for the synopsis of a given instruction in a file named "synopsis".
+
+    Args:
+    instr_name (str): The name of the instruction to search for
+
+    Returns:
+    str: AsciiDoc formatted string containing the synopsis of the instruction
+    """
+    asciidoc_content = 'Synopsis:: '
+
+    # Get the directory of the current script
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+
+    # Path to the synopsis file
+    synopsis_file = os.path.join(current_dir, "synopsis")
+
+    if os.path.exists(synopsis_file):
+        with open(synopsis_file, 'r') as f:
+            lines = f.readlines()
+            for line in lines:
+                parts = line.strip().split(' ', 1)
+                if len(parts) == 2 and parts[0].lower() == instr_name.lower():
+                    asciidoc_content += parts[1] + '\n\n'
+                    return asciidoc_content
+
+    # If no synopsis is found, return a default message
+    asciidoc_content += 'No synopsis available.\n\n'
+    return asciidoc_content
+
+
 def make_asciidoc_reference_table(instruction_list):
     table_content = "== Instruction Reference Table\n\n"
     table_content += "[cols=\"2,4\", options=\"header\"]\n"
@@ -464,36 +497,6 @@ def make_asciidoc_reference_table(instruction_list):
     table_content += "|===\n\n"
     return table_content
     
-def make_asciidoc_synopsis(instr_name):
-    """
-    Search for the synopsis of a given instruction in a file named "synopsis".
-
-    Args:
-    instr_name (str): The name of the instruction to search for
-
-    Returns:
-    str: AsciiDoc formatted string containing the synopsis of the instruction
-    """
-    asciidoc_content = 'Synopsis:: '
-    
-    # Get the directory of the current script
-    current_dir = os.path.dirname(os.path.realpath(__file__))
-    
-    # Path to the synopsis file
-    synopsis_file = os.path.join(current_dir, "synopsis")
-    
-    if os.path.exists(synopsis_file):
-        with open(synopsis_file, 'r') as f:
-            lines = f.readlines()
-            for line in lines:
-                parts = line.strip().split(' ', 1)
-                if len(parts) == 2 and parts[0].lower() == instr_name.lower():
-                    asciidoc_content += parts[1] + '\n\n'
-                    return asciidoc_content
-    
-    # If no synopsis is found, return a default message
-    asciidoc_content += 'No synopsis available.\n\n'
-    return asciidoc_content
 
 def make_asciidoc_encoding(instr_name, instr_data):
     '''
@@ -1497,6 +1500,170 @@ func encode(a obj.As) *inst {
     except:
         pass
 
+
+def make_yaml(instr_dict):
+    def get_yaml_long_name(instr_name):
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+        synopsis_file = os.path.join(current_dir, "synopsis")
+        
+        if os.path.exists(synopsis_file):
+            with open(synopsis_file, 'r') as f:
+                lines = f.readlines()
+                for line in lines:
+                    parts = line.strip().split(' ', 1)
+                    if len(parts) == 2 and parts[0].lower() == instr_name.lower():
+                        return parts[1]
+        
+        return 'No synopsis available.'
+
+    def get_yaml_description(instr_name):
+        current_dir = os.path.dirname(os.path.realpath(__file__))
+        desc_file = os.path.join(current_dir, "description")
+
+        if os.path.exists(desc_file):
+            with open(desc_file, 'r') as f:
+                lines = f.readlines()
+                # Skip the first line as it's the header
+                for line in lines[1:]:
+                    parts = line.strip().split(' ', 1)
+                    if len(parts) == 2 and parts[0].lower() == instr_name.lower():
+                        return parts[1]
+        
+        return 'No description available.'
+
+    def get_yaml_assembly(instr_name, instr_data):
+        var_fields = instr_data.get('variable_fields', [])
+
+        reg_args = []
+        imm_args = []
+
+        for field in var_fields:
+            mapped_field = asciidoc_mapping.get(field, field)
+            if ('imm') in field:
+                imm_args.append(mapped_field)
+            else:
+                reg_args.append(mapped_field.replace('rs', 'xs').replace('rd', 'xd'))
+
+        # Combine immediate fields
+        combined_imm = combine_imm_fields(imm_args)
+
+        # Combine all arguments, registers first then immediates
+        all_args = reg_args + (['imm'] if combined_imm else []) #substitute 'imm' with combined imm for precise imm description i.e. imm[12:0]
+
+        # Create the assembly string
+        assembly = f"{instr_name.lower()} {', '.join(all_args)}" if all_args else instr_name.lower()
+
+        return assembly
+
+    def process_extension(ext):
+        parts = ext.split('_')
+        if len(parts) == 2:
+            return [parts[1].capitalize()]
+        elif len(parts) == 3:
+            return [parts[1].capitalize(), parts[2].capitalize()]
+        else:
+            return [ext.capitalize()]  # fallback for unexpected formats
+
+    def make_yaml_encoding(instr_name, instr_data):
+        encoding = instr_data['encoding']
+        var_fields = instr_data.get('variable_fields', [])
+        
+        match = ''.join([bit if bit != '-' else '-' for bit in encoding])
+        
+        variables = []
+        for field_name in var_fields:
+            if field_name in arg_lut:
+                start_bit, end_bit = arg_lut[field_name]
+                variables.append({
+                    'name': field_name,
+                    'location': f'{end_bit}-{start_bit}'
+                })
+        
+        variables.sort(key=lambda x: int(x['location'].split('-')[0]))
+        if (variables):
+            return {
+                'match': match,
+                'variables': variables
+            }
+        else:
+            return {'match': match}
+
+    def get_yaml_definedby(instr_data):
+        defined_by = set()
+        for ext in instr_data['extension']:
+            parts = ext.split('_')
+            if len(parts) > 1:
+                # Handle cases like 'rv32_d_zicsr'
+                for part in parts[1:]:
+                    defined_by.add(part.capitalize())
+            else:
+                defined_by.add(ext.capitalize())
+        return ' '.join(sorted(defined_by))    
+
+    def get_yaml_base(instr_data):
+        for ext in instr_data['extension']:
+            if ext.startswith('rv32'):
+                return 32
+            elif ext.startswith('rv64'):
+                return 64
+        return None
+
+
+    # Group instructions by extension
+    extensions = {}
+    for instr_name, instr_data in instr_dict.items():
+        for ext in instr_data['extension']:
+            ext_letters = process_extension(ext)
+            for ext_letter in ext_letters:
+                if ext_letter not in extensions:
+                    extensions[ext_letter] = {}
+                extensions[ext_letter][instr_name] = instr_data
+
+
+
+    # Create a directory to store the YAML files
+    base_dir = 'yaml_output'
+    os.makedirs(base_dir, exist_ok=True)
+
+    # Generate and save YAML for each extension
+    for ext, ext_dict in extensions.items():
+        ext_dir = os.path.join(base_dir, ext)
+        os.makedirs(ext_dir, exist_ok=True)
+    
+        
+        for instr_name, instr_data in ext_dict.items():
+            yaml_content = {}
+            instr_name_with_periods = instr_name.replace('_', '.')
+            yaml_content[instr_name_with_periods] = {
+                'long_name': get_yaml_long_name(instr_name),
+                'description': get_yaml_description(instr_name),
+                'definedBy': get_yaml_definedby(instr_data),
+                'base': get_yaml_base(instr_data),
+                'assembly': get_yaml_assembly(instr_name, instr_data),
+                'encoding': make_yaml_encoding(instr_name, instr_data),
+                'access': {
+                            's': 'TODO',
+                            'u': 'TODO',
+                            'vs': 'TODO',
+                            'vu': 'TODO'
+                },
+                'operation()': "TODO"
+            }
+
+            if yaml_content[instr_name_with_periods]['base'] is None:
+                yaml_content[instr_name_with_periods].pop('base')
+ 
+            yaml_string = "# yaml-language-server: $schema=../../../schemas/inst_schema.json\n\n"
+            yaml_string += yaml.dump(yaml_content, default_flow_style=False, sort_keys=False)
+
+            # Write to file
+            filename = f'{instr_name_with_periods}.yaml'
+            filepath = os.path.join(ext_dir, filename)
+            with open(filepath, 'w') as outfile:
+                outfile.write(yaml_string)
+    
+    print("Summary of all extensions saved as yaml_output/extensions_summary.yaml")
+
 def signed(value, width):
   if 0 <= value < (1<<(width-1)):
     return value
@@ -1554,6 +1721,10 @@ if __name__ == "__main__":
         logging.info('instr-table.tex generated successfully')
         make_priv_latex_table()
         logging.info('priv-instr-table.tex generated successfully')
+
+    if '-yaml' in sys.argv[1: ]:
+        make_yaml(instr_dict)
+        logging.info('instr.yaml generated succesfully')
 
     if '-asciidoc' in sys.argv[1:]:
         extension_content, instruction_list = make_asciidoc_instructions(instr_dict)
