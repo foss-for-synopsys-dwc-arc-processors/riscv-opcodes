@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+sh2add:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zba
+  assembly: sh2add xd, xs1, xs2
+  encoding:
+    match: 0010000----------100-----0110011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+ctz:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zbb
+  assembly: ctz xd, xs1
+  encoding:
+    match: 011000000001-----001-----0010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

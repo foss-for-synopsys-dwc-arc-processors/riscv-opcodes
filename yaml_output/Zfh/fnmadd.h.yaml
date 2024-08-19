@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+fnmadd.h:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zfh
+  assembly: fnmadd_h xd, xs1, xs2, xs3, rm
+  encoding:
+    match: '-----10------------------1001111'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rm
+      location: 12-14
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+    - name: rs3
+      location: 27-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

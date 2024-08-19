@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+csrrsi:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zicsr
+  assembly: csrrsi xd, csr, imm
+  encoding:
+    match: '-----------------110-----1110011'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: zimm
+      location: 15-19
+    - name: csr
+      location: 20-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

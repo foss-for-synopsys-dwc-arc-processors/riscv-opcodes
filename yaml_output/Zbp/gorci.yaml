@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+gorci:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zbp
+  base: 64
+  assembly: gorci xd, xs1, shamt
+  encoding:
+    match: 001010-----------101-----0010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: shamtd
+      location: 20-25
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

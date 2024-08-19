@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+fmv.d.x:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: D
+  base: 64
+  assembly: fmv_d_x xd, xs1
+  encoding:
+    match: 111100100000-----000-----1010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

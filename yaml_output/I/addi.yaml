@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+addi:
+  long_name: Add Immediate
+  description: Adds the 12-bit sign-extended immediate to rs1 and writes the result
+    to rd. This is one of the most frequently used instructions in RISC-V, serving
+    multiple purposes. It's used for basic arithmetic with small constants, for adjusting
+    pointers (e.g., accessing structure fields or array elements), and for loading
+    small signed constants into registers. In RV64, it sign-extends the result to
+    64 bits. ADDI with a zero immediate is used to move values between registers.
+    It's also key in implementing higher-level language constructs like local variable
+    allocation on the stack.
+  definedBy: I
+  assembly: addi xd, xs1, imm
+  encoding:
+    match: '-----------------000-----0010011'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: imm12
+      location: 20-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

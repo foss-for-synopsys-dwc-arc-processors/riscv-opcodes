@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+lw.aq:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zalasr
+  assembly: lw_aq xd, xs1, rl
+  encoding:
+    match: 001101-00000-----010-----0101111
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rl
+      location: 25-25
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

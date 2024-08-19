@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+flh:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zfh
+  assembly: flh xd, xs1, imm
+  encoding:
+    match: '-----------------001-----0000111'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: imm12
+      location: 20-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

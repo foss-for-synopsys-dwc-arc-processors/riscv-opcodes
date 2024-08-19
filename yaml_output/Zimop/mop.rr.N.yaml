@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+mop.rr.N:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zimop
+  assembly: mop_rr_n mop_rr_t_30, mop_rr_t_27_26, xd, xs1, xs2
+  encoding:
+    match: 1-00--1----------100-----1110011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+    - name: mop_rr_t_27_26
+      location: 26-27
+    - name: mop_rr_t_30
+      location: 30-30
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

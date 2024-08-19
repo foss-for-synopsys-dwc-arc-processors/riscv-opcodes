@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+srli.rv32:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: I
+  base: 32
+  assembly: srli_rv32 xd, xs1, shamt
+  encoding:
+    match: 0000000----------101-----0010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: shamtw
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

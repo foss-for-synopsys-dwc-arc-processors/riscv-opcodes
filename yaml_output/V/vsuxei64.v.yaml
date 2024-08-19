@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vsuxei64.v:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: V
+  assembly: vsuxei64_v nf, vm, vs2, xs1, vs3
+  encoding:
+    match: '---001-----------111-----0100111'
+    variables:
+    - name: vs3
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: vs2
+      location: 20-24
+    - name: vm
+      location: 25-25
+    - name: nf
+      location: 29-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vsetvli:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: V
+  assembly: vsetvli xs1, xd, imm
+  encoding:
+    match: 0----------------111-----1010111
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: zimm11
+      location: 20-30
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

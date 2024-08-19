@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vbrev8.v:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zvbb Zvkn Zvks
+  assembly: vbrev8_v vm, vs2, vd
+  encoding:
+    match: 010010------01000010-----1010111
+    variables:
+    - name: vd
+      location: 7-11
+    - name: vs2
+      location: 20-24
+    - name: vm
+      location: 25-25
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

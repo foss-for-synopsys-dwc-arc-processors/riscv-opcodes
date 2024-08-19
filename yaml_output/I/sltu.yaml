@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+sltu:
+  long_name: Set if Less Than (Unsigned)
+  description: Compares rs1 and rs2 as unsigned integers. Sets rd to 1 if rs1 < rs2,
+    0 otherwise. SLTU is essential for unsigned comparisons, often used with memory
+    addresses, array indices, and other naturally unsigned values. It's particularly
+    useful in bounds checking for arrays, in implementing unsigned arithmetic operations,
+    and in certain low-level memory management tasks. SLTU can be more efficient than
+    SLT for certain types of comparisons, especially when dealing with memory addresses
+    or when the values are known to be non-negative.
+  definedBy: I
+  assembly: sltu xd, xs1, xs2
+  encoding:
+    match: 0000000----------011-----0110011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

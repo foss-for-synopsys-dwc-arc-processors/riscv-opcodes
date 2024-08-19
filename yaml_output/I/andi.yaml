@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+andi:
+  long_name: AND Immediate
+  description: Performs bitwise AND between rs1 and the sign-extended 12-bit immediate,
+    writing the result to rd. This instruction is crucial for masking operations,
+    where specific bits need to be isolated or cleared. It's commonly used in bit
+    manipulation, for example, to clear the upper bits of a value or to extract specific
+    bitfields. ANDI is also key in implementing bitwise flags and in certain optimizations
+    where only the lower bits of a value are significant. In boolean algebra, it's
+    used for logical AND operations with constants.
+  definedBy: I
+  assembly: andi xd, xs1, imm
+  encoding:
+    match: '-----------------111-----0010011'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: imm12
+      location: 20-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+add:
+  long_name: Add two values
+  description: Adds rs1 and rs2, writing the result to rd. This basic arithmetic operation
+    is fundamental in almost all computational tasks. It's used in address calculations,
+    loop counters, array indexing, and general arithmetic operations in high-level
+    languages. In more complex mathematical operations, ADD forms the basis for multi-word
+    arithmetic and can be used to implement higher-precision calculations. It's also
+    used in pointer arithmetic and in implementing certain algorithms like checksums.
+  definedBy: I
+  assembly: add xd, xs1, xs2
+  encoding:
+    match: 0000000----------000-----0110011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+amoswap.d:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: A
+  base: 64
+  assembly: amoswap_d xd, xs1, xs2, aq, rl
+  encoding:
+    match: 00001------------011-----0101111
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+    - name: rl
+      location: 25-25
+    - name: aq
+      location: 26-26
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

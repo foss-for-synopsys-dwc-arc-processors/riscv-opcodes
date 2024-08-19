@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+sspush.x5:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zicfiss
+  assembly: sspush_x5
+  encoding:
+    match: '11001110010100000100000001110011'
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+c.mop.N:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zcmop
+  assembly: c_mop_n c_mop_t
+  encoding:
+    match: '----------------01100---10000001'
+    variables:
+    - name: c_mop_t
+      location: 8-10
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

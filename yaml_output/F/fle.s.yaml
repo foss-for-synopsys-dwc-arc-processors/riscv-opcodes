@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+fle.s:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: F
+  assembly: fle_s xd, xs1, xs2
+  encoding:
+    match: 1010000----------000-----1010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

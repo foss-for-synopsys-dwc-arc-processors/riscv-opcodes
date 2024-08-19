@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+hlv.bu:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: H
+  assembly: hlv_bu xd, xs1
+  encoding:
+    match: 011000000001-----100-----1110011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

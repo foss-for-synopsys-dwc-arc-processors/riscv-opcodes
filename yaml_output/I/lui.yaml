@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+lui:
+  long_name: Load Upper Immediate
+  description: Loads a 20-bit immediate value into the upper 20 bits of the destination
+    register, setting the lower 12 bits to zero. This instruction is commonly used
+    in conjunction with an ADDI instruction to create 32-bit constants. It's particularly
+    useful for loading large constants or addresses into registers, as it allows for
+    efficient encoding of 32-bit values using two instructions. The immediate value
+    is sign-extended and shifted left by 12 bits before being placed in the destination
+    register, which means it can represent multiples of 4096 (2^12).
+  definedBy: I
+  assembly: lui xd, imm
+  encoding:
+    match: '-------------------------0110111'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: imm20
+      location: 12-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

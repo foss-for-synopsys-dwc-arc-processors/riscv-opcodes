@@ -1,0 +1,21 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+c.addw:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: C
+  base: 64
+  assembly: c_addw xs1'/xs2', xs2'
+  encoding:
+    match: '----------------100111---01---01'
+    variables:
+    - name: rs2_p
+      location: 2-4
+    - name: rd_rs1_p
+      location: 7-9
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

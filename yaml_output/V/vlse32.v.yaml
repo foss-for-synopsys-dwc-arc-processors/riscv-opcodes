@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vlse32.v:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: V
+  assembly: vlse32_v nf, vm, xs2, xs1, vd
+  encoding:
+    match: '---010-----------110-----0000111'
+    variables:
+    - name: vd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+    - name: vm
+      location: 25-25
+    - name: nf
+      location: 29-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

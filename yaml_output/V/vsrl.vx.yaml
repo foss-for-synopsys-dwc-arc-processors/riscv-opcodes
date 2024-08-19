@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vsrl.vx:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: V
+  assembly: vsrl_vx vm, vs2, xs1, vd
+  encoding:
+    match: 101000-----------100-----1010111
+    variables:
+    - name: vd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: vs2
+      location: 20-24
+    - name: vm
+      location: 25-25
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

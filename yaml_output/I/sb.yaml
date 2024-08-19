@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+sb:
+  long_name: Store Byte to memory
+  description: Stores the lowest 8 bits from rs2 to memory. The effective address
+    is obtained by adding register rs1 to the sign-extended 12-bit offset. This instruction
+    is essential for writing individual bytes to memory, which is crucial in many
+    low-level operations. It's commonly used in string manipulation, when writing
+    to byte-addressable devices, in network protocol implementations for setting individual
+    flag bits, and in general when working with packed data structures or binary file
+    formats.
+  definedBy: I
+  assembly: sb xs1, xs2, imm
+  encoding:
+    match: '-----------------000-----0100011'
+    variables:
+    - name: imm12lo
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+    - name: imm12hi
+      location: 25-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

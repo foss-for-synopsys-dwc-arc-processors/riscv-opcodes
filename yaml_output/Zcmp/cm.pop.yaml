@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+cm.pop:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zcmp
+  assembly: cm_pop c_rlist, imm
+  encoding:
+    match: '----------------10111010------10'
+    variables:
+    - name: c_spimm
+      location: 2-3
+    - name: c_rlist
+      location: 4-7
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

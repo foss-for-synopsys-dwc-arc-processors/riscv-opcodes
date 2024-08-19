@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+fsrm:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zicsr
+  assembly: fsrm xd, xs1
+  encoding:
+    match: 000000000010-----001-----1110011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

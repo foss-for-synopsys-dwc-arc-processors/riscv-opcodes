@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+rori:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zbb Zbkb Zk Zkn Zks
+  base: 64
+  assembly: rori xd, xs1, shamt
+  encoding:
+    match: 011000-----------101-----0010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: shamtd
+      location: 20-25
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

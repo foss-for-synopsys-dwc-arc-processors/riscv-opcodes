@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+ssrdp:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zicfiss
+  assembly: ssrdp xd!=0
+  encoding:
+    match: 11001101110000000100-----1110011
+    variables:
+    - name: rd_n0
+      location: 7-11
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

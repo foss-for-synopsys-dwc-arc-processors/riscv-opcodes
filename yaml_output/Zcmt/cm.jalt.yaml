@@ -1,0 +1,18 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+cm.jalt:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zcmt
+  assembly: cm_jalt c_index
+  encoding:
+    match: '----------------101000--------10'
+    variables:
+    - name: c_index
+      location: 2-9
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

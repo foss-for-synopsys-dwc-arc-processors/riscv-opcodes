@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+c.mv:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: C
+  assembly: c_mv xd!=0, xs2!=0
+  encoding:
+    match: '----------------1000----------10'
+    variables:
+    - name: c_rs2_n0
+      location: 2-6
+    - name: rd_n0
+      location: 7-11
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+scall:
+  long_name: No synopsis available.
+  description: '(Superseded by ECALL) This instruction was used in earlier versions
+    of the RISC-V specification but has been replaced by ECALL. It was originally
+    intended to generate a system call exception, similar to the current ECALL instruction.
+    For compatibility reasons, some implementations may still recognize SCALL, treating
+    it identically to ECALL. However, new code should use ECALL instead. The functionality
+    and use cases are the same as described for ECALL: primarily used for making requests
+    to the execution environment (typically an operating system), implementing system
+    calls, and facilitating transitions between privilege levels in RISC-V systems.'
+  definedBy: I
+  assembly: scall
+  encoding:
+    match: '00000000000000000000000001110011'
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

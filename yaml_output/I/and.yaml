@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+and:
+  long_name: AND two values
+  description: Performs bitwise AND between rs1 and rs2, writing the result to rd.
+    This instruction is fundamental in bitwise operations and is extensively used
+    in various low-level programming tasks. It's crucial for masking operations, where
+    specific bits need to be isolated or cleared while leaving others unchanged. AND
+    is commonly used in flag manipulation, for extracting specific bitfields from
+    larger words, and in implementing logical operations in boolean algebra. In embedded
+    systems, it's often used for clearing specific bits in control registers. AND
+    is also key in certain optimization techniques where only specific bits of a value
+    are significant, and in implementing bitwise algorithms in cryptography and hash
+    functions.
+  definedBy: I
+  assembly: and xd, xs1, xs2
+  encoding:
+    match: 0000000----------111-----0110011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

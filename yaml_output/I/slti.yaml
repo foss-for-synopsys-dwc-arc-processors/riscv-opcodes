@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+slti:
+  long_name: Set if Less Than Immediate (Signed)
+  description: Compares rs1 with the sign-extended immediate as signed integers. Sets
+    rd to 1 if rs1 < imm, 0 otherwise. This instruction is used for signed comparisons
+    with constants, which is useful in implementing conditional statements and loops
+    in high-level languages. It's particularly efficient for range checks and for
+    implementing min/max functions with compile-time known bounds. SLTI can be used
+    to create bitmasks based on the sign of a value, which is useful in certain bit
+    manipulation techniques.
+  definedBy: I
+  assembly: slti xd, xs1, imm
+  encoding:
+    match: '-----------------010-----0010011'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: imm12
+      location: 20-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

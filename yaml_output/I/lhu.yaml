@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+lhu:
+  long_name: Load unsigned Halfword from memory
+  description: Loads a 16-bit value from memory, zero-extends it to XLEN bits, and
+    writes it to rd. The effective address is obtained by adding register rs1 to the
+    sign-extended 12-bit offset. This instruction is used for loading unsigned halfword
+    (16-bit) values, ensuring that the upper bits are always zero. It's commonly used
+    when working with unsigned short types in C, or in graphics and audio processing
+    where 16-bit unsigned values are common (e.g., certain color or sample formats).
+    LHU is also useful in network protocols and file formats that use 16-bit unsigned
+    fields.
+  definedBy: I
+  assembly: lhu xd, xs1, imm
+  encoding:
+    match: '-----------------101-----0000011'
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: imm12
+      location: 20-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

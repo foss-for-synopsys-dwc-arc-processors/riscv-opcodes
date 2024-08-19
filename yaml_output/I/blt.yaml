@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+blt:
+  long_name: Branch if Less Than (Signed)
+  description: Compares two registers (rs1 and rs2) as signed integers and conditionally
+    branches if rs1 is less than rs2. If the condition is true, the program counter
+    is updated to PC + immediate, where the immediate is a signed 13-bit offset counting
+    in 2-byte units. This instruction is crucial for implementing signed comparisons
+    in loops and conditional statements. It's often used in sorting algorithms, binary
+    searches, and other comparison-based operations. BLT can be combined with BGE
+    to create equality comparisons for signed integers.
+  definedBy: I
+  assembly: blt xs1, xs2, imm
+  encoding:
+    match: '-----------------100-----1100011'
+    variables:
+    - name: bimm12lo
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+    - name: bimm12hi
+      location: 25-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

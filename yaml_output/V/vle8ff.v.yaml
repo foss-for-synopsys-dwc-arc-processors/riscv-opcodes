@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vle8ff.v:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: V
+  assembly: vle8ff_v nf, vm, xs1, vd
+  encoding:
+    match: '---000-10000-----000-----0000111'
+    variables:
+    - name: vd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: vm
+      location: 25-25
+    - name: nf
+      location: 29-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

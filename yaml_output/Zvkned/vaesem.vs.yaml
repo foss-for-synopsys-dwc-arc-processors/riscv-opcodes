@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vaesem.vs:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zvkn Zvkned
+  assembly: vaesem_vs vs2, vd
+  encoding:
+    match: 1010011-----00010010-----1110111
+    variables:
+    - name: vd
+      location: 7-11
+    - name: vs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

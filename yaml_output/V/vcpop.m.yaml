@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vcpop.m:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: V
+  assembly: vcpop_m vm, vs2, xd
+  encoding:
+    match: 010000------10000010-----1010111
+    variables:
+    - name: rd
+      location: 7-11
+    - name: vs2
+      location: 20-24
+    - name: vm
+      location: 25-25
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

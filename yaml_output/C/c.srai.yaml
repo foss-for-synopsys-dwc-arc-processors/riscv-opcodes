@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+c.srai:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: C
+  base: 64
+  assembly: c_srai xs1'/xs2', imm
+  encoding:
+    match: '----------------100-01--------01'
+    variables:
+    - name: c_nzuimm6lo
+      location: 2-6
+    - name: rd_rs1_p
+      location: 7-9
+    - name: c_nzuimm6hi
+      location: 12-12
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

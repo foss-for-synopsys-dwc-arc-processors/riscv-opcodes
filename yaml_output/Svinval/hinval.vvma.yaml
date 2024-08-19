@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+hinval.vvma:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Svinval
+  assembly: hinval_vvma xs1, xs2
+  encoding:
+    match: 0010011----------000000001110011
+    variables:
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

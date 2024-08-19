@@ -1,0 +1,31 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+bge:
+  long_name: Branch if Greater than or Equal (Signed)
+  description: Compares two registers (rs1 and rs2) as signed integers and conditionally
+    branches if rs1 is greater than or equal to rs2. If the condition is true, the
+    program counter is updated to PC + immediate, where the immediate is a signed
+    13-bit offset counting in 2-byte units. This instruction complements BLT and is
+    used in similar contexts for signed integer comparisons. It's particularly useful
+    in implementing the upper bound checks in loops and in range-checking operations.
+    BGE can be used to implement less-than-or-equal comparisons by swapping the order
+    of the operands.
+  definedBy: I
+  assembly: bge xs1, xs2, imm
+  encoding:
+    match: '-----------------101-----1100011'
+    variables:
+    - name: bimm12lo
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+    - name: bimm12hi
+      location: 25-31
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

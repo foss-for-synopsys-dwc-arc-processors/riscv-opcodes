@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+fence.tso:
+  long_name: Total Store Ordering fence
+  description: Provides Total Store Ordering (TSO) memory consistency. It ensures
+    that all stores before the FENCE.TSO instruction are globally visible before any
+    loads after the instruction are performed. This instruction is a lighter-weight
+    version of the general FENCE instruction, specifically designed for architectures
+    that support TSO memory models. FENCE.TSO is particularly useful in implementing
+    synchronization primitives and in porting code from architectures with stronger
+    memory models (like x86) to RISC-V. It provides a balance between the strict ordering
+    of FENCE and the relaxed ordering of normal memory operations, allowing for potential
+    performance optimizations while still ensuring necessary memory consistency in
+    concurrent programs.
+  definedBy: I
+  assembly: fence_tso xs1, xd
+  encoding:
+    match: 100000110011-----000-----0001111
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+c.lwsp:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: C
+  assembly: c_lwsp xd!=0, imm
+  encoding:
+    match: '----------------010-----------10'
+    variables:
+    - name: c_uimm8splo
+      location: 2-6
+    - name: rd_n0
+      location: 7-11
+    - name: c_uimm8sphi
+      location: 12-12
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

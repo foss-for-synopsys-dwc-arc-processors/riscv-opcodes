@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+cm.mva01s:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zcmp
+  assembly: cm_mva01s c_sreg1, c_sreg2
+  encoding:
+    match: '----------------101011---11---10'
+    variables:
+    - name: c_sreg2
+      location: 2-4
+    - name: c_sreg1
+      location: 7-9
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

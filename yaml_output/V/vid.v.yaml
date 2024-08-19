@@ -1,0 +1,20 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+vid.v:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: V
+  assembly: vid_v vm, vd
+  encoding:
+    match: 010100-0000010001010-----1010111
+    variables:
+    - name: vd
+      location: 7-11
+    - name: vm
+      location: 25-25
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

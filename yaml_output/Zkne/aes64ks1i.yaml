@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+aes64ks1i:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zk Zkn Zknd Zkne
+  base: 64
+  assembly: aes64ks1i xd, xs1, rnum
+  encoding:
+    match: 00110001---------001-----0010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rs1
+      location: 15-19
+    - name: rnum
+      location: 20-23
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

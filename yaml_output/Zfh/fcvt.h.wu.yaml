@@ -1,0 +1,22 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+fcvt.h.wu:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: Zfh
+  assembly: fcvt_h_wu xd, xs1, rm
+  encoding:
+    match: 110101000001-------------1010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rm
+      location: 12-14
+    - name: rs1
+      location: 15-19
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO

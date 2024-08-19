@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=../../../schemas/inst_schema.json
+
+fdiv.d:
+  long_name: No synopsis available.
+  description: No description available.
+  definedBy: D
+  assembly: fdiv_d xd, xs1, xs2, rm
+  encoding:
+    match: 0001101------------------1010011
+    variables:
+    - name: rd
+      location: 7-11
+    - name: rm
+      location: 12-14
+    - name: rs1
+      location: 15-19
+    - name: rs2
+      location: 20-24
+  access:
+    s: TODO
+    u: TODO
+    vs: TODO
+    vu: TODO
+  operation(): TODO
