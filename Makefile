@@ -7,43 +7,48 @@ INSTALL_HEADER_FILES := $(ISASIM_H) $(PK_H) $(ENV_H) $(OPENOCD_H)
 
 default: everything
 
-.PHONY : everything
+.PHONY: everything
 everything:
-	@./parse.py -c -go -chisel -sverilog -rust -latex -spinalhdl -asciidoc $(EXTENSIONS)
+	@./parse.py -c -go -chisel -sverilog -rust -latex -spinalhdl -asciidoc -yaml $(EXTENSIONS)
 
-.PHONY : encoding.out.h
+.PHONY: encoding.out.h
 encoding.out.h:
 	@./parse.py -c rv* unratified/rv_* unratified/rv32* unratified/rv64*
 
-.PHONY : inst.chisel
+.PHONY: inst.chisel
 inst.chisel:
 	@./parse.py -chisel $(EXTENSIONS)
 
-.PHONY : inst.go
+.PHONY: inst.go
 inst.go:
 	@./parse.py -go $(EXTENSIONS)
 
-.PHONY : latex
+.PHONY: latex
 latex:
 	@./parse.py -latex $(EXTENSIONS)
 
-.PHONY : inst.sverilog
+.PHONY: inst.sverilog
 inst.sverilog:
 	@./parse.py -sverilog $(EXTENSIONS)
 
-.PHONY : inst.rs
+.PHONY: inst.rs
 inst.rs:
 	@./parse.py -rust $(EXTENSIONS)
 
-.PHONY : instr-encoding.adoc
+.PHONY: instr-encoding.adoc
 instr-encoding.adoc:
 	@./parse.py -asciidoc $(EXTENSIONS)
 
-.PHONY : clean
+.PHONY: yaml
+yaml:
+	@./parse.py -yaml $(EXTENSIONS)
+
+.PHONY: clean
 clean:
 	rm -f inst* priv-instr-table.tex encoding.out.h instr-encoding.adoc
+	rm -rf yaml_output
 
-.PHONY : install
+.PHONY: install
 install: everything
 	set -e; for FILE in $(INSTALL_HEADER_FILES); do cp -f encoding.out.h $$FILE; done
 

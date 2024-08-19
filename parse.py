@@ -1675,7 +1675,7 @@ if __name__ == "__main__":
     print(f'Running with args : {sys.argv}')
 
     extensions = sys.argv[1:]
-    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl','-asciidoc']:
+    for i in ['-c','-latex','-chisel','-sverilog','-rust', '-go', '-spinalhdl','-asciidoc', '-yaml']:
         if i in extensions:
             extensions.remove(i)
     print(f'Extensions selected : {extensions}')
