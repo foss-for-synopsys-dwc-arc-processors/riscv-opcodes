@@ -1619,14 +1619,19 @@ def make_yaml(instr_dict):
 
     # Group instructions by extension
     extensions = {}
+    rv32_instructions = {}
     for instr_name, instr_data in instr_dict.items():
-        for ext in instr_data['extension']:
-            ext_letters = process_extension(ext)
-            for ext_letter in ext_letters:
-                if ext_letter not in extensions:
-                    extensions[ext_letter] = {}
-                extensions[ext_letter][instr_name] = instr_data
-
+        if instr_name.endswith('_rv32'):
+            base_name = instr_name[:-5]
+            rv32_instructions[base_name] = instr_name
+        else:
+            for ext in instr_data['extension']:
+                ext_letters = process_extension(ext)
+                for ext_letter in ext_letters:
+                    if ext_letter not in extensions:
+                        extensions[ext_letter] = {}
+                    extensions[ext_letter][instr_name] = instr_data
+    print (rv32_instructions)
 
 
     # Create a directory to store the YAML files
@@ -1658,7 +1663,16 @@ def make_yaml(instr_dict):
                 'operation': None
             }
 
-            if yaml_content[instr_name_with_periods]['base'] is None:
+            # Handle encoding for RV32 and RV64 versions
+            if instr_name in rv32_instructions:
+                yaml_content[instr_name_with_periods]['encoding'] = {
+                    'RV32': make_yaml_encoding(rv32_instructions[instr_name], instr_dict[rv32_instructions[instr_name]]),
+                    'RV64': make_yaml_encoding(instr_name, instr_data)
+                }
+            else:
+                yaml_content[instr_name_with_periods]['encoding'] = make_yaml_encoding(instr_name, instr_data)
+
+            if yaml_content[instr_name_with_periods]['base'] is None or (instr_name in rv32_instructions):
                 yaml_content[instr_name_with_periods].pop('base')
 
 
@@ -1667,7 +1681,7 @@ def make_yaml(instr_dict):
             yaml_string += yaml.dump(yaml_content, default_flow_style=False, sort_keys=False)
             yaml_string = yaml_string.replace("'[", "[").replace("]'","]").replace("'-","-").replace("0'","0").replace("1'","1").replace("-'","-")
             yaml_string = re.sub(r'description: (.+)', lambda m: f'description: |\n      {m.group(1)}', yaml_string)
-            yaml_string = re.sub(r'operation: (.+)', lambda m: f'operation(): |\n      {" "}', yaml_string)
+            yaml_string = re.sub(r'operation: (.+)', lambda m: f'operation(): |\n      {""}', yaml_string)
 
 
 
