@@ -13,6 +13,8 @@ import sys
 pp = pprint.PrettyPrinter(indent=2)
 logging.basicConfig(level=logging.INFO, format='%(levelname)s:: %(message)s')
 
+
+
 def process_enc_line(line, ext):
     '''
     This function processes each line of the encoding files (rv*). As part of
@@ -1529,7 +1531,8 @@ def make_yaml(instr_dict):
                     if len(parts) == 2 and parts[0].lower() == instr_name.lower():
                         return parts[1]
         
-        return 'No description available.'
+        return "No description available."
+        
 
     def get_yaml_assembly(instr_name, instr_data):
         var_fields = instr_data.get('variable_fields', [])
@@ -1551,7 +1554,7 @@ def make_yaml(instr_dict):
         all_args = reg_args + (['imm'] if combined_imm else []) #substitute 'imm' with combined imm for precise imm description i.e. imm[12:0]
 
         # Create the assembly string
-        assembly = f"{instr_name.lower()} {', '.join(all_args)}" if all_args else instr_name.lower()
+        assembly = f"{', '.join(all_args)}" if all_args else instr_name.lower()
 
         return assembly
 
@@ -1576,18 +1579,20 @@ def make_yaml(instr_dict):
                 start_bit, end_bit = arg_lut[field_name]
                 variables.append({
                     'name': field_name,
-                    'location': f'{end_bit}-{start_bit}'
+                    'location': f'{start_bit}-{end_bit}'  # Reversed order here
                 })
         
-        variables.sort(key=lambda x: int(x['location'].split('-')[0]))
-        if (variables):
+        # Sort variables in descending order based on the start of the bit range
+        variables.sort(key=lambda x: int(x['location'].split('-')[0]), reverse=True)
+        
+        if variables:
             return {
                 'match': match,
                 'variables': variables
             }
         else:
             return {'match': match}
-
+        
     def get_yaml_definedby(instr_data):
         defined_by = set()
         for ext in instr_data['extension']:
@@ -1598,7 +1603,10 @@ def make_yaml(instr_dict):
                     defined_by.add(part.capitalize())
             else:
                 defined_by.add(ext.capitalize())
-        return ' '.join(sorted(defined_by))    
+        
+        return f"[{', '.join(sorted(defined_by))}]"
+
+
 
     def get_yaml_base(instr_data):
         for ext in instr_data['extension']:
@@ -1642,19 +1650,26 @@ def make_yaml(instr_dict):
                 'assembly': get_yaml_assembly(instr_name, instr_data),
                 'encoding': make_yaml_encoding(instr_name, instr_data),
                 'access': {
-                            's': 'TODO',
-                            'u': 'TODO',
-                            'vs': 'TODO',
-                            'vu': 'TODO'
+                            's': '',
+                            'u': '',
+                            'vs': '',
+                            'vu': ''
                 },
-                'operation()': "TODO"
+                'operation': None
             }
 
             if yaml_content[instr_name_with_periods]['base'] is None:
                 yaml_content[instr_name_with_periods].pop('base')
- 
+
+
+        
             yaml_string = "# yaml-language-server: $schema=../../../schemas/inst_schema.json\n\n"
             yaml_string += yaml.dump(yaml_content, default_flow_style=False, sort_keys=False)
+            yaml_string = yaml_string.replace("'[", "[").replace("]'","]").replace("'-","-").replace("0'","0").replace("1'","1").replace("-'","-")
+            yaml_string = re.sub(r'description: (.+)', lambda m: f'description: |\n      {m.group(1)}', yaml_string)
+            yaml_string = re.sub(r'operation: (.+)', lambda m: f'operation(): |\n      {" "}', yaml_string)
+
+
 
             # Write to file
             filename = f'{instr_name_with_periods}.yaml'
@@ -1663,6 +1678,7 @@ def make_yaml(instr_dict):
                 outfile.write(yaml_string)
     
     print("Summary of all extensions saved as yaml_output/extensions_summary.yaml")
+
 
 def signed(value, width):
   if 0 <= value < (1<<(width-1)):
