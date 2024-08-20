@@ -2,7 +2,8 @@
 
 ecall:
   long_name: Environment call
-  description: Generates an environment call exception, used to make a request to
+  description: |
+      Generates an environment call exception, used to make a request to
     the execution environment (typically an operating system). This instruction is
     fundamental in implementing system calls, which are the primary mechanism for
     user-level programs to request services from the operating system. When an ECALL
@@ -11,13 +12,14 @@ ecall:
     ECALL is crucial in implementing features like file I/O, process management, and
     other operating system services. In bare-metal environments, it can be used to
     implement custom exception handling or to switch between different modes of operation.
-  definedBy: I
+  definedBy: [I]
   assembly: ecall
   encoding:
-    match: '00000000000000000000000001110011'
+    match: '00000000000000000000000001110011
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,27 +2,29 @@
 
 sltiu:
   long_name: Set if Less Than Immediate (Unsigned)
-  description: Compares rs1 with the sign-extended immediate as unsigned integers.
+  description: |
+      Compares rs1 with the sign-extended immediate as unsigned integers.
     Sets rd to 1 if rs1 < imm, 0 otherwise. Despite the immediate being sign-extended,
     the comparison is unsigned. This instruction is crucial for unsigned comparisons
     with constants, often used in array bounds checking, pointer comparisons, and
     implementing unsigned arithmetic operations. It's also useful in creating bitmasks
     for unsigned values and in certain bitwise manipulation techniques. SLTIU with
     a zero immediate can be used to efficiently check if a register is zero.
-  definedBy: I
-  assembly: sltiu xd, xs1, imm
+  definedBy: [I]
+  assembly: xd, xs1, imm
   encoding:
-    match: '-----------------011-----0010011'
+    match: -----------------011-----0010011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: imm12
-      location: 20-31
+      location: 31-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

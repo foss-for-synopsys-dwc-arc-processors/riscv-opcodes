@@ -2,19 +2,21 @@
 
 c.fsdsp:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C D
-  assembly: c_fsdsp xs2, imm
+  description: |
+      No description available.
+  definedBy: [C, D]
+  assembly: xs2, imm
   encoding:
-    match: '----------------101-----------10'
+    match: ----------------101-----------10
     variables:
-    - name: c_rs2
-      location: 2-6
     - name: c_uimm9sp_s
-      location: 7-12
+      location: 12-7
+    - name: c_rs2
+      location: 6-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

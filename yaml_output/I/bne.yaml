@@ -2,7 +2,8 @@
 
 bne:
   long_name: Branch if Not Equal
-  description: "Compares two registers (rs1 and rs2) and conditionally branches if\
+  description: |
+      "Compares two registers (rs1 and rs2) and conditionally branches if\
     \ they are not equal. If the condition is true, the program counter is updated\
     \ to PC + immediate, where the immediate is a signed 13-bit offset counting in\
     \ 2-byte units. This allows for branches within a \xB14 KiB range. BNE is widely\
@@ -10,22 +11,23 @@ bne:
     \ also used in conditional statements and in implementing more complex control\
     \ flow structures. In combination with BEQ, it forms the basis for most conditional\
     \ branching in RISC-V assembly."
-  definedBy: I
-  assembly: bne xs1, xs2, imm
+  definedBy: [I]
+  assembly: xs1, xs2, imm
   encoding:
-    match: '-----------------001-----1100011'
+    match: -----------------001-----1100011
     variables:
-    - name: bimm12lo
-      location: 7-11
-    - name: rs1
-      location: 15-19
-    - name: rs2
-      location: 20-24
     - name: bimm12hi
-      location: 25-31
+      location: 31-25
+    - name: rs2
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: bimm12lo
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

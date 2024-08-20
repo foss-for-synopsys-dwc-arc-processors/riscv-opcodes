@@ -2,23 +2,25 @@
 
 vmsgtu.vi:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: V
-  assembly: vmsgtu_vi vm, vs2, vd, imm
+  description: |
+      No description available.
+  definedBy: [V]
+  assembly: vm, vs2, vd, imm
   encoding:
     match: 011110-----------011-----1010111
     variables:
-    - name: vd
-      location: 7-11
-    - name: simm5
-      location: 15-19
-    - name: vs2
-      location: 20-24
     - name: vm
       location: 25-25
+    - name: vs2
+      location: 24-20
+    - name: simm5
+      location: 19-15
+    - name: vd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

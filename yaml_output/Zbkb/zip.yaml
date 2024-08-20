@@ -2,20 +2,22 @@
 
 zip:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zbkb Zk Zkn Zks
+  description: |
+      No description available.
+  definedBy: [Zbkb, Zk, Zkn, Zks]
   base: 32
-  assembly: zip xd, xs1
+  assembly: xd, xs1
   encoding:
     match: 000010001111-----001-----0010011
     variables:
-    - name: rd
-      location: 7-11
     - name: rs1
-      location: 15-19
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

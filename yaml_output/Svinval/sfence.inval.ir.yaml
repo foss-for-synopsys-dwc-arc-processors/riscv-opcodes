@@ -2,14 +2,16 @@
 
 sfence.inval.ir:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Svinval
+  description: |
+      No description available.
+  definedBy: [Svinval]
   assembly: sfence_inval_ir
   encoding:
-    match: '00011000000100000000000001110011'
+    match: '00011000000100000000000001110011
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

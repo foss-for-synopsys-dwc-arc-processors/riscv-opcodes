@@ -2,26 +2,28 @@
 
 ori:
   long_name: OR Immediate
-  description: Performs bitwise OR between rs1 and the sign-extended 12-bit immediate,
+  description: |
+      Performs bitwise OR between rs1 and the sign-extended 12-bit immediate,
     writing the result to rd. ORI is essential for setting specific bits in a register
     while leaving others unchanged. It's often used in flag manipulation, for example,
     in setting option bits in configuration words. In boolean algebra implementations,
     ORI is used for logical OR operations with constants. It's also useful in creating
     bitmasks and in certain bitfield manipulation techniques.
-  definedBy: I
-  assembly: ori xd, xs1, imm
+  definedBy: [I]
+  assembly: xd, xs1, imm
   encoding:
-    match: '-----------------110-----0010011'
+    match: -----------------110-----0010011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: imm12
-      location: 20-31
+      location: 31-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

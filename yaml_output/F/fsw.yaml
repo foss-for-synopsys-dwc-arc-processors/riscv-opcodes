@@ -2,23 +2,25 @@
 
 fsw:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: F
-  assembly: fsw xs1, xs2, imm
+  description: |
+      No description available.
+  definedBy: [F]
+  assembly: xs1, xs2, imm
   encoding:
-    match: '-----------------010-----0100111'
+    match: -----------------010-----0100111
     variables:
-    - name: imm12lo
-      location: 7-11
-    - name: rs1
-      location: 15-19
-    - name: rs2
-      location: 20-24
     - name: imm12hi
-      location: 25-31
+      location: 31-25
+    - name: rs2
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: imm12lo
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

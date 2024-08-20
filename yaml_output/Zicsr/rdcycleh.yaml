@@ -2,17 +2,19 @@
 
 rdcycleh:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zicsr
-  assembly: rdcycleh xd
+  description: |
+      No description available.
+  definedBy: [Zicsr]
+  assembly: xd
   encoding:
     match: 11001000000000000010-----1110011
     variables:
     - name: rd
-      location: 7-11
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

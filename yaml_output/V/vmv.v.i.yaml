@@ -2,19 +2,21 @@
 
 vmv.v.i:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: V
-  assembly: vmv_v_i vd, imm
+  description: |
+      No description available.
+  definedBy: [V]
+  assembly: vd, imm
   encoding:
     match: 010111100000-----011-----1010111
     variables:
-    - name: vd
-      location: 7-11
     - name: simm5
-      location: 15-19
+      location: 19-15
+    - name: vd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

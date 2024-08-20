@@ -2,19 +2,21 @@
 
 c.mv:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
-  assembly: c_mv xd!=0, xs2!=0
+  description: |
+      No description available.
+  definedBy: [C]
+  assembly: xd!=0, xs2!=0
   encoding:
-    match: '----------------1000----------10'
+    match: ----------------1000----------10
     variables:
-    - name: c_rs2_n0
-      location: 2-6
     - name: rd_n0
-      location: 7-11
+      location: 11-7
+    - name: c_rs2_n0
+      location: 6-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

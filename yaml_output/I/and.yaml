@@ -2,7 +2,8 @@
 
 and:
   long_name: AND two values
-  description: Performs bitwise AND between rs1 and rs2, writing the result to rd.
+  description: |
+      Performs bitwise AND between rs1 and rs2, writing the result to rd.
     This instruction is fundamental in bitwise operations and is extensively used
     in various low-level programming tasks. It's crucial for masking operations, where
     specific bits need to be isolated or cleared while leaving others unchanged. AND
@@ -12,20 +13,21 @@ and:
     is also key in certain optimization techniques where only specific bits of a value
     are significant, and in implementing bitwise algorithms in cryptography and hash
     functions.
-  definedBy: I
-  assembly: and xd, xs1, xs2
+  definedBy: [I]
+  assembly: xd, xs1, xs2
   encoding:
     match: 0000000----------111-----0110011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: rs2
-      location: 20-24
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

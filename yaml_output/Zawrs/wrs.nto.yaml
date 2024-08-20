@@ -2,14 +2,16 @@
 
 wrs.nto:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zawrs
+  description: |
+      No description available.
+  definedBy: [Zawrs]
   assembly: wrs_nto
   encoding:
-    match: '00000000110100000000000001110011'
+    match: '00000000110100000000000001110011
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

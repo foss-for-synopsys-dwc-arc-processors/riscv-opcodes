@@ -2,14 +2,16 @@
 
 c.sspush.x1:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C Zicfiss
+  description: |
+      No description available.
+  definedBy: [C, Zicfiss]
   assembly: c_sspush_x1
   encoding:
-    match: '----------------0110000010000001'
+    match: ----------------0110000010000001
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

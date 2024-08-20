@@ -2,14 +2,16 @@
 
 pause:
   long_name: Pause instruction for power management
-  description: No description available.
-  definedBy: I
+  description: |
+      No description available.
+  definedBy: [I]
   assembly: pause
   encoding:
-    match: '00000001000000000000000000001111'
+    match: '00000001000000000000000000001111
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

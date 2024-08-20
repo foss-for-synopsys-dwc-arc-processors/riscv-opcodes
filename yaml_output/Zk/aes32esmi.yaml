@@ -2,24 +2,26 @@
 
 aes32esmi:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zk Zkn Zkne
+  description: |
+      No description available.
+  definedBy: [Zk, Zkn, Zkne]
   base: 32
-  assembly: aes32esmi xd, xs1, xs2, bs
+  assembly: xd, xs1, xs2, bs
   encoding:
     match: --10011----------000-----0110011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
-    - name: rs2
-      location: 20-24
     - name: bs
-      location: 30-31
+      location: 31-30
+    - name: rs2
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

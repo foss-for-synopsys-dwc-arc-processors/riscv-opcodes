@@ -2,21 +2,23 @@
 
 csrrci:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zicsr
-  assembly: csrrci xd, csr, imm
+  description: |
+      No description available.
+  definedBy: [Zicsr]
+  assembly: xd, csr, imm
   encoding:
-    match: '-----------------111-----1110011'
+    match: -----------------111-----1110011
     variables:
-    - name: rd
-      location: 7-11
-    - name: zimm
-      location: 15-19
     - name: csr
-      location: 20-31
+      location: 31-20
+    - name: zimm
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

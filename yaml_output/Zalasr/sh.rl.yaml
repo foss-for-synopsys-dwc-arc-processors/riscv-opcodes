@@ -2,21 +2,23 @@
 
 sh.rl:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zalasr
-  assembly: sh_rl xs1, xs2, aq
+  description: |
+      No description available.
+  definedBy: [Zalasr]
+  assembly: xs1, xs2, aq
   encoding:
     match: 00111-1----------001000000101111
     variables:
-    - name: rs1
-      location: 15-19
-    - name: rs2
-      location: 20-24
     - name: aq
       location: 26-26
+    - name: rs2
+      location: 24-20
+    - name: rs1
+      location: 19-15
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

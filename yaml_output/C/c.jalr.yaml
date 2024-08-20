@@ -2,17 +2,19 @@
 
 c.jalr:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
-  assembly: c_jalr xs1!=0
+  description: |
+      No description available.
+  definedBy: [C]
+  assembly: xs1!=0
   encoding:
-    match: '----------------1001-----0000010'
+    match: ----------------1001-----0000010
     variables:
     - name: c_rs1_n0
-      location: 7-11
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

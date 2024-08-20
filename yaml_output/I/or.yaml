@@ -2,7 +2,8 @@
 
 or:
   long_name: OR two values
-  description: Performs bitwise OR between rs1 and rs2, writing the result to rd.
+  description: |
+      Performs bitwise OR between rs1 and rs2, writing the result to rd.
     This instruction is essential in bitwise operations and is widely used in various
     programming tasks. OR is primarily used for setting specific bits in a register
     while leaving others unchanged. It's commonly employed in flag manipulation, for
@@ -11,20 +12,21 @@ or:
     useful in creating bitmasks, in certain bitfield manipulation techniques, and
     in implementing simple data merging operations. In graphics programming, OR can
     be used for combining multiple layers or applying certain effects.
-  definedBy: I
-  assembly: or xd, xs1, xs2
+  definedBy: [I]
+  assembly: xd, xs1, xs2
   encoding:
     match: 0000000----------110-----0110011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: rs2
-      location: 20-24
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

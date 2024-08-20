@@ -2,21 +2,23 @@
 
 vpopc.m:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Aliases V
-  assembly: vpopc_m vm, vs2, xd
+  description: |
+      No description available.
+  definedBy: [Aliases, V]
+  assembly: vm, vs2, xd
   encoding:
     match: 010000------10000010-----1010111
     variables:
-    - name: rd
-      location: 7-11
-    - name: vs2
-      location: 20-24
     - name: vm
       location: 25-25
+    - name: vs2
+      location: 24-20
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

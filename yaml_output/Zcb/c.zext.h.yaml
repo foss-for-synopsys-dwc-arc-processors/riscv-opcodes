@@ -2,17 +2,19 @@
 
 c.zext.h:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zcb
-  assembly: c_zext_h xs1'/xs2'
+  description: |
+      No description available.
+  definedBy: [Zcb]
+  assembly: xs1/xs2'
   encoding:
-    match: '----------------100111---1101001'
+    match: ----------------100111---1101001
     variables:
     - name: rd_rs1_p
-      location: 7-9
+      location: 9-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

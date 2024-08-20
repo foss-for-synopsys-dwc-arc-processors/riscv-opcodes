@@ -2,19 +2,21 @@
 
 mop.r.20:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zimop
-  assembly: mop_r_20 xd, xs1
+  description: |
+      No description available.
+  definedBy: [Zimop]
+  assembly: xd, xs1
   encoding:
     match: 110001011100-----100-----1110011
     variables:
-    - name: rd
-      location: 7-11
     - name: rs1
-      location: 15-19
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

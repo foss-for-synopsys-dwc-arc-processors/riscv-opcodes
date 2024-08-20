@@ -2,14 +2,16 @@
 
 sspopchk.x5:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zicfiss
+  description: |
+      No description available.
+  definedBy: [Zicfiss]
   assembly: sspopchk_x5
   encoding:
-    match: '11001101110000101100000001110011'
+    match: '11001101110000101100000001110011
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

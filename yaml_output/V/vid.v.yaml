@@ -2,19 +2,21 @@
 
 vid.v:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: V
-  assembly: vid_v vm, vd
+  description: |
+      No description available.
+  definedBy: [V]
+  assembly: vm, vd
   encoding:
     match: 010100-0000010001010-----1010111
     variables:
-    - name: vd
-      location: 7-11
     - name: vm
       location: 25-25
+    - name: vd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

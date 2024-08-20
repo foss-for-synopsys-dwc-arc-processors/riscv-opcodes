@@ -2,19 +2,21 @@
 
 vmv.x.s:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: V
-  assembly: vmv_x_s vs2, xd
+  description: |
+      No description available.
+  definedBy: [V]
+  assembly: vs2, xd
   encoding:
     match: 0100001-----00000010-----1010111
     variables:
-    - name: rd
-      location: 7-11
     - name: vs2
-      location: 20-24
+      location: 24-20
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

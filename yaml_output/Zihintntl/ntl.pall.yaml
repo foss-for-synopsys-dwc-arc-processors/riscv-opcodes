@@ -2,14 +2,16 @@
 
 ntl.pall:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zihintntl
+  description: |
+      No description available.
+  definedBy: [Zihintntl]
   assembly: ntl_pall
   encoding:
-    match: '00000000001100000000000000110011'
+    match: '00000000001100000000000000110011
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

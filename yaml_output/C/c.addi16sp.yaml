@@ -2,19 +2,21 @@
 
 c.addi16sp:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
-  assembly: c_addi16sp imm
+  description: |
+      No description available.
+  definedBy: [C]
+  assembly: imm
   encoding:
-    match: '----------------011-00010-----01'
+    match: ----------------011-00010-----01
     variables:
-    - name: c_nzimm10lo
-      location: 2-6
     - name: c_nzimm10hi
       location: 12-12
+    - name: c_nzimm10lo
+      location: 6-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

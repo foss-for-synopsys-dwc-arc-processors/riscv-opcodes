@@ -2,27 +2,29 @@
 
 slt:
   long_name: Set if Less Than (Signed)
-  description: Compares rs1 and rs2 as signed integers. Sets rd to 1 if rs1 < rs2,
+  description: |
+      Compares rs1 and rs2 as signed integers. Sets rd to 1 if rs1 < rs2,
     0 otherwise. This instruction is fundamental for implementing signed comparisons
     in more complex conditional structures. It's often used in sorting algorithms,
     in implementing min/max functions, and in various decision-making processes in
     programs. SLT can be used to create branching conditions for other instructions,
     allowing for more complex control flow. It's also useful in implementing certain
     mathematical functions that depend on the relative ordering of values.
-  definedBy: I
-  assembly: slt xd, xs1, xs2
+  definedBy: [I]
+  assembly: xd, xs1, xs2
   encoding:
     match: 0000000----------010-----0110011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: rs2
-      location: 20-24
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

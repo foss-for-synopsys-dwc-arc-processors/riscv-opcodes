@@ -2,27 +2,29 @@
 
 lb:
   long_name: Load signed Byte from memory
-  description: Loads an 8-bit value from memory, sign-extends it to XLEN bits (32
+  description: |
+      Loads an 8-bit value from memory, sign-extends it to XLEN bits (32
     bits in RV32, 64 bits in RV64), and writes it to rd. The effective address is
     obtained by adding register rs1 to the sign-extended 12-bit offset. This instruction
     is crucial for accessing individual bytes in memory, such as when working with
     character data or packed data structures. The sign-extension allows for proper
     handling of signed 8-bit values in larger integer contexts. LB is often used in
     string processing, parsing binary data, and accessing byte-addressable devices.
-  definedBy: I
-  assembly: lb xd, xs1, imm
+  definedBy: [I]
+  assembly: xd, xs1, imm
   encoding:
-    match: '-----------------000-----0000011'
+    match: -----------------000-----0000011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: imm12
-      location: 20-31
+      location: 31-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

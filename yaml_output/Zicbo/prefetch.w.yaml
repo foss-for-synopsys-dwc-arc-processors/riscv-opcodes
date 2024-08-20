@@ -2,19 +2,21 @@
 
 prefetch.w:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zicbo
-  assembly: prefetch_w xs1, imm
+  description: |
+      No description available.
+  definedBy: [Zicbo]
+  assembly: xs1, imm
   encoding:
-    match: '-------00011-----110000000010011'
+    match: -------00011-----110000000010011
     variables:
-    - name: rs1
-      location: 15-19
     - name: imm12hi
-      location: 25-31
+      location: 31-25
+    - name: rs1
+      location: 19-15
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

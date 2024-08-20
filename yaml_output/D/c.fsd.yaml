@@ -2,23 +2,25 @@
 
 c.fsd:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C D
-  assembly: c_fsd xs1', xs2', imm
+  description: |
+      No description available.
+  definedBy: [C, D]
+  assembly: xs1, xs2', imm
   encoding:
-    match: '----------------101-----------00'
+    match: ----------------101-----------00
     variables:
-    - name: rs2_p
-      location: 2-4
-    - name: c_uimm8lo
-      location: 5-6
-    - name: rs1_p
-      location: 7-9
     - name: c_uimm8hi
-      location: 10-12
+      location: 12-10
+    - name: rs1_p
+      location: 9-7
+    - name: c_uimm8lo
+      location: 6-5
+    - name: rs2_p
+      location: 4-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

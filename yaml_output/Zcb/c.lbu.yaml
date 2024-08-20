@@ -2,21 +2,23 @@
 
 c.lbu:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zcb
-  assembly: c_lbu xd', xs1', imm
+  description: |
+      No description available.
+  definedBy: [Zcb]
+  assembly: xd', xs1, imm
   encoding:
-    match: '----------------100000--------00'
+    match: ----------------100000--------00
     variables:
-    - name: rd_p
-      location: 2-4
-    - name: c_uimm2
-      location: 5-6
     - name: rs1_p
-      location: 7-9
+      location: 9-7
+    - name: c_uimm2
+      location: 6-5
+    - name: rd_p
+      location: 4-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

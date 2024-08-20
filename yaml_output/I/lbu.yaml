@@ -2,7 +2,8 @@
 
 lbu:
   long_name: Load unsigned Byte from memory
-  description: Loads an 8-bit value from memory, zero-extends it to XLEN bits, and
+  description: |
+      Loads an 8-bit value from memory, zero-extends it to XLEN bits, and
     writes it to rd. The effective address is obtained by adding register rs1 to the
     sign-extended 12-bit offset. This instruction is used for loading unsigned byte
     values, ensuring that the upper bits are always zero. It's particularly useful
@@ -10,20 +11,21 @@ lbu:
     the high bits should not be interpreted as a sign. LBU is often used in network
     protocol implementations, file I/O operations, and when working with binary file
     formats.
-  definedBy: I
-  assembly: lbu xd, xs1, imm
+  definedBy: [I]
+  assembly: xd, xs1, imm
   encoding:
-    match: '-----------------100-----0000011'
+    match: -----------------100-----0000011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: imm12
-      location: 20-31
+      location: 31-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

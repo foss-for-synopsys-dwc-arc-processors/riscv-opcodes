@@ -2,23 +2,25 @@
 
 vfadd.vv:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: V
-  assembly: vfadd_vv vm, vs2, vs1, vd
+  description: |
+      No description available.
+  definedBy: [V]
+  assembly: vm, vs2, vs1, vd
   encoding:
     match: 000000-----------001-----1010111
     variables:
-    - name: vd
-      location: 7-11
-    - name: vs1
-      location: 15-19
-    - name: vs2
-      location: 20-24
     - name: vm
       location: 25-25
+    - name: vs2
+      location: 24-20
+    - name: vs1
+      location: 19-15
+    - name: vd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

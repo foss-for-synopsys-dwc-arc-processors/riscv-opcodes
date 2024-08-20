@@ -2,21 +2,23 @@
 
 c.sh:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zcb
-  assembly: c_sh xs2', xs1', imm
+  description: |
+      No description available.
+  definedBy: [Zcb]
+  assembly: xs2', xs1, imm
   encoding:
-    match: '----------------100011---0----00'
+    match: ----------------100011---0----00
     variables:
-    - name: rs2_p
-      location: 2-4
+    - name: rs1_p
+      location: 9-7
     - name: c_uimm1
       location: 5-5
-    - name: rs1_p
-      location: 7-9
+    - name: rs2_p
+      location: 4-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

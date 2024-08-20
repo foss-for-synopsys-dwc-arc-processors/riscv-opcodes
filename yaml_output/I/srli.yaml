@@ -2,22 +2,33 @@
 
 srli:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: I
-  base: 64
-  assembly: srli xd, xs1, shamt
+  description: |
+      No description available.
+  definedBy: [I]
+  assembly: xd, xs1, shamt
   encoding:
-    match: 000000-----------101-----0010011
-    variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
-    - name: shamtd
-      location: 20-25
+    RV32:
+      match: 0000000----------101-----0010011
+      variables:
+      - name: shamtw
+        location: 24-20
+      - name: rs1
+        location: 19-15
+      - name: rd
+        location: 11-7
+    RV64:
+      match: 000000-----------101-----0010011
+      variables:
+      - name: shamtd
+        location: 25-20
+      - name: rs1
+        location: 19-15
+      - name: rd
+        location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,7 +2,8 @@
 
 auipc:
   long_name: Add Upper Immediate to PC
-  description: "Adds a 20-bit immediate value (shifted left by 12 bits) to the current\
+  description: |
+      "Adds a 20-bit immediate value (shifted left by 12 bits) to the current\
     \ PC (Program Counter), storing the full 32-bit result in the destination register.\
     \ This instruction is particularly useful for PC-relative addressing, especially\
     \ when used in conjunction with JALR for implementing large PC-relative offsets.\
@@ -10,18 +11,19 @@ auipc:
     \ for position-independent code. The immediate value is sign-extended and shifted\
     \ left by 12 bits before being added to the PC, allowing for a range of \xB12\
     \ GiB around the current PC."
-  definedBy: I
-  assembly: auipc xd, imm
+  definedBy: [I]
+  assembly: xd, imm
   encoding:
-    match: '-------------------------0010111'
+    match: -------------------------0010111
     variables:
-    - name: rd
-      location: 7-11
     - name: imm20
-      location: 12-31
+      location: 31-12
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

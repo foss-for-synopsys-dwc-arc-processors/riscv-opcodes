@@ -2,14 +2,16 @@
 
 c.mop.13:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zcmop
+  description: |
+      No description available.
+  definedBy: [Zcmop]
   assembly: c_mop_13
   encoding:
-    match: '----------------0110011010000001'
+    match: ----------------0110011010000001
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

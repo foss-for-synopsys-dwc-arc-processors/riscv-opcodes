@@ -2,14 +2,16 @@
 
 c.ntl.pall:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C Zihintntl
+  description: |
+      No description available.
+  definedBy: [C, Zihintntl]
   assembly: c_ntl_pall
   encoding:
-    match: '----------------1001000000001110'
+    match: ----------------1001000000001110
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

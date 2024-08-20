@@ -2,7 +2,8 @@
 
 jalr:
   long_name: Jump and Link to computed target, storing return address
-  description: Jumps to an address computed from a base register (rs1) and a 12-bit
+  description: |
+      Jumps to an address computed from a base register (rs1) and a 12-bit
     immediate offset, saving the address of the next instruction (PC+4) in the destination
     register (usually x1/ra). This instruction is more flexible than JAL as it allows
     for computed jumps and can be used for returns, indirect calls, and implementing
@@ -10,20 +11,21 @@ jalr:
     12-bit immediate, with the least significant bit set to zero. This instruction
     is crucial for implementing function returns and for calling functions through
     function pointers.
-  definedBy: I
-  assembly: jalr xd, xs1, imm
+  definedBy: [I]
+  assembly: xd, xs1, imm
   encoding:
-    match: '-----------------000-----1100111'
+    match: -----------------000-----1100111
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: imm12
-      location: 20-31
+      location: 31-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,19 +2,21 @@
 
 c.addi4spn:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
-  assembly: c_addi4spn xd', imm
+  description: |
+      No description available.
+  definedBy: [C]
+  assembly: xd', imm
   encoding:
-    match: '----------------000-----------00'
+    match: ----------------000-----------00
     variables:
-    - name: rd_p
-      location: 2-4
     - name: c_nzuimm10
-      location: 5-12
+      location: 12-5
+    - name: rd_p
+      location: 4-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,19 +2,21 @@
 
 vaesef.vv:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zvkn Zvkned
-  assembly: vaesef_vv vs2, vd
+  description: |
+      No description available.
+  definedBy: [Zvkn, Zvkned]
+  assembly: vs2, vd
   encoding:
     match: 1010001-----00011010-----1110111
     variables:
-    - name: vd
-      location: 7-11
     - name: vs2
-      location: 20-24
+      location: 24-20
+    - name: vd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,25 +2,27 @@
 
 jal:
   long_name: Jump and Link to target address, storing return address
-  description: "Performs an unconditional jump to a PC-relative offset and saves the\
+  description: |
+      "Performs an unconditional jump to a PC-relative offset and saves the\
     \ address of the next instruction (PC+4) in the destination register (usually\
     \ x1/ra). The offset is encoded in the immediate field, allowing jumps of up to\
     \ \xB11 MiB. This instruction is primarily used for procedure calls, where the\
     \ return address needs to be saved. The large jump range makes it suitable for\
     \ most function calls within a program. If the rd field is zero, no return address\
     \ is saved, allowing JAL to be used for unconditional branches as well."
-  definedBy: I
-  assembly: jal xd, imm
+  definedBy: [I]
+  assembly: xd, imm
   encoding:
-    match: '-------------------------1101111'
+    match: -------------------------1101111
     variables:
-    - name: rd
-      location: 7-11
     - name: jimm20
-      location: 12-31
+      location: 31-12
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

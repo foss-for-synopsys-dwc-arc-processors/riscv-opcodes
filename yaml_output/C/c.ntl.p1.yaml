@@ -2,14 +2,16 @@
 
 c.ntl.p1:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C Zihintntl
+  description: |
+      No description available.
+  definedBy: [C, Zihintntl]
   assembly: c_ntl_p1
   encoding:
-    match: '----------------1001000000001010'
+    match: ----------------1001000000001010
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

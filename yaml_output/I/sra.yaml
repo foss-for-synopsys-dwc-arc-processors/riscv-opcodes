@@ -2,26 +2,28 @@
 
 sra:
   long_name: Shift Right Arithmetic
-  description: Shifts rs1 right by the amount specified in the lower 5 (RV32) or 6
+  description: |
+      Shifts rs1 right by the amount specified in the lower 5 (RV32) or 6
     (RV64) bits of rs2, sign-extending (copying the most significant bit). Writes
     the result to rd. Arithmetic right shifts are equivalent to division by powers
     of 2 for signed integers, rounding towards negative infinity. SRA is essential
     in implementing efficient signed division by constants and in certain signal processing
     operations. It's also used in various algorithms where the
-  definedBy: I
-  assembly: sra xd, xs1, xs2
+  definedBy: [I]
+  assembly: xd, xs1, xs2
   encoding:
     match: 0100000----------101-----0110011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: rs2
-      location: 20-24
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

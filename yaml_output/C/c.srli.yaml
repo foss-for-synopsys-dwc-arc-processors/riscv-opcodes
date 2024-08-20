@@ -2,22 +2,31 @@
 
 c.srli:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
-  base: 64
-  assembly: c_srli xs1'/xs2', imm
+  description: |
+      No description available.
+  definedBy: [C]
+  assembly: xs1/xs2', imm
   encoding:
-    match: '----------------100-00--------01'
-    variables:
-    - name: c_nzuimm6lo
-      location: 2-6
-    - name: rd_rs1_p
-      location: 7-9
-    - name: c_nzuimm6hi
-      location: 12-12
+    RV32:
+      match: ----------------100000--------01
+      variables:
+      - name: rd_rs1_p
+        location: 9-7
+      - name: c_nzuimm5
+        location: 6-2
+    RV64:
+      match: ----------------100-00--------01
+      variables:
+      - name: c_nzuimm6hi
+        location: 12-12
+      - name: rd_rs1_p
+        location: 9-7
+      - name: c_nzuimm6lo
+        location: 6-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

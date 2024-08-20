@@ -2,7 +2,8 @@
 
 bgeu:
   long_name: Branch if Greater than or Equal (Unsigned)
-  description: Compares two registers (rs1 and rs2) as unsigned integers and conditionally
+  description: |
+      Compares two registers (rs1 and rs2) as unsigned integers and conditionally
     branches if rs1 is greater than or equal to rs2. If the condition is true, the
     program counter is updated to PC + immediate, where the immediate is a signed
     13-bit offset counting in 2-byte units. This instruction complements BLTU and
@@ -11,22 +12,23 @@ bgeu:
     operations involving memory addresses or other unsigned values. BGEU can be used
     to implement less-than-or-equal comparisons for unsigned integers by swapping
     the order of the operands.
-  definedBy: I
-  assembly: bgeu xs1, xs2, imm
+  definedBy: [I]
+  assembly: xs1, xs2, imm
   encoding:
-    match: '-----------------111-----1100011'
+    match: -----------------111-----1100011
     variables:
-    - name: bimm12lo
-      location: 7-11
-    - name: rs1
-      location: 15-19
-    - name: rs2
-      location: 20-24
     - name: bimm12hi
-      location: 25-31
+      location: 31-25
+    - name: rs2
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: bimm12lo
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

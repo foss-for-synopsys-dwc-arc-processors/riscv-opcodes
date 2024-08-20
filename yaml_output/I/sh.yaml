@@ -2,29 +2,31 @@
 
 sh:
   long_name: Store Halfword to memory
-  description: Stores the lowest 16 bits from rs2 to memory. The effective address
+  description: |
+      Stores the lowest 16 bits from rs2 to memory. The effective address
     is obtained by adding register rs1 to the sign-extended 12-bit offset. This instruction
     is used for writing 16-bit (halfword) values to memory. It's commonly employed
     when working with short integer types, in audio processing for storing 16-bit
     samples, in graphics for certain color depth operations, and in various protocols
     and file formats that use 16-bit data units. SH is also useful in embedded systems
     where memory might be arranged in 16-bit words.
-  definedBy: I
-  assembly: sh xs1, xs2, imm
+  definedBy: [I]
+  assembly: xs1, xs2, imm
   encoding:
-    match: '-----------------001-----0100011'
+    match: -----------------001-----0100011
     variables:
-    - name: imm12lo
-      location: 7-11
-    - name: rs1
-      location: 15-19
-    - name: rs2
-      location: 20-24
     - name: imm12hi
-      location: 25-31
+      location: 31-25
+    - name: rs2
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: imm12lo
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

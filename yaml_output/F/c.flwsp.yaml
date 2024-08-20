@@ -2,22 +2,24 @@
 
 c.flwsp:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C F
+  description: |
+      No description available.
+  definedBy: [C, F]
   base: 32
-  assembly: c_flwsp xd, imm
+  assembly: xd, imm
   encoding:
-    match: '----------------011-----------10'
+    match: ----------------011-----------10
     variables:
-    - name: c_uimm8splo
-      location: 2-6
-    - name: rd
-      location: 7-11
     - name: c_uimm8sphi
       location: 12-12
+    - name: rd
+      location: 11-7
+    - name: c_uimm8splo
+      location: 6-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

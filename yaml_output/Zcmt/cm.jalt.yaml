@@ -2,17 +2,19 @@
 
 cm.jalt:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zcmt
-  assembly: cm_jalt c_index
+  description: |
+      No description available.
+  definedBy: [Zcmt]
+  assembly: c_index
   encoding:
-    match: '----------------101000--------10'
+    match: ----------------101000--------10
     variables:
     - name: c_index
-      location: 2-9
+      location: 9-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

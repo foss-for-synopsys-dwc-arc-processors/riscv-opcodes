@@ -2,7 +2,8 @@
 
 fence:
   long_name: Enforce ordering between memory operations
-  description: Ensures that all memory accesses and I/O operations issued before the
+  description: |
+      Ensures that all memory accesses and I/O operations issued before the
     FENCE instruction are completed before any memory accesses or I/O operations after
     the FENCE are issued. This instruction is crucial in multicore and multiprocessor
     systems for enforcing memory ordering. FENCE is used to create synchronization
@@ -12,24 +13,25 @@ fence:
     of memory accesses with respect to memory-mapped I/O operations. FENCE can have
     different variants to specify which types of operations (reads, writes, I/O) need
     to be ordered.
-  definedBy: I
-  assembly: fence fm, pred, succ, xs1, xd
+  definedBy: [I]
+  assembly: fm, pred, succ, xs1, xd
   encoding:
-    match: '-----------------000-----0001111'
+    match: -----------------000-----0001111
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
-    - name: succ
-      location: 20-23
-    - name: pred
-      location: 24-27
     - name: fm
-      location: 28-31
+      location: 31-28
+    - name: pred
+      location: 27-24
+    - name: succ
+      location: 23-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

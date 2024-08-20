@@ -2,21 +2,23 @@
 
 c.li:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
-  assembly: c_li xd!=0, imm
+  description: |
+      No description available.
+  definedBy: [C]
+  assembly: xd!=0, imm
   encoding:
-    match: '----------------010-----------01'
+    match: ----------------010-----------01
     variables:
-    - name: c_imm6lo
-      location: 2-6
-    - name: rd_n0
-      location: 7-11
     - name: c_imm6hi
       location: 12-12
+    - name: rd_n0
+      location: 11-7
+    - name: c_imm6lo
+      location: 6-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

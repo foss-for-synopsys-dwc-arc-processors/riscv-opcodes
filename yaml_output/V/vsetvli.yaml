@@ -2,21 +2,23 @@
 
 vsetvli:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: V
-  assembly: vsetvli xs1, xd, imm
+  description: |
+      No description available.
+  definedBy: [V]
+  assembly: xs1, xd, imm
   encoding:
     match: 0----------------111-----1010111
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: zimm11
-      location: 20-30
+      location: 30-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

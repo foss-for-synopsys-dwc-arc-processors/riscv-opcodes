@@ -2,17 +2,19 @@
 
 lpad:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zicfilp
-  assembly: lpad imm
+  description: |
+      No description available.
+  definedBy: [Zicfilp]
+  assembly: imm
   encoding:
-    match: '--------------------000000010111'
+    match: --------------------000000010111
     variables:
     - name: imm20
-      location: 12-31
+      location: 31-12
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,14 +2,16 @@
 
 wfi:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: System
+  description: |
+      No description available.
+  definedBy: [System]
   assembly: wfi
   encoding:
-    match: '00010000010100000000000001110011'
+    match: '00010000010100000000000001110011
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,27 +2,29 @@
 
 lh:
   long_name: Load signed Halfword from memory
-  description: Loads a 16-bit value from memory, sign-extends it to XLEN bits, and
+  description: |
+      Loads a 16-bit value from memory, sign-extends it to XLEN bits, and
     writes it to rd. The effective address is obtained by adding register rs1 to the
     sign-extended 12-bit offset. This instruction is used for accessing 16-bit (halfword)
     data types, such as short integers in C. The sign-extension ensures that signed
     16-bit values are correctly interpreted in 32-bit or 64-bit contexts. LH is commonly
     used in audio processing (for 16-bit samples), in graphics (for certain color
     depths), and in working with communication protocols that use 16-bit data units.
-  definedBy: I
-  assembly: lh xd, xs1, imm
+  definedBy: [I]
+  assembly: xd, xs1, imm
   encoding:
-    match: '-----------------001-----0000011'
+    match: -----------------001-----0000011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: imm12
-      location: 20-31
+      location: 31-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,18 +2,20 @@
 
 c.jal:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
+  description: |
+      No description available.
+  definedBy: [C]
   base: 32
-  assembly: c_jal imm
+  assembly: imm
   encoding:
-    match: '----------------001-----------01'
+    match: ----------------001-----------01
     variables:
     - name: c_imm12
-      location: 2-12
+      location: 12-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

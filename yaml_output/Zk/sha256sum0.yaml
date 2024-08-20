@@ -2,19 +2,21 @@
 
 sha256sum0:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: Zk Zkn Zknh
-  assembly: sha256sum0 xd, xs1
+  description: |
+      No description available.
+  definedBy: [Zk, Zkn, Zknh]
+  assembly: xd, xs1
   encoding:
     match: 000100000000-----001-----0010011
     variables:
-    - name: rd
-      location: 7-11
     - name: rs1
-      location: 15-19
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

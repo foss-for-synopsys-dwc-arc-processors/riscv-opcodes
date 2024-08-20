@@ -2,27 +2,29 @@
 
 srl:
   long_name: Shift Right Logical
-  description: Shifts rs1 right by the amount specified in the lower 5 (RV32) or 6
+  description: |
+      Shifts rs1 right by the amount specified in the lower 5 (RV32) or 6
     (RV64) bits of rs2, filling with zeros. Writes the result to rd. Right logical
     shifts are equivalent to division by powers of 2 for unsigned integers, making
     SRL useful for efficient division by constants. It's crucial in various bit manipulation
     techniques, such as extracting the least significant bits of a value. SRL is often
     used in implementing unsigned integer division algorithms, in certain cryptographic
     operations, and in graphics processing for color manipulation.
-  definedBy: I
-  assembly: srl xd, xs1, xs2
+  definedBy: [I]
+  assembly: xd, xs1, xs2
   encoding:
     match: 0000000----------101-----0110011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rs1
-      location: 15-19
     - name: rs2
-      location: 20-24
+      location: 24-20
+    - name: rs1
+      location: 19-15
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

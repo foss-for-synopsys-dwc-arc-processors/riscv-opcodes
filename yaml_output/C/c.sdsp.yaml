@@ -2,20 +2,22 @@
 
 c.sdsp:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
+  description: |
+      No description available.
+  definedBy: [C]
   base: 64
-  assembly: c_sdsp xs2, imm
+  assembly: xs2, imm
   encoding:
-    match: '----------------111-----------10'
+    match: ----------------111-----------10
     variables:
-    - name: c_rs2
-      location: 2-6
     - name: c_uimm9sp_s
-      location: 7-12
+      location: 12-7
+    - name: c_rs2
+      location: 6-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

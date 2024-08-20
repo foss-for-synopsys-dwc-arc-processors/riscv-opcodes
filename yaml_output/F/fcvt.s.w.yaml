@@ -2,21 +2,23 @@
 
 fcvt.s.w:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: F
-  assembly: fcvt_s_w xd, xs1, rm
+  description: |
+      No description available.
+  definedBy: [F]
+  assembly: xd, xs1, rm
   encoding:
     match: 110100000000-------------1010011
     variables:
-    - name: rd
-      location: 7-11
-    - name: rm
-      location: 12-14
     - name: rs1
-      location: 15-19
+      location: 19-15
+    - name: rm
+      location: 14-12
+    - name: rd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

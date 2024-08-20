@@ -2,14 +2,16 @@
 
 c.ebreak:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
+  description: |
+      No description available.
+  definedBy: [C]
   assembly: c_ebreak
   encoding:
-    match: '----------------1001000000000010'
+    match: ----------------1001000000000010
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

@@ -2,19 +2,21 @@
 
 vl4re8.v:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: V
-  assembly: vl4re8_v xs1, vd
+  description: |
+      No description available.
+  definedBy: [V]
+  assembly: xs1, vd
   encoding:
     match: 011000101000-----000-----0000111
     variables:
-    - name: vd
-      location: 7-11
     - name: rs1
-      location: 15-19
+      location: 19-15
+    - name: vd
+      location: 11-7
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      

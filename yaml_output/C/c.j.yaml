@@ -2,17 +2,19 @@
 
 c.j:
   long_name: No synopsis available.
-  description: No description available.
-  definedBy: C
-  assembly: c_j imm
+  description: |
+      No description available.
+  definedBy: [C]
+  assembly: imm
   encoding:
-    match: '----------------101-----------01'
+    match: ----------------101-----------01
     variables:
     - name: c_imm12
-      location: 2-12
+      location: 12-2
   access:
-    s: TODO
-    u: TODO
-    vs: TODO
-    vu: TODO
-  operation(): TODO
+    s: ''
+    u: ''
+    vs: ''
+    vu: ''
+  operation(): |
+      
