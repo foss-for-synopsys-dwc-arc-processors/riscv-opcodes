@@ -1,20 +1,24 @@
 # yaml-language-server: $schema=../../../schemas/inst_schema.json
 
-rdcycle:
+rdinstreth:
   long_name: No synopsis available.
   description: |
       No description available.
-  definedBy: [Zicsr]
+  definedBy: [Zicntr]
+  base: 32
   assembly: xd
   encoding:
-    match: 11000000000000000010-----1110011
+    match: 11001000001000000010-----1110011
     variables:
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: csrrs
   operation(): |
       

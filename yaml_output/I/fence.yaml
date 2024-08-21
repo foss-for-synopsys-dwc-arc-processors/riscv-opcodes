@@ -20,18 +20,33 @@ fence:
     variables:
     - name: fm
       location: 31-28
+      start-bit: 31
+      end_bit: 28
     - name: pred
       location: 27-24
+      start-bit: 27
+      end_bit: 24
     - name: succ
       location: 23-20
+      start-bit: 23
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: fm==1000, pred==0011, succ==0011
+    to: fence.tso xs1, xd
+  - when: rs1==00000, fm==0000, pred==0001, rd==00000, succ==0000
+    to: pause pause
   operation(): |
       

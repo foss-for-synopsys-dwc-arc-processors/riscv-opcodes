@@ -11,8 +11,12 @@ cm.mvsa01:
     variables:
     - name: c_sreg1
       location: 9-7
+      start-bit: 9
+      end_bit: 7
     - name: c_sreg2
       location: 4-2
+      start-bit: 4
+      end_bit: 2
   access:
     s: ''
     u: ''

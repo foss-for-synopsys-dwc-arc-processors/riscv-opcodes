@@ -11,12 +11,19 @@ vl4re8.v:
     variables:
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: vd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: ''
+    to: vl4r.v xs1, vd
   operation(): |
       

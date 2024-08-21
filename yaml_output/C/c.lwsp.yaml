@@ -11,10 +11,16 @@ c.lwsp:
     variables:
     - name: c_uimm8sphi
       location: 12-12
+      start-bit: 12
+      end_bit: 12
     - name: rd_n0
       location: 11-7
+      start-bit: 11
+      end_bit: 7
     - name: c_uimm8splo
       location: 6-2
+      start-bit: 6
+      end_bit: 2
   access:
     s: ''
     u: ''

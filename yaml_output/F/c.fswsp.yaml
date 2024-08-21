@@ -12,8 +12,12 @@ c.fswsp:
     variables:
     - name: c_uimm8sp_s
       location: 12-7
+      start-bit: 12
+      end_bit: 7
     - name: c_rs2
       location: 6-2
+      start-bit: 6
+      end_bit: 2
   access:
     s: ''
     u: ''

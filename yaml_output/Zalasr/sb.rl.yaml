@@ -11,10 +11,16 @@ sb.rl:
     variables:
     - name: aq
       location: 26-26
+      start-bit: 26
+      end_bit: 26
     - name: rs2
       location: 24-20
+      start-bit: 24
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
   access:
     s: ''
     u: ''

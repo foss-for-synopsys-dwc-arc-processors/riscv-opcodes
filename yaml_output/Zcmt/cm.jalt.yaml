@@ -11,6 +11,8 @@ cm.jalt:
     variables:
     - name: c_index
       location: 9-2
+      start-bit: 9
+      end_bit: 2
   access:
     s: ''
     u: ''

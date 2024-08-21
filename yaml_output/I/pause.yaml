@@ -8,10 +8,12 @@ pause:
   assembly: pause
   encoding:
     match: '00000001000000000000000000001111
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: fence
   operation(): |
       

@@ -16,10 +16,14 @@ ebreak:
   assembly: ebreak
   encoding:
     match: '00000000000100000000000001110011
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: ebreak
+    to: sbreak sbreak
   operation(): |
       

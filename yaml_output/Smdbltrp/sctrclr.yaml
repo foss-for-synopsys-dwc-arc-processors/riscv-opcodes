@@ -8,6 +8,7 @@ sctrclr:
   assembly: sctrclr
   encoding:
     match: '00010000010000000000000001110011
+    variables: []
   access:
     s: ''
     u: ''

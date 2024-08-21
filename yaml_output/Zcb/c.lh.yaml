@@ -11,10 +11,16 @@ c.lh:
     variables:
     - name: rs1_p
       location: 9-7
+      start-bit: 9
+      end_bit: 7
     - name: c_uimm1
       location: 5-5
+      start-bit: 5
+      end_bit: 5
     - name: rd_p
       location: 4-2
+      start-bit: 4
+      end_bit: 2
   access:
     s: ''
     u: ''

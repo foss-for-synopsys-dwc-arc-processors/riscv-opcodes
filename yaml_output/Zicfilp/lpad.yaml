@@ -11,10 +11,13 @@ lpad:
     variables:
     - name: imm20
       location: 31-12
+      start-bit: 31
+      end_bit: 12
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: auipc
   operation(): |
       

@@ -15,10 +15,12 @@ scall:
   assembly: scall
   encoding:
     match: '00000000000000000000000001110011
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: ecall
   operation(): |
       

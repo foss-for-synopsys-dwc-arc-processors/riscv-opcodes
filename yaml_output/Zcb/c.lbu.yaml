@@ -11,10 +11,16 @@ c.lbu:
     variables:
     - name: rs1_p
       location: 9-7
+      start-bit: 9
+      end_bit: 7
     - name: c_uimm2
       location: 6-5
+      start-bit: 6
+      end_bit: 5
     - name: rd_p
       location: 4-2
+      start-bit: 4
+      end_bit: 2
   access:
     s: ''
     u: ''

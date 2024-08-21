@@ -11,8 +11,12 @@ cm.push:
     variables:
     - name: c_rlist
       location: 7-4
+      start-bit: 7
+      end_bit: 4
     - name: c_spimm
       location: 3-2
+      start-bit: 3
+      end_bit: 2
   access:
     s: ''
     u: ''

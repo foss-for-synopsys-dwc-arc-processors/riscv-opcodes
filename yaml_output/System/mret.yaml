@@ -8,6 +8,7 @@ mret:
   assembly: mret
   encoding:
     match: '00110000001000000000000001110011
+    variables: []
   access:
     s: ''
     u: ''

@@ -11,8 +11,12 @@ c.mv:
     variables:
     - name: rd_n0
       location: 11-7
+      start-bit: 11
+      end_bit: 7
     - name: c_rs2_n0
       location: 6-2
+      start-bit: 6
+      end_bit: 2
   access:
     s: ''
     u: ''

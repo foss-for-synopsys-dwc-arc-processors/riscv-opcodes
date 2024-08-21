@@ -8,10 +8,12 @@ sspush.x1:
   assembly: sspush_x1
   encoding:
     match: '11001110000100000100000001110011
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: mop.rr.N
   operation(): |
       

@@ -16,14 +16,27 @@ ori:
     variables:
     - name: imm12
       location: 31-20
+      start-bit: 31
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: imm12==-------00000, rd==00000, imm12hi==-------
+    to: prefetch.i xs1, imm
+  - when: imm12==-------00001, rd==00000, imm12hi==-------
+    to: prefetch.r xs1, imm
+  - when: imm12==-------00011, rd==00000, imm12hi==-------
+    to: prefetch.w xs1, imm
   operation(): |
       

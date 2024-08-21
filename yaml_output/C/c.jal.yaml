@@ -12,6 +12,8 @@ c.jal:
     variables:
     - name: c_imm12
       location: 12-2
+      start-bit: 12
+      end_bit: 2
   access:
     s: ''
     u: ''

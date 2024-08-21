@@ -18,12 +18,19 @@ auipc:
     variables:
     - name: imm20
       location: 31-12
+      start-bit: 31
+      end_bit: 12
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: rd==00000
+    to: lpad imm
   operation(): |
       

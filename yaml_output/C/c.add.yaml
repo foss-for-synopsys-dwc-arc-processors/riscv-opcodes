@@ -11,12 +11,25 @@ c.add:
     variables:
     - name: rd_rs1_n0
       location: 11-7
+      start-bit: 11
+      end_bit: 7
     - name: c_rs2_n0
       location: 6-2
+      start-bit: 6
+      end_bit: 2
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: c_rs2_n0==00010, rd_rs1_n0==00000
+    to: c.ntl.p1 c_ntl_p1
+  - when: c_rs2_n0==00011, rd_rs1_n0==00000
+    to: c.ntl.pall c_ntl_pall
+  - when: c_rs2_n0==00100, rd_rs1_n0==00000
+    to: c.ntl.s1 c_ntl_s1
+  - when: c_rs2_n0==00101, rd_rs1_n0==00000
+    to: c.ntl.all c_ntl_all
   operation(): |
       

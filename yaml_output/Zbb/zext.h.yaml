@@ -12,19 +12,28 @@ zext.h:
       variables:
       - name: rs1
         location: 19-15
+        start-bit: 19
+        end_bit: 15
       - name: rd
         location: 11-7
+        start-bit: 11
+        end_bit: 7
     RV64:
       match: 000010000000-----100-----0111011
       variables:
       - name: rs1
         location: 19-15
+        start-bit: 19
+        end_bit: 15
       - name: rd
         location: 11-7
+        start-bit: 11
+        end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: packw
   operation(): |
       

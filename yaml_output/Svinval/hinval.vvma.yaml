@@ -11,8 +11,12 @@ hinval.vvma:
     variables:
     - name: rs2
       location: 24-20
+      start-bit: 24
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
   access:
     s: ''
     u: ''

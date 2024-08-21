@@ -11,12 +11,20 @@ vrgatherei16.vv:
     variables:
     - name: vm
       location: 25-25
+      start-bit: 25
+      end_bit: 25
     - name: vs2
       location: 24-20
+      start-bit: 24
+      end_bit: 20
     - name: vs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: vd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''

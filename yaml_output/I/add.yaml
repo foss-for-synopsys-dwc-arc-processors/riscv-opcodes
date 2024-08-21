@@ -16,14 +16,29 @@ add:
     variables:
     - name: rs2
       location: 24-20
+      start-bit: 24
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: rs2==00010, rd==00000, rs1==00000
+    to: ntl.p1 ntl_p1
+  - when: rs2==00011, rd==00000, rs1==00000
+    to: ntl.pall ntl_pall
+  - when: rs2==00100, rd==00000, rs1==00000
+    to: ntl.s1 ntl_s1
+  - when: rs2==00101, rd==00000, rs1==00000
+    to: ntl.all ntl_all
   operation(): |
       

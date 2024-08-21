@@ -11,10 +11,16 @@ csrrci:
     variables:
     - name: csr
       location: 31-20
+      start-bit: 31
+      end_bit: 20
     - name: zimm
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''

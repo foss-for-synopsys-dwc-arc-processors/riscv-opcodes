@@ -8,10 +8,12 @@ c.mop.5:
   assembly: c_mop_5
   encoding:
     match: ----------------0110001010000001
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: c.mop.N
   operation(): |
       

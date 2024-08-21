@@ -8,10 +8,12 @@ ntl.all:
   assembly: ntl_all
   encoding:
     match: '00000000010100000000000000110011
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: add
   operation(): |
       

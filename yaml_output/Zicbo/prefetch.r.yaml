@@ -11,12 +11,17 @@ prefetch.r:
     variables:
     - name: imm12hi
       location: 31-25
+      start-bit: 31
+      end_bit: 25
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: ori
   operation(): |
       

@@ -11,6 +11,8 @@ c.sext.h:
     variables:
     - name: rd_rs1_p
       location: 9-7
+      start-bit: 9
+      end_bit: 7
   access:
     s: ''
     u: ''

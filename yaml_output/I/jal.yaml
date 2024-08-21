@@ -17,8 +17,12 @@ jal:
     variables:
     - name: jimm20
       location: 31-12
+      start-bit: 31
+      end_bit: 12
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''

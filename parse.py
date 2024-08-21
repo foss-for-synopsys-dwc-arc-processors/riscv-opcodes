@@ -204,6 +204,8 @@ def create_inst_dict(file_filter, include_pseudo=True, include_pseudo_ops=[]):
     '''
     opcodes_dir = os.path.dirname(os.path.realpath(__file__))
     instr_dict = {}
+    pseudo_origins = {}  # New dictionary to store pseudo-instruction origins
+
 
     # file_names contains all files to be parsed in the riscv-opcodes directory
     file_names = []
@@ -328,6 +330,9 @@ def create_inst_dict(file_filter, include_pseudo=True, include_pseudo_ops=[]):
 
 
             (name, single_dict) = process_enc_line(pseudo_inst + ' ' + line, f)
+            single_dict['is_pseudo'] = True  # Mark as pseudo-instruction
+            single_dict['orig_inst'] = orig_inst.replace('.', '_')  # Store originating instruction
+
             # add the pseudo_op to the dictionary only if the original
             # instruction is not already in the dictionary.
             if orig_inst.replace('.','_') not in instr_dict \
@@ -345,8 +350,19 @@ def create_inst_dict(file_filter, include_pseudo=True, include_pseudo_ops=[]):
                     ext_name = single_dict['extension']
                     if ext_name not in instr_dict[name]['extension']:
                         instr_dict[name]['extension'].extend(ext_name)
+
+                # Store the pseudo-instruction origin
+                pseudo_origins[name] = orig_inst.replace('.', '_')
+
             else:
                 logging.debug(f'        Skipping pseudo_op {pseudo_inst} since original instruction {orig_inst} already selected in list')
+
+    # Update original instructions with their pseudo-instructions
+    for pseudo, orig in pseudo_origins.items():
+        if orig in instr_dict:
+            if 'pseudo_ops' not in instr_dict[orig]:
+                instr_dict[orig]['pseudo_ops'] = []
+            instr_dict[orig]['pseudo_ops'].append(pseudo)
 
     # third pass if for imported instructions
     logging.debug('Collecting imported instructions')
@@ -1534,7 +1550,8 @@ def make_yaml(instr_dict):
         return "No description available."
         
 
-    def get_yaml_assembly(instr_name, instr_data):
+    def get_yaml_assembly(instr_name, instr_dict):
+        instr_data = instr_dict.get(instr_name, {})
         var_fields = instr_data.get('variable_fields', [])
 
         reg_args = []
@@ -1579,20 +1596,66 @@ def make_yaml(instr_dict):
                 start_bit, end_bit = arg_lut[field_name]
                 variables.append({
                     'name': field_name,
-                    'location': f'{start_bit}-{end_bit}'  # Reversed order here
+                    'location': f'{start_bit}-{end_bit}',
+                    'start-bit': start_bit,
+                    'end_bit':end_bit
                 })
         
         # Sort variables in descending order based on the start of the bit range
         variables.sort(key=lambda x: int(x['location'].split('-')[0]), reverse=True)
         
-        if variables:
-            return {
-                'match': match,
-                'variables': variables
-            }
-        else:
-            return {'match': match}
+        result = {
+            'match': match,
+            'variables': variables
+        }
         
+        return result
+    
+    def get_yaml_encoding_diff(instr_data_original, pseudo_instructions):
+        def get_variables(instr_data):
+            encoding = instr_data['encoding']
+            var_fields = instr_data.get('variable_fields', [])
+            
+            variables = {}
+            for field_name in var_fields:
+                if field_name in arg_lut:
+                    start_bit, end_bit = arg_lut[field_name]
+                    variables[field_name] = {
+                        'field_name': field_name,
+                        'match': encoding[31-start_bit:32-end_bit],
+                        'start_bit': start_bit,
+                        'end_bit': end_bit
+                    }
+            return variables
+
+        original_vars = get_variables(instr_data_original)
+        differences = {}
+
+        for pseudo_name, pseudo_data in pseudo_instructions.items():
+            pseudo_vars = get_variables(pseudo_data)
+            field_differences = {}
+
+            # Find fields that are different or unique to each instruction
+            all_fields = set(original_vars.keys()) | set(pseudo_vars.keys())
+            for field in all_fields:
+                if field not in pseudo_vars:
+                    field_differences[field] = {
+                        'pseudo_value': pseudo_data['encoding'][31-original_vars[field]['start_bit']:32-original_vars[field]['end_bit']]
+                    }
+                elif field not in original_vars:
+                    field_differences[field] = {
+                        'pseudo_value': pseudo_vars[field]['match']
+                    }
+                elif original_vars[field]['match'] != pseudo_vars[field]['match']:
+                    field_differences[field] = {
+                        'pseudo_value': pseudo_vars[field]['match']
+                    }
+
+            if field_differences:
+                differences[pseudo_name] = field_differences
+
+        return differences
+
     def get_yaml_definedby(instr_data):
         defined_by = set()
         for ext in instr_data['extension']:
@@ -1631,7 +1694,6 @@ def make_yaml(instr_dict):
                     if ext_letter not in extensions:
                         extensions[ext_letter] = {}
                     extensions[ext_letter][instr_name] = instr_data
-    print (rv32_instructions)
 
 
     # Create a directory to store the YAML files
@@ -1652,16 +1714,42 @@ def make_yaml(instr_dict):
                 'description': get_yaml_description(instr_name),
                 'definedBy': get_yaml_definedby(instr_data),
                 'base': get_yaml_base(instr_data),
-                'assembly': get_yaml_assembly(instr_name, instr_data),
+                'assembly': get_yaml_assembly(instr_name, instr_dict),
                 'encoding': make_yaml_encoding(instr_name, instr_data),
                 'access': {
                             's': '',
                             'u': '',
                             'vs': '',
                             'vu': ''
-                },
-                'operation': None
+                }
             }
+
+            # Add pseudoinstruction field for origin instructions
+            if 'pseudo_ops' in instr_data:
+                pseudo_list = [pseudo.replace('_', '.') for pseudo in instr_data['pseudo_ops']]
+                if pseudo_list:
+                    yaml_content[instr_name_with_periods]['pseudoinstructions'] = []
+                    pseudo_instructions = {pseudo.replace('.', '_'): instr_dict[pseudo.replace('.', '_')] for pseudo in pseudo_list}
+                    encoding_diffs = get_yaml_encoding_diff(instr_data, pseudo_instructions)
+                    for pseudo in pseudo_list:
+                        assembly = get_yaml_assembly(pseudo.replace('.', '_'), instr_dict)
+                        diff_info = encoding_diffs.get(pseudo.replace('.', '_'), {})
+                        when_condition = get_yaml_assembly(instr_name, instr_dict).replace(assembly,"").replace(",","")
+                        if diff_info:
+                            diff_str = ", ".join([f"{field}=={details['pseudo_value']}" for field, details in diff_info.items()])
+                            when_condition = f"{diff_str}"
+                        yaml_content[instr_name_with_periods]['pseudoinstructions'].append({
+                            'when': when_condition,
+                            'to': f"{pseudo} {assembly}",
+                        })
+            
+            
+            #  Add origininstruction field for pseudo instructions
+            if instr_data.get('is_pseudo', False):
+                yaml_content[instr_name_with_periods]['origininstruction'] = instr_data['orig_inst'].replace('_', '.')
+
+            # Add operation field last
+            yaml_content[instr_name_with_periods]['operation'] = None
 
             # Handle encoding for RV32 and RV64 versions
             if instr_name in rv32_instructions:

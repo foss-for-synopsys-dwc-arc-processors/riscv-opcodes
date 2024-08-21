@@ -8,6 +8,7 @@ wrs.sto:
   assembly: wrs_sto
   encoding:
     match: '00000001110100000000000001110011
+    variables: []
   access:
     s: ''
     u: ''

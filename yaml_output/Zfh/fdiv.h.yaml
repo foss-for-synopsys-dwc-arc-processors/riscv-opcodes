@@ -11,12 +11,20 @@ fdiv.h:
     variables:
     - name: rs2
       location: 24-20
+      start-bit: 24
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: rm
       location: 14-12
+      start-bit: 14
+      end_bit: 12
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''

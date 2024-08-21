@@ -11,10 +11,16 @@ vsetvli:
     variables:
     - name: zimm11
       location: 30-20
+      start-bit: 30
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''

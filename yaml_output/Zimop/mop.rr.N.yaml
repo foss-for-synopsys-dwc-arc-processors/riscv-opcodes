@@ -11,18 +11,49 @@ mop.rr.N:
     variables:
     - name: mop_rr_t_30
       location: 30-30
+      start-bit: 30
+      end_bit: 30
     - name: mop_rr_t_27_26
       location: 27-26
+      start-bit: 27
+      end_bit: 26
     - name: rs2
       location: 24-20
+      start-bit: 24
+      end_bit: 20
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: mop_rr_t_27_26==11, rs1==00000, mop_rr_t_30==1, rd==00000, rs2==00001
+    to: sspush.x1 sspush_x1
+  - when: mop_rr_t_27_26==11, rs1==00000, mop_rr_t_30==1, rd==00000, rs2==00101
+    to: sspush.x5 sspush_x5
+  - when: mop_rr_t_27_26==00, mop_rr_t_30==0
+    to: mop.rr.0 xd, xs1, xs2
+  - when: mop_rr_t_27_26==01, mop_rr_t_30==0
+    to: mop.rr.1 xd, xs1, xs2
+  - when: mop_rr_t_27_26==10, mop_rr_t_30==0
+    to: mop.rr.2 xd, xs1, xs2
+  - when: mop_rr_t_27_26==11, mop_rr_t_30==0
+    to: mop.rr.3 xd, xs1, xs2
+  - when: mop_rr_t_27_26==00, mop_rr_t_30==1
+    to: mop.rr.4 xd, xs1, xs2
+  - when: mop_rr_t_27_26==01, mop_rr_t_30==1
+    to: mop.rr.5 xd, xs1, xs2
+  - when: mop_rr_t_27_26==10, mop_rr_t_30==1
+    to: mop.rr.6 xd, xs1, xs2
+  - when: mop_rr_t_27_26==11, mop_rr_t_30==1
+    to: mop.rr.7 xd, xs1, xs2
   operation(): |
       

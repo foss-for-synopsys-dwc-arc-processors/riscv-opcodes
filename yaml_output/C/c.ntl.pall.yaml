@@ -8,10 +8,12 @@ c.ntl.pall:
   assembly: c_ntl_pall
   encoding:
     match: ----------------1001000000001110
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: c.add
   operation(): |
       

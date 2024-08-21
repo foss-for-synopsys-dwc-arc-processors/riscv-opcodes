@@ -12,21 +12,36 @@ c.slli:
       variables:
       - name: rd_rs1_n0
         location: 11-7
+        start-bit: 11
+        end_bit: 7
       - name: c_nzuimm6lo
         location: 6-2
+        start-bit: 6
+        end_bit: 2
     RV64:
       match: ----------------000-----------10
       variables:
       - name: c_nzuimm6hi
         location: 12-12
+        start-bit: 12
+        end_bit: 12
       - name: rd_rs1_n0
         location: 11-7
+        start-bit: 11
+        end_bit: 7
       - name: c_nzuimm6lo
         location: 6-2
+        start-bit: 6
+        end_bit: 2
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: ''
+    to: c.slli xd/xs!=0, imm
+  - when: c_nzuimm6hi==0
+    to: c.slli.rv32 xd/xs!=0, imm
   operation(): |
       

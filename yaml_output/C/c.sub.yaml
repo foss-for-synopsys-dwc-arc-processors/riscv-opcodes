@@ -11,8 +11,12 @@ c.sub:
     variables:
     - name: rd_rs1_p
       location: 9-7
+      start-bit: 9
+      end_bit: 7
     - name: rs2_p
       location: 4-2
+      start-bit: 4
+      end_bit: 2
   access:
     s: ''
     u: ''

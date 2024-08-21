@@ -11,10 +11,13 @@ ssrdp:
     variables:
     - name: rd_n0
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: mop.r.N
   operation(): |
       

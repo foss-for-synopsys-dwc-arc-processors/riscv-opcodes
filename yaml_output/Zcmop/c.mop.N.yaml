@@ -11,10 +11,33 @@ c.mop.N:
     variables:
     - name: c_mop_t
       location: 10-8
+      start-bit: 10
+      end_bit: 8
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: c_mop_t==000
+    to: c.sspush.x1 c_sspush_x1
+  - when: c_mop_t==010
+    to: c.sspopchk.x5 c_sspopchk_x5
+  - when: c_mop_t==000
+    to: c.mop.1 c_mop_1
+  - when: c_mop_t==001
+    to: c.mop.3 c_mop_3
+  - when: c_mop_t==010
+    to: c.mop.5 c_mop_5
+  - when: c_mop_t==011
+    to: c.mop.7 c_mop_7
+  - when: c_mop_t==100
+    to: c.mop.9 c_mop_9
+  - when: c_mop_t==101
+    to: c.mop.11 c_mop_11
+  - when: c_mop_t==110
+    to: c.mop.13 c_mop_13
+  - when: c_mop_t==111
+    to: c.mop.15 c_mop_15
   operation(): |
       

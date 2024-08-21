@@ -12,21 +12,36 @@ c.srai:
       variables:
       - name: rd_rs1_p
         location: 9-7
+        start-bit: 9
+        end_bit: 7
       - name: c_nzuimm5
         location: 6-2
+        start-bit: 6
+        end_bit: 2
     RV64:
       match: ----------------100-01--------01
       variables:
       - name: c_nzuimm6hi
         location: 12-12
+        start-bit: 12
+        end_bit: 12
       - name: rd_rs1_p
         location: 9-7
+        start-bit: 9
+        end_bit: 7
       - name: c_nzuimm6lo
         location: 6-2
+        start-bit: 6
+        end_bit: 2
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  pseudoinstructions:
+  - when: ''
+    to: c.srai xs1/xs2', imm
+  - when: c_nzuimm6hi==0, c_nzuimm5==-----, c_nzuimm6lo==-----
+    to: c.srai.rv32 xs1/xs2', imm
   operation(): |
       

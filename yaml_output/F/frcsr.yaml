@@ -4,17 +4,20 @@ frcsr:
   long_name: No synopsis available.
   description: |
       No description available.
-  definedBy: [Zicsr]
+  definedBy: [F]
   assembly: xd
   encoding:
     match: 00000000001100000010-----1110011
     variables:
     - name: rd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: csrrs
   operation(): |
       

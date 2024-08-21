@@ -8,6 +8,7 @@ c.ebreak:
   assembly: c_ebreak
   encoding:
     match: ----------------1001000000000010
+    variables: []
   access:
     s: ''
     u: ''

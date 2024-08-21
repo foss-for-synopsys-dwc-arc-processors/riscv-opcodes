@@ -8,10 +8,12 @@ sspopchk.x1:
   assembly: sspopchk_x1
   encoding:
     match: '11001101110000001100000001110011
+    variables: []
   access:
     s: ''
     u: ''
     vs: ''
     vu: ''
+  origininstruction: mop.r.N
   operation(): |
       

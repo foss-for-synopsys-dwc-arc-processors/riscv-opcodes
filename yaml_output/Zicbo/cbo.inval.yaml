@@ -11,6 +11,8 @@ cbo.inval:
     variables:
     - name: rs1
       location: 19-15
+      start-bit: 19
+      end_bit: 15
   access:
     s: ''
     u: ''

@@ -12,12 +12,20 @@ c.flw:
     variables:
     - name: c_uimm7hi
       location: 12-10
+      start-bit: 12
+      end_bit: 10
     - name: rs1_p
       location: 9-7
+      start-bit: 9
+      end_bit: 7
     - name: c_uimm7lo
       location: 6-5
+      start-bit: 6
+      end_bit: 5
     - name: rd_p
       location: 4-2
+      start-bit: 4
+      end_bit: 2
   access:
     s: ''
     u: ''

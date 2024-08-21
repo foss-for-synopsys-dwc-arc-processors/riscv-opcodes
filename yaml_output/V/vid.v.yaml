@@ -11,8 +11,12 @@ vid.v:
     variables:
     - name: vm
       location: 25-25
+      start-bit: 25
+      end_bit: 25
     - name: vd
       location: 11-7
+      start-bit: 11
+      end_bit: 7
   access:
     s: ''
     u: ''
