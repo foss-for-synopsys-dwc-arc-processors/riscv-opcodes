@@ -556,6 +556,8 @@ def make_asciidoc_encoding(instr_name, instr_data):
         # Add any fixed bits before this field
         if current_bit > start_bit:
             fixed_bits = encoding[31-current_bit:31-start_bit]
+            print (fixed_bits)
+            print (current_bit, start_bit)
             if fixed_bits:
                 # Check for funct3 (3 bits, typically at 14-12)
                 if end_bit - start_bit == 3 and current_bit == 14:
